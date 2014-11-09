@@ -108,7 +108,7 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw key box
 		Field keys = new Field();
-		keys.setBounds(190, 15, 20, 22);
+		keys.setRect(190, 15, 20, 22);
 		keys.drawField(g2);
 		
 		// detect key presses
@@ -152,25 +152,25 @@ public class Board extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_LEFT) {
-				ball.dx = -1;
+				ball.setDx(-1);
 				pressedkeys[0] = 1;
 				ball.setRotation(180);
 			}
 
 			if (key == KeyEvent.VK_RIGHT) {
-				ball.dx = 1;
+				ball.setDx(1);
 				pressedkeys[2] = 1;
 				ball.setRotation(0);
 			}
 
 			if (key == KeyEvent.VK_UP) {
-				ball.dy = -1;
+				ball.setDy(-1);
 				pressedkeys[1] = 1;
 				ball.setRotation(90);
 			}
 
 			if (key == KeyEvent.VK_DOWN) {
-				ball.dy = 1;
+				ball.setDy(1);
 				pressedkeys[3] = 1;
 				ball.setRotation(270);
 			}
@@ -180,22 +180,22 @@ public class Board extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_LEFT) {
-				ball.dx = 0;
+				ball.setDx(0);
 				pressedkeys[0] = 0;
 			}
 
 			if (key == KeyEvent.VK_RIGHT) {
-				ball.dx = 0;
+				ball.setDx(0);
 				pressedkeys[2] = 0;
 			}
 
 			if (key == KeyEvent.VK_UP) {
-				ball.dy = 0;
+				ball.setDy(0);
 				pressedkeys[1] = 0;
 			}
 
 			if (key == KeyEvent.VK_DOWN) {
-				ball.dy = 0;
+				ball.setDy(0);
 				pressedkeys[3] = 0;
 			}
 		}
@@ -210,7 +210,6 @@ public class Board extends JPanel implements ActionListener {
 				frame = frame.getParent();
 			while (!(frame instanceof JFrame));
 			((JFrame) frame).dispose();
-			//System.exit(0);
 		}
 	}
 }

@@ -7,7 +7,7 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class Field extends Rectangle{
+public class Field extends Rectangle.Double {
 	
 	// sides of the field, parts where collision can be detected
 	private ArrayList<Line2D.Double> sides;
