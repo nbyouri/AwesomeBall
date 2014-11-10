@@ -2,8 +2,7 @@ package test_jeu;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
+//import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -12,21 +11,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+//import java.util.ArrayList;
+
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
+
 
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
 	private Timer timer;
+	private TextField title;
 	private Ball ball;
 	private Field field;
-	private JButton exit;
+	private Button exit;
 	private KeyIndicator keys;
 	
 	// constants
@@ -36,12 +36,28 @@ public class Board extends JPanel implements ActionListener {
 	public static final int BOARD_Y_POS = 50;
 	
 	public Board() {
+		// get screen size
+		//double w = size.getWidth();
+		//double h = size.getHeight();
+		double w = 600;
+		double h = 200;
+				
+		// setup game title
+		title = new TextField("SpaceShip Collider");
+		title.setSize(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 130, 22);
+		
 		// setup field 
 		field = new Field();
+		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
+				w - BOARD_X_POS - BOARD_X_POS,
+				h - BOARD_Y_POS - BOARD_Y_POS);
+		
 		// setup ball
 		ball = new Ball();
+		
 		// setup key indicator
 		keys = new KeyIndicator();
+		keys.setSize(190, 15, 20, 22);
 		
 		// key listener and window settings
 		addKeyListener(new TAdapter());
@@ -50,9 +66,13 @@ public class Board extends JPanel implements ActionListener {
 		setDoubleBuffered(true);
 		setLayout(null);
 		
-		// quit button, add here and not in paint() or it won't work
-		exit = new JButton("EXIT");
-		exit.addActionListener(new CloseListener());
+		// quit button, add here and not in paint() 
+		// or it won't work
+		exit = new Button("EXIT", new CloseListener());
+		exit.setBounds(BOARD_X_POS,
+				BOARD_X_POS + (int)field.getHeight() + 
+				(int)((h - (BOARD_Y_POS + field.getHeight())) / 4),
+				(int)field.getWidth(), 22);
 		add(exit);
 		
 		// timer
@@ -64,60 +84,25 @@ public class Board extends JPanel implements ActionListener {
 		super.paint(g);
 
 		Graphics2D g2 = (Graphics2D)g;
-	    
+		
+		// smooth rendering, otherwise fonts look bad
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
 	    		RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHint(RenderingHints.KEY_RENDERING, 
 	    		RenderingHints.VALUE_RENDER_QUALITY);
-
-		// get screen size
-		Dimension size = getSize();
-		double w = size.getWidth();
-		double h = size.getHeight();
-		
-		// initialize field and draw it 
-		// position is relative to the 
-		// jframe size
-		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
-				w - BOARD_X_POS - BOARD_X_POS,
-				h - BOARD_Y_POS - BOARD_Y_POS);
+	    
+	    // draw title
+	    title.draw(g2, null);
+	    
+	    // draw field
 		field.draw(g2, ball.approaches(field));
 		
 		// draw ball
 		ball.draw(g2);
 		
-		// detect ball rotation 
-		// XXX to fix
-		//ball.rotate(g2, ball.getRotation());
-		
-		// setup font settings
-		Font myFont = new Font("Helvetica", Font.BOLD, 12);
-		g2.setFont(myFont);
-		Field pos = new Field();
-		g2.setColor(Color.cyan);
-		String posxystr = "SpaceCraft Collider";
-		pos.setRect(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 130, 22);
-		g2.drawString(posxystr, (int)pos.getX() + 10, (int)pos.getY() + 15);
-		g2.draw(pos);
-
 		// draw key box
-		keys.setSize(190, 15, 20, 22);
 		keys.draw(g2, keys.getPressedKeys());
-		
-		// exit button settings
-		Border cyanborder = new LineBorder(Color.cyan, 1);
-		exit.setFont(myFont);
-		exit.setBorder(cyanborder);
-		exit.setForeground(Color.cyan);
-		exit.setBackground(Color.black);
-		exit.setFocusPainted(false);
-		exit.setContentAreaFilled(false);
-		// set position relative to the field
-		exit.setBounds(BOARD_X_POS,
-				BOARD_X_POS + (int)field.getHeight() + 
-				(int)((h - (BOARD_Y_POS + field.getHeight())) / 4),
-				(int)field.getWidth(), 22);
-		
+
 		// clear things up
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();

@@ -19,8 +19,8 @@ import javax.swing.JFrame;
  * shoot bullets
  * 
  * QUICKTODO:
- * class for jbutton
- * initialise in board constructor?
+ * abstract version of rectangle draw?
+ * spaceship rotation
  */
 
 @SuppressWarnings("serial")
