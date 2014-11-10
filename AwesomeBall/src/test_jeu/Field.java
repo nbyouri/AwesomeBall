@@ -2,19 +2,16 @@ package test_jeu;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class Field extends Rectangle.Double {
+public class Field extends Shape {
 	
 	// sides of the field, parts where collision can be detected
 	private ArrayList<Line2D.Double> sides;
 	
 	public Field() {
-		super(0, 0, 0, 0);
-		
 		sides = new ArrayList<Line2D.Double>();
 		
 		// 4 sides of field rectangle
@@ -66,14 +63,10 @@ public class Field extends Rectangle.Double {
     }
     
     // draw field and sides
-    public void draw(Graphics2D g2, ArrayList<Integer> ar) {
-   
+    public void draw(Graphics2D g2) {
     	// draw rectangle
     	g2.setColor(Color.cyan);
 		g2.draw(this);
-		
-		// draw side(s) if needed
-    	drawSides(g2, ar);
-    	
+
     }
 }

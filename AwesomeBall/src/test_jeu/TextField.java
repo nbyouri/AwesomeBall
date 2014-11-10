@@ -21,8 +21,8 @@ public class TextField extends Field {
 	}
 	
 	@Override
-	public void draw(Graphics2D g2, ArrayList<Integer> ar) {
-		super.draw(g2, ar);
+	public void draw(Graphics2D g2) {
+		super.draw(g2);
 		g2.setFont(this.textFont);
 		g2.drawString(this.str, (int)this.getX() + 10, (int)this.getY() + 15);
 		g2.draw(this);

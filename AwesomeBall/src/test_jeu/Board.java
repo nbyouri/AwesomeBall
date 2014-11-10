@@ -40,9 +40,7 @@ public class Board extends JPanel implements ActionListener {
 	public Board(Dimension boardSize) {
 		// get screen size
 		size = boardSize;
-		//double w = 800;
-		//double h = 600;
-				
+
 		// setup game title
 		title = new TextField("SpaceShip Collider");
 		title.setSize(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 130, 22);
@@ -93,20 +91,20 @@ public class Board extends JPanel implements ActionListener {
 	    		RenderingHints.VALUE_RENDER_QUALITY);
 	    
 	    // draw title
-	    title.draw(g2, null);
+	    title.draw(g2);
 	    
 	    // draw field
-		field.draw(g2, ball.approaches(field));
+		field.draw(g2);
+		field.drawSides(g2, ball.approaches(field));
 		
 		// draw ball
 		ball.draw(g2);
+		ball.drawSides(g2, ball.approaches(field));
 		
 		// draw key box
-		keys.draw(g2, keys.getPressedKeys());
+		keys.draw(g2);
+		keys.drawSides(g2, keys.getPressedKeys());
 
-		
-		// debug
-		System.out.println(this.size.toString());
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();

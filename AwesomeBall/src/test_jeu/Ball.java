@@ -3,7 +3,6 @@ package test_jeu;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Color;
-import java.awt.Rectangle;
 //import java.awt.event.KeyEvent;
 
 import java.awt.image.BufferedImage;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
-public class Ball extends Rectangle.Double {
+public class Ball extends Field {
 	private Image img;
 	private double dx;
 	private double dy;
@@ -30,6 +29,7 @@ public class Ball extends Rectangle.Double {
 		// initial position
 		this.x = 60;
 		this.y = 80;
+
 	}
 
 	public double getDx() {
@@ -62,6 +62,7 @@ public class Ball extends Rectangle.Double {
 
 	public void setLocation(double x, double y) {
 		this.setRect(x, y, this.getWidth(), this.getHeight());
+		this.setSides();
 	}
 	
 	// move ball in rectangle
@@ -93,7 +94,7 @@ public class Ball extends Rectangle.Double {
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
 		g2.setColor(Color.RED);
-		//g2.draw(this);
+		g2.draw(this);
 	}
 
 	// rotate the image
