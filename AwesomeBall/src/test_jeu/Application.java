@@ -17,6 +17,10 @@ import javax.swing.JFrame;
  * acceleration
  * sounds
  * shoot bullets
+ * 
+ * QUICKTODO:
+ * class for jbutton
+ * initialise in board constructor?
  */
 
 @SuppressWarnings("serial")

@@ -27,7 +27,7 @@ public class Board extends JPanel implements ActionListener {
 	private Ball ball;
 	private Field field;
 	private JButton exit;
-	private int pressedkeys[];
+	private KeyIndicator keys;
 	
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
@@ -36,10 +36,12 @@ public class Board extends JPanel implements ActionListener {
 	public static final int BOARD_Y_POS = 50;
 	
 	public Board() {
-		// setup field and ball
+		// setup field 
 		field = new Field();
+		// setup ball
 		ball = new Ball();
-		pressedkeys = new int[]{0, 0, 0, 0};
+		// setup key indicator
+		keys = new KeyIndicator();
 		
 		// key listener and window settings
 		addKeyListener(new TAdapter());
@@ -76,16 +78,11 @@ public class Board extends JPanel implements ActionListener {
 		// initialize field and draw it 
 		// position is relative to the 
 		// jframe size
-		field.setRect(BOARD_X_POS, BOARD_Y_POS, 
+		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
 				w - BOARD_X_POS - BOARD_X_POS,
 				h - BOARD_Y_POS - BOARD_Y_POS);
-		field.drawField(g2);
+		field.draw(g2, ball.approaches(field));
 		
-		// detect side of rectangle the ball sticks with
-		field.setSides();
-	
-		// detect ball side field hit
-		field.drawSides(g2, ball.approaches(field));
 		// draw ball
 		ball.draw(g2);
 		
@@ -93,32 +90,19 @@ public class Board extends JPanel implements ActionListener {
 		// XXX to fix
 		//ball.rotate(g2, ball.getRotation());
 		
-		
-		// draw position box
 		// setup font settings
 		Font myFont = new Font("Helvetica", Font.BOLD, 12);
 		g2.setFont(myFont);
 		Field pos = new Field();
 		g2.setColor(Color.cyan);
-		//String posxystr = ("Ball Position\n x = " + ball.getX() + "\ny = " + ball.getY());
 		String posxystr = "SpaceCraft Collider";
 		pos.setRect(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 130, 22);
 		g2.drawString(posxystr, (int)pos.getX() + 10, (int)pos.getY() + 15);
 		g2.draw(pos);
 
 		// draw key box
-		Field keys = new Field();
-		keys.setRect(190, 15, 20, 22);
-		keys.drawField(g2);
-		
-		// detect key presses
-		keys.setSides();
-		ArrayList<Integer> arkeys = new ArrayList<Integer>();
-		for (int i = 0; i < pressedkeys.length; i++) {
-			if (pressedkeys[i] == 1)
-				arkeys.add(i);
-		}
-		keys.drawSides(g2, arkeys);
+		keys.setSize(190, 15, 20, 22);
+		keys.draw(g2, keys.getPressedKeys());
 		
 		// exit button settings
 		Border cyanborder = new LineBorder(Color.cyan, 1);
@@ -133,7 +117,7 @@ public class Board extends JPanel implements ActionListener {
 				BOARD_X_POS + (int)field.getHeight() + 
 				(int)((h - (BOARD_Y_POS + field.getHeight())) / 4),
 				(int)field.getWidth(), 22);
-
+		
 		// clear things up
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -153,25 +137,25 @@ public class Board extends JPanel implements ActionListener {
 
 			if (key == KeyEvent.VK_LEFT) {
 				ball.setDx(-1);
-				pressedkeys[0] = 1;
+				keys.setPressedKey(0, 1);
 				ball.setRotation(180);
+			}
+			
+			if (key == KeyEvent.VK_UP) {
+				ball.setDy(-1);
+				keys.setPressedKey(1, 1);
+				ball.setRotation(90);
 			}
 
 			if (key == KeyEvent.VK_RIGHT) {
 				ball.setDx(1);
-				pressedkeys[2] = 1;
+				keys.setPressedKey(2, 1);
 				ball.setRotation(0);
 			}
-
-			if (key == KeyEvent.VK_UP) {
-				ball.setDy(-1);
-				pressedkeys[1] = 1;
-				ball.setRotation(90);
-			}
-
+			
 			if (key == KeyEvent.VK_DOWN) {
 				ball.setDy(1);
-				pressedkeys[3] = 1;
+				keys.setPressedKey(3, 1);
 				ball.setRotation(270);
 			}
 		}
@@ -181,22 +165,22 @@ public class Board extends JPanel implements ActionListener {
 
 			if (key == KeyEvent.VK_LEFT) {
 				ball.setDx(0);
-				pressedkeys[0] = 0;
+				keys.setPressedKey(0, 0);
 			}
-
-			if (key == KeyEvent.VK_RIGHT) {
-				ball.setDx(0);
-				pressedkeys[2] = 0;
-			}
-
+			
 			if (key == KeyEvent.VK_UP) {
 				ball.setDy(0);
-				pressedkeys[1] = 0;
+				keys.setPressedKey(1, 0);
 			}
+			
+			if (key == KeyEvent.VK_RIGHT) {
+				ball.setDx(0);
+				keys.setPressedKey(2, 0);
+			}	
 
 			if (key == KeyEvent.VK_DOWN) {
 				ball.setDy(0);
-				pressedkeys[3] = 0;
+				keys.setPressedKey(3, 0);
 			}
 		}
 	}
@@ -210,6 +194,7 @@ public class Board extends JPanel implements ActionListener {
 				frame = frame.getParent();
 			while (!(frame instanceof JFrame));
 			((JFrame) frame).dispose();
+			System.exit(0);
 		}
 	}
 }

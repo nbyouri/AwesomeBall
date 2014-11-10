@@ -182,12 +182,15 @@ public class Ball extends Rectangle.Double {
 		if (this.approachesLeftSide(r)) {
 			ids.add(0);
 		} 
-		if (this.approachesRightSide(r)) {
-			ids.add(2);
-		} 
+		
 		if (this.approachesTopSide(r)) {
 			ids.add(1);
 		} 
+		
+		if (this.approachesRightSide(r)) {
+			ids.add(2);
+		} 
+		
 		if (this.approachesBottomSide(r)) {
 			ids.add(3);
 		}

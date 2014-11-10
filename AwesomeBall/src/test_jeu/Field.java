@@ -30,6 +30,11 @@ public class Field extends Rectangle.Double {
 		return sides.get(i);
 	}
 	
+	public void setSize(double x, double y, double width, double height) {
+		super.setRect(x, y, width, height);
+		this.setSides();
+	}
+	
 	public void setSides() {
 		// left
 		this.sides.get(0).setLine(this.getX(),  
@@ -53,16 +58,22 @@ public class Field extends Rectangle.Double {
 				this.getY() + this.getHeight());
 	}
 	
-	// draw rectangle
-	public void drawField(Graphics2D g2) {
-		g2.setColor(Color.cyan);
-		g2.draw(this);
-	}
-	
     // draw side(s) of Field
     public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
     	g2.setColor(Color.yellow);
     	for (int i = 0; i < ar.size(); i++)
 			 g2.draw(this.getSide(ar.get(i)));
+    }
+    
+    // draw field and sides
+    public void draw(Graphics2D g2, ArrayList<Integer> ar) {
+   
+    	// draw rectangle
+    	g2.setColor(Color.cyan);
+		g2.draw(this);
+		
+		// draw side(s) if needed
+    	drawSides(g2, ar);
+    	
     }
 }
