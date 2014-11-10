@@ -4,13 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 
 @SuppressWarnings("serial")
 public class Button extends JButton {
@@ -23,6 +21,7 @@ public class Button extends JButton {
 	public Button(String title, ActionListener al) {
 		super(title);
 		
+		// default settings
 		buttonFont = new Font("Helvetica", Font.BOLD, 12);
 		buttonBorder = new LineBorder(Color.cyan, 1);
 		buttonPressedBorder = new LineBorder(Color.yellow, 1);
@@ -37,13 +36,22 @@ public class Button extends JButton {
 		this.setFocusPainted(false);
 		this.setContentAreaFilled(false);
 		this.addActionListener(al);
+		this.setRolloverEnabled(true);
+		
+		// change color when clicked
 		this.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent evt) {
-				if (getModel().isPressed()) {
+				if (model.isPressed()) {
 					// don't use this here
 					setForeground(buttonPressedFgColor);
 					setBorder(buttonPressedBorder);
+				} else if (getModel().isRollover()) {
+					setForeground(buttonPressedFgColor);
+					setBorder(buttonPressedBorder);
+				} else {
+					setForeground(buttonFgColor);
+					setBorder(buttonBorder);
 				}
 			}
 		});

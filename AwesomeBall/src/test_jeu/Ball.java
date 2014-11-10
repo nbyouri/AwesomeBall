@@ -16,6 +16,7 @@ public class Ball extends Field {
 	private Image img;
 	private double dx;
 	private double dy;
+	private double rotation;
 
 	public Ball() {  
 		// load image
@@ -61,10 +62,19 @@ public class Ball extends Field {
 	}
 
 	public void setLocation(double x, double y) {
-		this.setRect(x, y, this.getWidth(), this.getHeight());
+		this.setSize(x, y, this.getWidth(), this.getHeight());
 		this.setSides();
 	}
 	
+	
+	public double getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(double rotation) {
+		this.rotation = rotation;
+	}
+
 	// move ball in rectangle
 	public void move(Field r) {
 		if (insideRect(r)){
@@ -98,13 +108,13 @@ public class Ball extends Field {
 	}
 
 	// rotate the image
-	public void rotate(double degrees) {
+	public void rotate() {
 		ImageIcon ii = new ImageIcon(this.getImage());
 		BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
 				ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
 		// rotate around the center
-		g2.rotate(Math.toRadians(degrees), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
+		g2.rotate(Math.toRadians(this.getRotation()), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
 		g2.drawImage(this.getImage(), 0, 0, null);
 		this.setImg(blankCanvas);
 	}

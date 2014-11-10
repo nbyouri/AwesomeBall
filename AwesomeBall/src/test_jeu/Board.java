@@ -125,25 +125,25 @@ public class Board extends JPanel implements ActionListener {
 			if (key == KeyEvent.VK_LEFT) {
 				ball.setDx(-1);
 				keys.setPressedKey(0, 1);
-				ball.rotate(180);
+				ball.setRotation(180);
 			}
 			
 			if (key == KeyEvent.VK_UP) {
 				ball.setDy(-1);
 				keys.setPressedKey(1, 1);
-				ball.rotate(90);
+				ball.setRotation(90);
 			}
 
 			if (key == KeyEvent.VK_RIGHT) {
 				ball.setDx(1);
 				keys.setPressedKey(2, 1);
-				ball.rotate(0);
+				ball.setRotation(0);
 			}
 			
 			if (key == KeyEvent.VK_DOWN) {
 				ball.setDy(1);
 				keys.setPressedKey(3, 1);
-				ball.rotate(270);
+				ball.setRotation(270);
 			}
 		}
 

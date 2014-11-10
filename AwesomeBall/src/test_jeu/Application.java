@@ -14,13 +14,11 @@ import javax.swing.JFrame;
  * block comments
  * 
  * FUNCTIONALITY:
- * rotate ship when moving
  * acceleration
  * sounds
  * shoot bullets
  * 
- * QUICKTODO:
- * abstract version of rectangle draw?
+ * QUICKFIX:
  * spaceship rotation
  */
 
