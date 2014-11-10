@@ -2,6 +2,7 @@ package test_jeu;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 //import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,7 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 //import java.util.ArrayList;
 
-import java.util.ArrayList;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,6 +29,7 @@ public class Board extends JPanel implements ActionListener {
 	private Field field;
 	private Button exit;
 	private KeyIndicator keys;
+	public Dimension size;
 	
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
@@ -35,12 +37,11 @@ public class Board extends JPanel implements ActionListener {
 	public static final int BOARD_X_POS = 50;
 	public static final int BOARD_Y_POS = 50;
 	
-	public Board() {
+	public Board(Dimension boardSize) {
 		// get screen size
-		//double w = size.getWidth();
-		//double h = size.getHeight();
-		double w = 600;
-		double h = 200;
+		size = boardSize;
+		//double w = 800;
+		//double h = 600;
 				
 		// setup game title
 		title = new TextField("SpaceShip Collider");
@@ -49,8 +50,8 @@ public class Board extends JPanel implements ActionListener {
 		// setup field 
 		field = new Field();
 		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
-				w - BOARD_X_POS - BOARD_X_POS,
-				h - BOARD_Y_POS - BOARD_Y_POS);
+				this.size.getWidth() - BOARD_X_POS - BOARD_X_POS,
+				this.size.getHeight() - (3 * BOARD_Y_POS));
 		
 		// setup ball
 		ball = new Ball();
@@ -71,7 +72,7 @@ public class Board extends JPanel implements ActionListener {
 		exit = new Button("EXIT", new CloseListener());
 		exit.setBounds(BOARD_X_POS,
 				BOARD_X_POS + (int)field.getHeight() + 
-				(int)((h - (BOARD_Y_POS + field.getHeight())) / 4),
+				(int)((this.size.getHeight() - (BOARD_Y_POS + field.getHeight())) / 4),
 				(int)field.getWidth(), 22);
 		add(exit);
 		
@@ -103,7 +104,10 @@ public class Board extends JPanel implements ActionListener {
 		// draw key box
 		keys.draw(g2, keys.getPressedKeys());
 
-		// clear things up
+		
+		// debug
+		System.out.println(this.size.toString());
+		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
@@ -123,25 +127,25 @@ public class Board extends JPanel implements ActionListener {
 			if (key == KeyEvent.VK_LEFT) {
 				ball.setDx(-1);
 				keys.setPressedKey(0, 1);
-				ball.setRotation(180);
+				ball.rotate(180);
 			}
 			
 			if (key == KeyEvent.VK_UP) {
 				ball.setDy(-1);
 				keys.setPressedKey(1, 1);
-				ball.setRotation(90);
+				ball.rotate(90);
 			}
 
 			if (key == KeyEvent.VK_RIGHT) {
 				ball.setDx(1);
 				keys.setPressedKey(2, 1);
-				ball.setRotation(0);
+				ball.rotate(0);
 			}
 			
 			if (key == KeyEvent.VK_DOWN) {
 				ball.setDy(1);
 				keys.setPressedKey(3, 1);
-				ball.setRotation(270);
+				ball.rotate(270);
 			}
 		}
 

@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 //import java.awt.event.KeyEvent;
 
+import java.awt.image.BufferedImage;
 //import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
@@ -16,19 +17,15 @@ public class Ball extends Rectangle.Double {
 	private Image img;
 	private double dx;
 	private double dy;
-	private double rotation;
 
 	public Ball() {  
 		// load image
 		ImageIcon ii = new ImageIcon(this.getClass().getResource("images/craft.png"));
 		img = ii.getImage();
 
-		// Calculate rectangle width and height from image
+		// calculate rectangle width and height from image
 		this.width = ii.getIconWidth();
 		this.height = ii.getIconHeight();
-
-		// Normal position by default
-		this.rotation = 0;
 
 		// initial position
 		this.x = 60;
@@ -57,15 +54,6 @@ public class Ball extends Rectangle.Double {
 
 	public void setImg(Image img) {
 		this.img = img;
-	}
-
-
-	public double getRotation() {
-		return rotation;
-	}
-
-	public void setRotation(double rotation) {
-		this.rotation = rotation;
 	}
 
 	public Image getImage() {
@@ -108,16 +96,16 @@ public class Ball extends Rectangle.Double {
 		//g2.draw(this);
 	}
 
-	// rotate the player
-	public void rotate(Graphics2D g2, double degrees) {
-		/*AffineTransform transform = new AffineTransform();
-    	transform.rotate(Math.toRadians(degrees), 
-    			this.getX() + this.getWidth()/2, 
-    			this.getY() + this.getHeight()/2);
-    	g2.transform(transform);*/
-		g2.translate(this.getWidth() / 2, this.getHeight() /  2);
-		g2.rotate(Math.toRadians(degrees));
-		g2.draw(this);
+	// rotate the image
+	public void rotate(double degrees) {
+		ImageIcon ii = new ImageIcon(this.getImage());
+		BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
+				ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
+		// rotate around the center
+		g2.rotate(Math.toRadians(degrees), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
+		g2.drawImage(this.getImage(), 0, 0, null);
+		this.setImg(blankCanvas);
 	}
 
 	// precise collision check of the ball relative to the field position
