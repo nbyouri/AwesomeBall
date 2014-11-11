@@ -3,7 +3,6 @@ package test_jeu;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-//import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -12,9 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-//import java.util.ArrayList;
-
-
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -36,6 +32,9 @@ public class Board extends JPanel implements ActionListener {
 	public static final int TOP_MENUS_Y_POS = 15;
 	public static final int BOARD_X_POS = 50;
 	public static final int BOARD_Y_POS = 50;
+	public static final int EXIT_SUCCESS = 0;
+	public static final int EXIT_FAILURE = 1;
+	public static final int FPS_60 = 17;
 	
 	public Board(Dimension boardSize) {
 		// get screen size
@@ -64,18 +63,21 @@ public class Board extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
 		setLayout(null);
+		setDoubleBuffered(true);
 		
 		// quit button, add here and not in paint() 
 		// or it won't work
 		exit = new Button("EXIT", new CloseListener());
+		// place below the field
 		exit.setBounds(BOARD_X_POS,
 				BOARD_X_POS + (int)field.getHeight() + 
-				(int)((this.size.getHeight() - (BOARD_Y_POS + field.getHeight())) / 4),
+				(int)((this.size.getHeight() - 
+						(BOARD_Y_POS + field.getHeight())) / 4),
 				(int)field.getWidth(), 22);
 		add(exit);
 		
 		// timer
-		timer = new Timer(5, this);
+		timer = new Timer(FPS_60, this);
 		timer.start();
 	}
 
@@ -104,7 +106,7 @@ public class Board extends JPanel implements ActionListener {
 		// draw key box
 		keys.draw(g2);
 		keys.drawSides(g2, keys.getPressedKeys());
-
+		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -123,27 +125,27 @@ public class Board extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_LEFT) {
-				ball.setDx(-1);
-				keys.setPressedKey(0, 1);
-				ball.setRotation(180);
+				ball.setDx(-Ball.SPEED_ONE);
+				keys.setPressedKey(KeyIndicator.KEY_LEFT, KeyIndicator.KEY_ON);
+				ball.rotate(Ball.LEFT);
 			}
 			
 			if (key == KeyEvent.VK_UP) {
-				ball.setDy(-1);
-				keys.setPressedKey(1, 1);
-				ball.setRotation(90);
+				ball.setDy(-Ball.SPEED_ONE);
+				keys.setPressedKey(KeyIndicator.KEY_UP, KeyIndicator.KEY_ON);
+				ball.rotate(Ball.UP);
 			}
 
 			if (key == KeyEvent.VK_RIGHT) {
-				ball.setDx(1);
-				keys.setPressedKey(2, 1);
-				ball.setRotation(0);
+				ball.setDx(Ball.SPEED_ONE);
+				keys.setPressedKey(KeyIndicator.KEY_RIGHT, KeyIndicator.KEY_ON);
+				ball.rotate(Ball.RIGHT);
 			}
 			
 			if (key == KeyEvent.VK_DOWN) {
-				ball.setDy(1);
-				keys.setPressedKey(3, 1);
-				ball.setRotation(270);
+				ball.setDy(Ball.SPEED_ONE);
+				keys.setPressedKey(KeyIndicator.KEY_DOWN, KeyIndicator.KEY_ON);
+				ball.rotate(Ball.DOWN);
 			}
 		}
 
@@ -151,23 +153,27 @@ public class Board extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_LEFT) {
-				ball.setDx(0);
-				keys.setPressedKey(0, 0);
+				ball.setDx(Ball.STOP);
+				keys.setPressedKey(KeyIndicator.KEY_LEFT, KeyIndicator.KEY_OFF);
 			}
 			
 			if (key == KeyEvent.VK_UP) {
-				ball.setDy(0);
-				keys.setPressedKey(1, 0);
+				ball.setDy(Ball.STOP);
+				keys.setPressedKey(KeyIndicator.KEY_UP, KeyIndicator.KEY_OFF);
 			}
 			
 			if (key == KeyEvent.VK_RIGHT) {
-				ball.setDx(0);
-				keys.setPressedKey(2, 0);
+				ball.setDx(Ball.STOP);
+				keys.setPressedKey(KeyIndicator.KEY_RIGHT, KeyIndicator.KEY_OFF);
 			}	
 
 			if (key == KeyEvent.VK_DOWN) {
-				ball.setDy(0);
-				keys.setPressedKey(3, 0);
+				ball.setDy(Ball.STOP);
+				keys.setPressedKey(KeyIndicator.KEY_DOWN, KeyIndicator.KEY_OFF);
+			}
+			
+			if (key == KeyEvent.VK_ESCAPE) {
+				exitProgram();
 			}
 		}
 	}
@@ -176,12 +182,17 @@ public class Board extends JPanel implements ActionListener {
 	private class CloseListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Container frame = exit.getParent();
-			do
-				frame = frame.getParent();
-			while (!(frame instanceof JFrame));
-			((JFrame) frame).dispose();
-			System.exit(0);
+			exitProgram();
 		}
+	}
+	
+	// exit in a clean way
+	public void exitProgram() {
+		Container frame = exit.getParent();
+		do {
+			frame = frame.getParent();
+		} while (!(frame instanceof JFrame));
+		((JFrame) frame).dispose();
+		System.exit(EXIT_SUCCESS);
 	}
 }

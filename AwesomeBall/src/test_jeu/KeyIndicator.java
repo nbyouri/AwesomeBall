@@ -8,14 +8,22 @@ import java.util.ArrayList;
 public class KeyIndicator extends Field {
 	private ArrayList<Integer> pressedkeys;
 	
+	// constants
+	public static final int KEY_OFF = 0;
+	public static final int KEY_ON = 1;
+	public static final int KEY_LEFT = 0;
+	public static final int KEY_UP = 1;
+	public static final int KEY_RIGHT = 2;
+	public static final int KEY_DOWN = 3;
+	
 	public KeyIndicator() {
 		pressedkeys = new ArrayList<Integer>();
 		
 		// initialize arrow keys
-		pressedkeys.add(0); // 0 == left
-		pressedkeys.add(0); // 1 == top
-		pressedkeys.add(0); // 2 == right
-		pressedkeys.add(0); // 3 == down
+		pressedkeys.add(KEY_OFF); // KEY_UP
+		pressedkeys.add(KEY_OFF); // KEY_LEFT
+		pressedkeys.add(KEY_OFF); // KEY_RIGHT
+		pressedkeys.add(KEY_OFF); // KEY_DOWN
 	}
 	
 	public ArrayList<Integer> getPressedKeys() {
@@ -39,7 +47,7 @@ public class KeyIndicator extends Field {
 		g2.setColor(Color.yellow);
 		
 		for (int i = 0; i < ar.size(); i++) {
-			if (this.getPressedKey(i) == 1) 
+			if (this.getPressedKey(i) == KEY_ON) 
 				g2.draw(this.getSide(i));
 		}
 	}

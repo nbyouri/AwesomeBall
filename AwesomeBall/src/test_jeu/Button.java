@@ -37,12 +37,12 @@ public class Button extends JButton {
 		this.setContentAreaFilled(false);
 		this.addActionListener(al);
 		this.setRolloverEnabled(true);
-		
+
 		// change color when clicked
 		this.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent evt) {
-				if (model.isPressed()) {
+				if (getModel().isPressed()) {
 					// don't use this here
 					setForeground(buttonPressedFgColor);
 					setBorder(buttonPressedBorder);

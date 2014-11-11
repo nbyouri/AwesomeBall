@@ -17,9 +17,10 @@ import javax.swing.JFrame;
  * acceleration
  * sounds
  * shoot bullets
+ * threading
  * 
  * QUICKFIX:
- * spaceship rotation
+ * spaceship rotation : use different draw methods en fonction de la position des keys
  */
 
 @SuppressWarnings("serial")

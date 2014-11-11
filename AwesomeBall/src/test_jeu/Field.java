@@ -11,6 +11,12 @@ public class Field extends Shape {
 	// sides of the field, parts where collision can be detected
 	private ArrayList<Line2D.Double> sides;
 	
+	// constants
+	public static final int SIDE_LEFT = 0;
+	public static final int SIDE_UP = 1;
+	public static final int SIDE_RIGHT = 2;
+	public static final int SIDE_DOWN = 3;
+	
 	public Field() {
 		sides = new ArrayList<Line2D.Double>();
 		
@@ -33,23 +39,19 @@ public class Field extends Shape {
 	}
 	
 	public void setSides() {
-		// left
-		this.sides.get(0).setLine(this.getX(),  
+		this.sides.get(SIDE_LEFT).setLine(this.getX(),  
 				this.getY(), 
 				this.getX(),  
 				this.getY() + this.getHeight());
-		// top
-		this.sides.get(1).setLine(this.getX(),
+		this.sides.get(SIDE_UP).setLine(this.getX(),
 				this.getY(),
 				this.getX() + this.getWidth(),
 				this.getY());
-		// right
-		this.sides.get(2).setLine(this.getX() + this.getWidth(), 
+		this.sides.get(SIDE_RIGHT).setLine(this.getX() + this.getWidth(), 
 				this.getY(), 
 				this.getX() + this.getWidth(),
 				this.getY() + this.getHeight());
-		// bottom
-		this.sides.get(3).setLine(this.getX(),
+		this.sides.get(SIDE_DOWN).setLine(this.getX(),
 				this.getY() + this.getHeight(),
 				this.getX() + this.getWidth(),
 				this.getY() + this.getHeight());

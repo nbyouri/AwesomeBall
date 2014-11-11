@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Color;
 //import java.awt.event.KeyEvent;
 
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 //import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
@@ -16,7 +17,17 @@ public class Ball extends Field {
 	private Image img;
 	private double dx;
 	private double dy;
-	private double rotation;
+	private int rotation;
+	
+	// constants
+	// ball rotation angles
+	public static final int UP = 90;
+	public static final int LEFT = 180;
+	public static final int RIGHT = 0;
+	public static final int DOWN = -90;
+	public static final int SPEED_ONE = 1;
+	public static final int SPEED_TWO = 2;
+	public static final int STOP = 0;
 
 	public Ball() {  
 		// load image
@@ -27,6 +38,8 @@ public class Ball extends Field {
 		this.width = ii.getIconWidth();
 		this.height = ii.getIconHeight();
 
+		this.rotation = 0;
+		
 		// initial position
 		this.x = 60;
 		this.y = 80;
@@ -66,12 +79,14 @@ public class Ball extends Field {
 		this.setSides();
 	}
 	
-	
-	public double getRotation() {
+	// return normalised angle
+	public int getRotation() {
+	    while (rotation <= -180) rotation += 360;
+	    while (rotation > 180) rotation -= 360;
 		return rotation;
 	}
 
-	public void setRotation(double rotation) {
+	public void setRotation(int rotation) {
 		this.rotation = rotation;
 	}
 
@@ -108,15 +123,74 @@ public class Ball extends Field {
 	}
 
 	// rotate the image
-	public void rotate() {
-		ImageIcon ii = new ImageIcon(this.getImage());
-		BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
-				ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
-		// rotate around the center
-		g2.rotate(Math.toRadians(this.getRotation()), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
-		g2.drawImage(this.getImage(), 0, 0, null);
-		this.setImg(blankCanvas);
+	// use swing constants up/down/left/right?
+	public void rotate(int rotation) {
+		// only rotate if change of key
+		/*if (this.getRotation() != rotation) {
+			if (rotation == UP) {
+				if (this.getRotation() == LEFT)
+					this.setRotation(DOWN);
+				
+				if (this.getRotation() == UP)
+					this.setRotation(RIGHT);
+
+				if (this.getRotation() == RIGHT)
+					this.setRotation(UP);
+				
+				if (this.getRotation() == DOWN)
+					this.setRotation(LEFT);
+			}
+			if (rotation == DOWN) {
+				if (this.getRotation() == LEFT)
+					this.setRotation(UP);
+				
+				if (this.getRotation() == UP)
+					this.setRotation(LEFT);
+
+				if (this.getRotation() == RIGHT)
+					this.setRotation(DOWN);
+				
+				if (this.getRotation() == DOWN)
+					this.setRotation(RIGHT);
+			}
+			if (rotation == LEFT) {
+				if (this.getRotation() == LEFT)
+					this.setRotation(RIGHT);
+				
+				if (this.getRotation() == UP)
+					this.setRotation(UP);
+
+				if (this.getRotation() == RIGHT)
+					this.setRotation(LEFT);
+				
+				if (this.getRotation() == DOWN)
+					this.setRotation(DOWN);
+			}
+			if (rotation == RIGHT) {
+				if (this.getRotation() == LEFT)
+					this.setRotation(LEFT);
+				
+				if (this.getRotation() == UP)
+					this.setRotation(DOWN);
+
+				if (this.getRotation() == RIGHT)
+					this.setRotation(RIGHT);
+				
+				if (this.getRotation() == DOWN)
+					this.setRotation(UP);
+			}*/
+			ImageIcon ii = new ImageIcon(this.getImage());
+			BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
+					ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
+			AffineTransform transform = new AffineTransform();
+			//transform.setToTranslation(ii.getIconWidth() / 2, ii.getIconHeight() / 2);
+			transform.rotate(Math.toRadians(rotation), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
+
+			// rotate around the center
+			//g2.rotate(Math.toRadians(rotation), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
+			g2.drawImage(this.getImage(), transform, null);
+			this.setImg(blankCanvas);
 	}
 
 	// precise collision check of the ball relative to the field position
