@@ -136,25 +136,6 @@ public class Ball extends Field {
 		}
 	}
 
-	public void drawLeft() {
-		switch(this.getRotation()) {
-		
-			case UP:
-				this.rotate(UP);
-				break;
-				
-			case RIGHT:
-				this.rotate(LEFT);
-				break;
-				
-			case DOWN:
-				this.rotate(DOWN);
-				break;
-				
-		}
-		this.setRotation(LEFT);
-	}
-	
 	public void drawRight() {
 		switch(this.getRotation()) {
 		

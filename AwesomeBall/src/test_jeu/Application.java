@@ -19,8 +19,6 @@ import javax.swing.JFrame;
  * shoot bullets
  * threading
  * 
- * QUICKFIX:
- * spaceship rotation : fix left
  */
 
 @SuppressWarnings("serial")
