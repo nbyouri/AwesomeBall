@@ -77,7 +77,6 @@ public class Ball extends Field {
 	// return normalised angle
 	// but don't change 360 to 0
 	public int getRotation() {
-		if (rotation == 360) return rotation;
 	    while (rotation <= -180) rotation += 360;
 	    while (rotation > 180) rotation -= 360;
 		return rotation;
@@ -115,12 +114,11 @@ public class Ball extends Field {
 				(int)this.getY(), 
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
-		g2.setColor(Color.magenta);
+		g2.setColor(Color.red);
 		g2.draw(this);
 	}
 
 	// rotate the image
-	// use swing constants up/down/left/right?
 	public void rotate(int rotation) {
 		// only rotate if change of key
 		if (this.getRotation() != rotation) {
@@ -135,12 +133,48 @@ public class Ball extends Field {
 			this.setImg(blankCanvas);
 		}
 	}
+	
+	// flip image around vertical axis
+	public void flip(int rotation) {
+		if (this.getRotation() != rotation) {
+			ImageIcon ii = new ImageIcon(this.getImage());
+			BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
+					ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
+			// flip vertically
+			g2.drawImage(this.getImage(), (int)this.getWidth(), 0, 0, (int)this.getHeight(),
+					0, 0, (int)this.getWidth(), (int)this.getHeight(), null);
+			this.setImg(blankCanvas);
+		}
+	}
 
+	// different cases of rotating and flipping
+	public void drawLeft() {
+		switch(this.getRotation()) {
+		
+		case RIGHT:
+			this.flip(LEFT);
+			break;
+		
+		case UP:
+			this.rotate(DOWN);
+			this.flip(LEFT);
+			break;
+		
+		case DOWN:
+			this.rotate(UP);
+			this.flip(LEFT);
+			break;
+			
+		}
+		this.setRotation(LEFT);
+	}
+	
 	public void drawRight() {
 		switch(this.getRotation()) {
 		
 			case LEFT:
-				this.rotate(LEFT);
+				this.flip(RIGHT);
 				break;
 	
 			case UP:
@@ -160,6 +194,7 @@ public class Ball extends Field {
 		
 		case LEFT:
 			this.rotate(DOWN);
+			this.flip(UP);
 			break;
 		
 		case RIGHT:
@@ -178,7 +213,8 @@ public class Ball extends Field {
 		switch(this.getRotation()) {
 		
 		case LEFT:
-			this.rotate(UP);
+			this.flip(DOWN);
+			this.rotate(DOWN);
 			break;
 		
 		case UP:

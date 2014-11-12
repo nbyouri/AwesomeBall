@@ -138,7 +138,7 @@ public class Board extends JPanel implements ActionListener {
 			if (key == KeyEvent.VK_LEFT) {
 				ball.setDx(-Ball.SPEED_ONE);
 				keys.setPressedKey(KeyIndicator.KEY_LEFT, KeyIndicator.KEY_ON);
-				ball.drawRight();
+				ball.drawLeft();
 			}
 			
 			if (key == KeyEvent.VK_UP) {
