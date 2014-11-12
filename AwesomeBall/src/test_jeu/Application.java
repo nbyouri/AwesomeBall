@@ -20,7 +20,7 @@ import javax.swing.JFrame;
  * threading
  * 
  * QUICKFIX:
- * spaceship rotation : use different draw methods en fonction de la position des keys
+ * spaceship rotation : fix left
  */
 
 @SuppressWarnings("serial")

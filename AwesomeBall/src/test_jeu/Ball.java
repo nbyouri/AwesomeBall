@@ -3,13 +3,8 @@ package test_jeu;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Color;
-//import java.awt.event.KeyEvent;
-
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-//import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
@@ -21,10 +16,10 @@ public class Ball extends Field {
 	
 	// constants
 	// ball rotation angles
-	public static final int UP = 90;
+	public static final int UP = -90;
 	public static final int LEFT = 180;
 	public static final int RIGHT = 0;
-	public static final int DOWN = -90;
+	public static final int DOWN = 90;
 	public static final int SPEED_ONE = 1;
 	public static final int SPEED_TWO = 2;
 	public static final int STOP = 0;
@@ -80,7 +75,9 @@ public class Ball extends Field {
 	}
 	
 	// return normalised angle
+	// but don't change 360 to 0
 	public int getRotation() {
+		if (rotation == 360) return rotation;
 	    while (rotation <= -180) rotation += 360;
 	    while (rotation > 180) rotation -= 360;
 		return rotation;
@@ -118,7 +115,7 @@ public class Ball extends Field {
 				(int)this.getY(), 
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
-		g2.setColor(Color.RED);
+		g2.setColor(Color.magenta);
 		g2.draw(this);
 	}
 
@@ -126,73 +123,95 @@ public class Ball extends Field {
 	// use swing constants up/down/left/right?
 	public void rotate(int rotation) {
 		// only rotate if change of key
-		/*if (this.getRotation() != rotation) {
-			if (rotation == UP) {
-				if (this.getRotation() == LEFT)
-					this.setRotation(DOWN);
-				
-				if (this.getRotation() == UP)
-					this.setRotation(RIGHT);
-
-				if (this.getRotation() == RIGHT)
-					this.setRotation(UP);
-				
-				if (this.getRotation() == DOWN)
-					this.setRotation(LEFT);
-			}
-			if (rotation == DOWN) {
-				if (this.getRotation() == LEFT)
-					this.setRotation(UP);
-				
-				if (this.getRotation() == UP)
-					this.setRotation(LEFT);
-
-				if (this.getRotation() == RIGHT)
-					this.setRotation(DOWN);
-				
-				if (this.getRotation() == DOWN)
-					this.setRotation(RIGHT);
-			}
-			if (rotation == LEFT) {
-				if (this.getRotation() == LEFT)
-					this.setRotation(RIGHT);
-				
-				if (this.getRotation() == UP)
-					this.setRotation(UP);
-
-				if (this.getRotation() == RIGHT)
-					this.setRotation(LEFT);
-				
-				if (this.getRotation() == DOWN)
-					this.setRotation(DOWN);
-			}
-			if (rotation == RIGHT) {
-				if (this.getRotation() == LEFT)
-					this.setRotation(LEFT);
-				
-				if (this.getRotation() == UP)
-					this.setRotation(DOWN);
-
-				if (this.getRotation() == RIGHT)
-					this.setRotation(RIGHT);
-				
-				if (this.getRotation() == DOWN)
-					this.setRotation(UP);
-			}*/
+		if (this.getRotation() != rotation) {
 			ImageIcon ii = new ImageIcon(this.getImage());
 			BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
 					ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
-			AffineTransform transform = new AffineTransform();
-			//transform.setToTranslation(ii.getIconWidth() / 2, ii.getIconHeight() / 2);
-			transform.rotate(Math.toRadians(rotation), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
 
 			// rotate around the center
-			//g2.rotate(Math.toRadians(rotation), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
-			g2.drawImage(this.getImage(), transform, null);
+			g2.rotate(Math.toRadians(rotation), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
+			g2.drawImage(this.getImage(), 0, 0, null);
 			this.setImg(blankCanvas);
+		}
 	}
 
+	public void drawLeft() {
+		switch(this.getRotation()) {
+		
+			case UP:
+				this.rotate(UP);
+				break;
+				
+			case RIGHT:
+				this.rotate(LEFT);
+				break;
+				
+			case DOWN:
+				this.rotate(DOWN);
+				break;
+				
+		}
+		this.setRotation(LEFT);
+	}
+	
+	public void drawRight() {
+		switch(this.getRotation()) {
+		
+			case LEFT:
+				this.rotate(LEFT);
+				break;
+	
+			case UP:
+				this.rotate(DOWN);
+				break;
+				
+			case DOWN:
+				this.rotate(UP);
+				break;
+				
+		}
+		this.setRotation(RIGHT);
+	}
+	
+	public void drawUp() {
+		switch(this.getRotation()) {
+		
+		case LEFT:
+			this.rotate(DOWN);
+			break;
+		
+		case RIGHT:
+			this.rotate(UP);
+			break;
+			
+		case DOWN:
+			this.rotate(LEFT);
+			break;
+			
+		}
+		this.setRotation(UP);
+	}
+	
+	public void drawDown() {
+		switch(this.getRotation()) {
+		
+		case LEFT:
+			this.rotate(UP);
+			break;
+		
+		case UP:
+			this.rotate(LEFT);
+			break;
+			
+		case RIGHT:
+			this.rotate(DOWN);
+			break;
+
+		}
+		this.setRotation(DOWN);
+	}
+	
 	// precise collision check of the ball relative to the field position
 	public Boolean insideRect(Field r) {
 		if ((this.touchRectLeft(r)) || (this.touchRectRight(r)) ||
@@ -253,19 +272,19 @@ public class Ball extends Field {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 
 		if (this.approachesLeftSide(r)) {
-			ids.add(0);
+			ids.add(Field.SIDE_LEFT);
 		} 
 		
 		if (this.approachesTopSide(r)) {
-			ids.add(1);
+			ids.add(Field.SIDE_UP);
 		} 
 		
 		if (this.approachesRightSide(r)) {
-			ids.add(2);
+			ids.add(Field.SIDE_RIGHT);
 		} 
 		
 		if (this.approachesBottomSide(r)) {
-			ids.add(3);
+			ids.add(Field.SIDE_DOWN);
 		}
 
 		return ids;

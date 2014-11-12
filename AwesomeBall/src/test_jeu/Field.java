@@ -20,7 +20,7 @@ public class Field extends Shape {
 	public Field() {
 		sides = new ArrayList<Line2D.Double>();
 		
-		// 4 sides of field rectangle
+		// 4 sides of field rectangle, initialise to 0
 		for (int i = 0; i < 4; i++)
 			sides.add(new Line2D.Double(0,0,0,0));
 	}
@@ -40,15 +40,14 @@ public class Field extends Shape {
 	
 	public void setSides() {
 		this.sides.get(SIDE_LEFT).setLine(this.getX(),  
-				this.getY(), 
-				this.getX(),  
+				this.getY(), this.getX(),  
 				this.getY() + this.getHeight());
 		this.sides.get(SIDE_UP).setLine(this.getX(),
 				this.getY(),
 				this.getX() + this.getWidth(),
 				this.getY());
-		this.sides.get(SIDE_RIGHT).setLine(this.getX() + this.getWidth(), 
-				this.getY(), 
+		this.sides.get(SIDE_RIGHT).setLine(this.getX() + 
+				this.getWidth(), this.getY(), 
 				this.getX() + this.getWidth(),
 				this.getY() + this.getHeight());
 		this.sides.get(SIDE_DOWN).setLine(this.getX(),
@@ -59,7 +58,7 @@ public class Field extends Shape {
 	
     // draw side(s) of Field
     public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
-    	g2.setColor(Color.yellow);
+    	g2.setColor(Color.magenta);
     	for (int i = 0; i < ar.size(); i++)
 			 g2.draw(this.getSide(ar.get(i)));
     }

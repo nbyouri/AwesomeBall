@@ -21,6 +21,7 @@ import javax.swing.Timer;
 public class Board extends JPanel implements ActionListener {
 	private Timer timer;
 	private TextField title;
+	private TextField rotation;
 	private Ball ball;
 	private Field field;
 	private Button exit;
@@ -34,7 +35,7 @@ public class Board extends JPanel implements ActionListener {
 	public static final int BOARD_Y_POS = 50;
 	public static final int EXIT_SUCCESS = 0;
 	public static final int EXIT_FAILURE = 1;
-	public static final int FPS_60 = 17;
+	public static final int FPS = 5;
 	
 	public Board(Dimension boardSize) {
 		// get screen size
@@ -57,6 +58,11 @@ public class Board extends JPanel implements ActionListener {
 		keys = new KeyIndicator();
 		keys.setSize(190, 15, 20, 22);
 		
+		// setup rotation indicator
+		rotation = new TextField(null);
+		rotation.setSize(220, 15, 38, 22);
+		
+		
 		// key listener and window settings
 		addKeyListener(new TAdapter());
 		setFocusable(true);
@@ -77,7 +83,7 @@ public class Board extends JPanel implements ActionListener {
 		add(exit);
 		
 		// timer
-		timer = new Timer(FPS_60, this);
+		timer = new Timer(FPS, this);
 		timer.start();
 	}
 
@@ -107,6 +113,11 @@ public class Board extends JPanel implements ActionListener {
 		keys.draw(g2);
 		keys.drawSides(g2, keys.getPressedKeys());
 		
+		// draw rotation box
+		String r = Integer.toString(ball.getRotation());
+		rotation.setStr(r);
+		rotation.draw(g2);
+		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -127,25 +138,25 @@ public class Board extends JPanel implements ActionListener {
 			if (key == KeyEvent.VK_LEFT) {
 				ball.setDx(-Ball.SPEED_ONE);
 				keys.setPressedKey(KeyIndicator.KEY_LEFT, KeyIndicator.KEY_ON);
-				ball.rotate(Ball.LEFT);
+				ball.drawRight();
 			}
 			
 			if (key == KeyEvent.VK_UP) {
 				ball.setDy(-Ball.SPEED_ONE);
 				keys.setPressedKey(KeyIndicator.KEY_UP, KeyIndicator.KEY_ON);
-				ball.rotate(Ball.UP);
+				ball.drawUp();
 			}
 
 			if (key == KeyEvent.VK_RIGHT) {
 				ball.setDx(Ball.SPEED_ONE);
 				keys.setPressedKey(KeyIndicator.KEY_RIGHT, KeyIndicator.KEY_ON);
-				ball.rotate(Ball.RIGHT);
+				ball.drawRight();
 			}
 			
 			if (key == KeyEvent.VK_DOWN) {
 				ball.setDy(Ball.SPEED_ONE);
 				keys.setPressedKey(KeyIndicator.KEY_DOWN, KeyIndicator.KEY_ON);
-				ball.rotate(Ball.DOWN);
+				ball.drawDown();
 			}
 		}
 

@@ -15,6 +15,10 @@ public class TextField extends Field {
 		textFont = new Font("Helvetica", Font.BOLD, 12);
 	}
 	
+	public void setStr(String str) {
+		this.str = str;
+	}
+	
 	@Override 
 	public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
 		// empty method, do nothing yet
