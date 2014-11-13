@@ -1,4 +1,4 @@
-package test_jeu;
+package geo;
 
 import java.awt.Font;
 import java.awt.Graphics2D;

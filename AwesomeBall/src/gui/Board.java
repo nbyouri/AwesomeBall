@@ -1,4 +1,6 @@
-package test_jeu;
+package gui;
+
+import geo.*;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -36,6 +38,7 @@ public class Board extends JPanel implements ActionListener {
 	public static final int BOARD_X_POS = 50;
 	public static final int BOARD_Y_POS = 50;
 	public static final int FPS = 5;
+	public static final int EXIT_SUCCESS = 0;
 	
 	public Board(Dimension boardSize) {
 
@@ -218,7 +221,7 @@ public class Board extends JPanel implements ActionListener {
 			frame = frame.getParent();
 		} while (!(frame instanceof JFrame));
 		((JFrame) frame).dispose();
-		System.exit(SpaceBalls.EXIT_SUCCESS);
+		System.exit(EXIT_SUCCESS);
 	}
 
 }

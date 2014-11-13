@@ -1,8 +1,8 @@
 package unitTesting;
 
 import static org.junit.Assert.*;
-import test_jeu.TextField;
 import org.junit.Test;
+import geo.*;
 
 public class TextFieldTest {
 

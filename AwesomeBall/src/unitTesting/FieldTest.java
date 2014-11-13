@@ -2,10 +2,8 @@ package unitTesting;
 
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
-
+import geo.*;
 import org.junit.Test;
-
-import test_jeu.Field;
 
 public class FieldTest {
 

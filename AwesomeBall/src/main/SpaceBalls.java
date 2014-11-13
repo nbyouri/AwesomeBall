@@ -1,8 +1,11 @@
-package test_jeu;
+package main;
+
+import gui.Board;
 
 import java.awt.EventQueue;
 //import java.awt.GraphicsDevice;
 //import java.awt.GraphicsEnvironment;
+
 
 
 
@@ -21,6 +24,8 @@ import javax.swing.JFrame;
  * threading
  * 
  * QUICKFIX:
+ * class for image loading
+ * Shape points to Point2D.Double
  * update ball location on key release
  * show ball/spacecraft thruster
  * stick ball when in front + space key
@@ -54,7 +59,7 @@ public class SpaceBalls extends JFrame {
         add(mainBoard);
 
         this.setTitle("SpaceBalls");
-        //this.setResizable(false);
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
       
