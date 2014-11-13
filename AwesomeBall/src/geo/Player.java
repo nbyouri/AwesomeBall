@@ -11,10 +11,7 @@ import javax.swing.ImageIcon;
 @SuppressWarnings("serial")
 public class Player extends Field {
 	private Images img;
-	private double dx;
-	private double dy;
-	private int rotation;
-	
+
 	// constants
 	// ball rotation angles
 	public static final int UP = -90;
@@ -27,7 +24,7 @@ public class Player extends Field {
 	public static final int INIT_X = 60;
 	public static final int INIT_Y = 80;
 	public static final int INIT_ROT = 0;
-	
+
 	public Player() {  
 		// load image
 		try { 
@@ -41,69 +38,20 @@ public class Player extends Field {
 		this.width = img.getWidth();
 		this.height = img.getHeight();
 
-		this.rotation = INIT_ROT;
-		
+		img.setRotation(INIT_ROT);
+
 		// initial position
 		this.x = INIT_X;
 		this.y = INIT_Y;
 
 	}
 
-	public double getDx() {
-		return dx;
+	public Images getImg() {
+		return img;
 	}
 
-
-	public void setDx(double dx) {
-		this.dx = dx;
-	}
-
-
-	public double getDy() {
-		return dy;
-	}
-
-
-	public void setDy(double dy) {
-		this.dy = dy;
-	}
-
-	public void setLocation(double x, double y) {
-		this.setSize(x, y, this.getWidth(), this.getHeight());
-		this.setSides();
-	}
-	
-	// return normalised angle
-	// but don't change 360 to 0
-	public int getRotation() {
-	    while (rotation <= -180) rotation += 360;
-	    while (rotation > 180) rotation -= 360;
-		return rotation;
-	}
-
-	public void setRotation(int rotation) {
-		this.rotation = rotation;
-	}
-
-	// move ball in rectangle
-	public void move(Field r) {
-		if (insideRect(r)){
-			this.setLocation(this.getX() + this.getDx(),
-					this.getY() + this.getDy());
-		}
-
-		if (this.touchRectLeft(r))
-			this.setLocation(this.getX() - this.getDx(), this.getY());
-
-		if (this.touchRectTop(r))
-			this.setLocation(this.getX(), this.getY() - this.getDy());
-
-		if (this.touchRectRight(r))
-			this.setLocation(this.getX() - this.getDx(), this.getY());
-
-		if (this.touchRectBottom(r))
-			this.setLocation(this.getX(), this.getY() - this.getDy());
-
+	public void setImg(Images img) {
+		this.img = img;
 	}
 
 	// draw rectangle and ball
@@ -117,115 +65,85 @@ public class Player extends Field {
 		//g2.draw(this);
 	}
 
-	// rotate the image
-	public void rotate(int rotation) {
-		// only rotate if change of key
-		if (this.getRotation() != rotation) {
-			ImageIcon ii = new ImageIcon(img.getPlayer());
-			BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
-					ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
-
-			// rotate around the center
-			g2.rotate(Math.toRadians(rotation), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
-			g2.drawImage(img.getPlayer(), 0, 0, null);
-			img.setPlayer(blankCanvas);
-		}
-	}
-	
-	// flip image around vertical axis
-	public void flip(int rotation) {
-		if (this.getRotation() != rotation) {
-			ImageIcon ii = new ImageIcon(img.getPlayer());
-			BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
-					ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
-			// flip vertically
-			g2.drawImage(img.getPlayer(), (int)this.getWidth(), 0, 0, (int)this.getHeight(),
-					0, 0, (int)this.getWidth(), (int)this.getHeight(), null);
-			img.setPlayer(blankCanvas);
-		}
-	}
-
 	// different cases of rotating and flipping
 	public void drawLeft() {
-		switch(this.getRotation()) {
-		
+		switch(img.getRotation()) {
+
 		case RIGHT:
-			this.flip(LEFT);
+			img.flip(img.getPlayer(), LEFT);
 			break;
-		
+
 		case UP:
-			this.rotate(DOWN);
-			this.flip(LEFT);
+			img.rotate(img.getPlayer(), DOWN);
+			img.flip(img.getPlayer(), LEFT);
 			break;
-		
+
 		case DOWN:
-			this.rotate(UP);
-			this.flip(LEFT);
-			break;
-			
-		}
-		this.setRotation(LEFT);
-	}
-	
-	public void drawRight() {
-		switch(this.getRotation()) {
-		
-			case LEFT:
-				this.flip(RIGHT);
-				break;
-	
-			case UP:
-				this.rotate(DOWN);
-				break;
-				
-			case DOWN:
-				this.rotate(UP);
-				break;
-				
-		}
-		this.setRotation(RIGHT);
-	}
-	
-	public void drawUp() {
-		switch(this.getRotation()) {
-		
-		case LEFT:
-			this.rotate(DOWN);
-			this.flip(UP);
-			break;
-		
-		case RIGHT:
-			this.rotate(UP);
-			break;
-			
-		case DOWN:
-			this.rotate(LEFT);
-			break;
-			
-		}
-		this.setRotation(UP);
-	}
-	
-	public void drawDown() {
-		switch(this.getRotation()) {
-		
-		case LEFT:
-			this.flip(DOWN);
-			this.rotate(DOWN);
-			break;
-		
-		case UP:
-			this.rotate(LEFT);
-			break;
-			
-		case RIGHT:
-			this.rotate(DOWN);
+			img.rotate(img.getPlayer(), UP);
+			img.flip(img.getPlayer(), LEFT);
 			break;
 
 		}
-		this.setRotation(DOWN);
+		img.setRotation(LEFT);
 	}
-	
+
+	public void drawRight() {
+		switch(img.getRotation()) {
+
+		case LEFT:
+			img.flip(img.getPlayer(), RIGHT);
+			break;
+
+		case UP:
+			img.rotate(img.getPlayer(), DOWN);
+			break;
+
+		case DOWN:
+			img.rotate(img.getPlayer(), UP);
+			break;
+
+		}
+		img.setRotation(RIGHT);
+	}
+
+	public void drawUp() {
+		switch(img.getRotation()) {
+
+		case LEFT:
+			img.rotate(img.getPlayer(), DOWN);
+			img.flip(img.getPlayer(), UP);
+			break;
+
+		case RIGHT:
+			img.rotate(img.getPlayer(), UP);
+			break;
+
+		case DOWN:
+			img.rotate(img.getPlayer(), LEFT);
+			break;
+
+		}
+		img.setRotation(UP);
+	}
+
+	public void drawDown() {
+		switch(img.getRotation()) {
+
+		case LEFT:
+			img.flip(img.getPlayer(), DOWN);
+			img.rotate(img.getPlayer(), DOWN);
+			break;
+
+		case UP:
+			img.rotate(img.getPlayer(), LEFT);
+			break;
+
+		case RIGHT:
+			img.rotate(img.getPlayer(), DOWN);
+			break;
+
+		}
+		img.setRotation(DOWN);
+	}
+
 }

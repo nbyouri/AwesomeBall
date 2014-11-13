@@ -131,7 +131,7 @@ public class Board extends JPanel implements ActionListener {
 		keys.drawSides(g2, keys.getPressedKeys());
 		
 		// draw rotation box
-		String r = Integer.toString(player.getRotation());
+		String r = Integer.toString(player.getImg().getRotation());
 		rotation.setStr(r);
 		rotation.draw(g2);
 
