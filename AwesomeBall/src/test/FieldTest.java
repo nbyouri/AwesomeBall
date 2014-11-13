@@ -1,4 +1,4 @@
-package unitTesting;
+package test;
 
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
