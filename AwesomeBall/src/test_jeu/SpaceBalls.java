@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 //import java.awt.GraphicsEnvironment;
 
 
+
 import javax.swing.JFrame;
 
 /*
@@ -19,12 +20,24 @@ import javax.swing.JFrame;
  * shoot bullets
  * threading
  * 
+ * QUICKFIX:
+ * update ball location on key release
+ * show ball/spacecraft thruster
+ * stick ball when in front + space key
+ * shoot the ball when space key pressed
+ * others can steal the ball if in front + space key
+ * settings panel
+ * 
  */
 
 @SuppressWarnings("serial")
-public class Application extends JFrame {
-
-	public Application() {
+public class SpaceBalls extends JFrame {
+	
+	// constantes
+	public static final int EXIT_SUCCESS = 0;
+	public static final int EXIT_FAILURE = 1;
+	
+	public SpaceBalls() {
 
         // full screen code
         /*GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -33,26 +46,26 @@ public class Application extends JFrame {
         defaultScreen.setFullScreenWindow(this);*/
 		
 		// our main window is 800x600 for now.
-		this.setSize(800, 600);
+		this.setSize(850, 600);
 		
 		// initialize a board which takes the whole screen
 		Board mainBoard = new Board(this.getSize());
 
         add(mainBoard);
 
-        this.setTitle("Application");
-        this.setResizable(false);
+        this.setTitle("SpaceBalls");
+        //this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
       
     }    
-    
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
         	// main application
             @Override
             public void run() {
-                Application ex = new Application();
+                SpaceBalls ex = new SpaceBalls();
                 ex.setVisible(true);
             }
         });

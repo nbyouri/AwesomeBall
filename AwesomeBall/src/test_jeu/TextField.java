@@ -8,6 +8,11 @@ import java.util.ArrayList;
 public class TextField extends Field {
 	private Font textFont;
 	private String str;
+	public TextField() {
+		super();
+		this.str = null;
+		textFont = null;
+	}
 	public TextField(String str) {
 		super();
 		this.str = str;
@@ -17,6 +22,10 @@ public class TextField extends Field {
 	
 	public void setStr(String str) {
 		this.str = str;
+	}
+	
+	public String getStr() {
+		return this.str;
 	}
 	
 	@Override 
