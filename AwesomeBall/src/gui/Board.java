@@ -40,7 +40,7 @@ public class Board extends JPanel implements ActionListener {
 	public static final int KEYS_X_POS = 190;
 	public static final int KEYS_WIDTH = 20;
 	public static final int SCORES_X = 220;
-	public static final int SCORES_WIDTH = 38;
+	public static final int SCORES_WIDTH = 50;
 	public static final int FPS = 5;
 	public static final int EXIT_SUCCESS = 0;
 	
@@ -77,7 +77,7 @@ public class Board extends JPanel implements ActionListener {
 		
 		// setup rotation indicator
 		rotation = new Text(null);
-		rotation.setSize(SCORES_X, TOP_MENUS_Y_POS, TOP_MENUS_Y_POS, TOP_MENUS_HEIGHT);
+		rotation.setSize(SCORES_X, TOP_MENUS_Y_POS, SCORES_WIDTH, TOP_MENUS_HEIGHT);
 		
 		
 		// key listener and window settings
@@ -136,7 +136,7 @@ public class Board extends JPanel implements ActionListener {
 		keys.drawSides(g2, keys.getPressedKeys());
 		
 		// draw rotation box => score box?
-		rotation.setStr(Player.getDirection(player.getImg().getRotation()));
+		rotation.setStr(Player.Direction.getNameFromRotation(player.getImg().getRotation()));
 		rotation.draw(g2);
 
 		// clean

@@ -52,10 +52,6 @@ public abstract class Shape extends Rectangle.Double {
 		}
 	};
 	
-	/*public static final int SIDE_LEFT = 0;
-	public static final int SIDE_UP = 1;
-	public static final int SIDE_RIGHT = 2;
-	public static final int SIDE_DOWN = 3;*/
 	public static final int CENTER_V = 4;
 	public static final int CENTER_H = 5;
 	

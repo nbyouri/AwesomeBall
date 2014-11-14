@@ -53,10 +53,6 @@ public class Player extends Field {
 		}
 	};
 	
-	public static String getDirection(int i) {
-		return Direction.getNameFromRotation(i);
-	}
-	
 	public Player() {  
 		// load image
 		try { 
