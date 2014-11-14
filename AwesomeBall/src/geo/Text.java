@@ -5,15 +5,15 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class TextField extends Field {
+public class Text extends Field {
 	private Font textFont;
 	private String str;
-	public TextField() {
+	public Text() {
 		super();
 		this.str = null;
 		textFont = null;
 	}
-	public TextField(String str) {
+	public Text(String str) {
 		super();
 		this.str = str;
 		

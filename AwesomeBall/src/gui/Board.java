@@ -22,13 +22,13 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
 	private Timer timer;
-	private TextField title;
-	private TextField rotation;
+	private Text title;
+	private Text rotation;
 	private Player player;
 	private Ball ball;
 	private Field field;
 	private Button exit;
-	private KeyIndicator keys;
+	private Keys keys;
 	
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
@@ -37,6 +37,10 @@ public class Board extends JPanel implements ActionListener {
 	public static final int TOP_TITLE_WIDTH = 130;
 	public static final int BOARD_X_POS = 50;
 	public static final int BOARD_Y_POS = 50;
+	public static final int KEYS_X_POS = 190;
+	public static final int KEYS_WIDTH = 20;
+	public static final int SCORES_X = 220;
+	public static final int SCORES_WIDTH = 38;
 	public static final int FPS = 5;
 	public static final int EXIT_SUCCESS = 0;
 	
@@ -48,7 +52,7 @@ public class Board extends JPanel implements ActionListener {
 		
 		
 		// setup game title
-		title = new TextField("SpaceShip Collider");
+		title = new Text("SpaceShip Collider");
 		title.setSize(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 
 				TOP_TITLE_WIDTH, TOP_MENUS_HEIGHT);
 		
@@ -68,12 +72,12 @@ public class Board extends JPanel implements ActionListener {
 				
 		
 		// setup key indicator
-		keys = new KeyIndicator();
-		keys.setSize(190, TOP_MENUS_Y_POS, 20, TOP_MENUS_HEIGHT);
+		keys = new Keys();
+		keys.setSize(KEYS_X_POS, TOP_MENUS_Y_POS, KEYS_WIDTH, TOP_MENUS_HEIGHT);
 		
 		// setup rotation indicator
-		rotation = new TextField(null);
-		rotation.setSize(220, 15, 38, TOP_MENUS_HEIGHT);
+		rotation = new Text(null);
+		rotation.setSize(SCORES_X, TOP_MENUS_Y_POS, TOP_MENUS_Y_POS, TOP_MENUS_HEIGHT);
 		
 		
 		// key listener and window settings
@@ -116,23 +120,23 @@ public class Board extends JPanel implements ActionListener {
 	    
 	    // draw field and it's center line
 		field.draw(g2);
-		field.drawSides(g2, player.approaches(field));
+		field.drawSides(g2, player.approaches(field.getBounds()));
 		field.drawCenterLines(g2);
 		
 		// draw player
 		player.draw(g2);
-		player.drawSides(g2, player.approaches(field));
+		player.drawSides(g2, player.approaches(field.getBounds()));
 		
 		// draw ball
+		ball.move(player, field);
 		ball.draw(g2);
 		
 		// draw key box
 		keys.draw(g2);
 		keys.drawSides(g2, keys.getPressedKeys());
 		
-		// draw rotation box
-		String r = Integer.toString(player.getImg().getRotation());
-		rotation.setStr(r);
+		// draw rotation box => score box?
+		rotation.setStr(Player.getDirection(player.getImg().getRotation()));
 		rotation.draw(g2);
 
 		// clean
@@ -142,7 +146,7 @@ public class Board extends JPanel implements ActionListener {
 
 
 	public void actionPerformed(ActionEvent e) {
-		player.move(field);
+		player.move(field.getBounds());
 		repaint();
 	}
 	
@@ -154,25 +158,25 @@ public class Board extends JPanel implements ActionListener {
 
 			if (key == KeyEvent.VK_LEFT) {
 				player.setDx(-Player.SPEED_ONE);
-				keys.setPressedKey(KeyIndicator.KEY_LEFT, KeyIndicator.KEY_ON);
+				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_ON);
 				player.drawLeft();
 			}
 			
 			if (key == KeyEvent.VK_UP) {
 				player.setDy(-Player.SPEED_ONE);
-				keys.setPressedKey(KeyIndicator.KEY_UP, KeyIndicator.KEY_ON);
+				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_ON);
 				player.drawUp();
 			}
 
 			if (key == KeyEvent.VK_RIGHT) {
 				player.setDx(Player.SPEED_ONE);
-				keys.setPressedKey(KeyIndicator.KEY_RIGHT, KeyIndicator.KEY_ON);
+				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_ON);
 				player.drawRight();
 			}
 			
 			if (key == KeyEvent.VK_DOWN) {
 				player.setDy(Player.SPEED_ONE);
-				keys.setPressedKey(KeyIndicator.KEY_DOWN, KeyIndicator.KEY_ON);
+				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
 				player.drawDown();
 			}
 		}
@@ -182,22 +186,22 @@ public class Board extends JPanel implements ActionListener {
 
 			if (key == KeyEvent.VK_LEFT) {
 				player.setDx(Player.STOP);
-				keys.setPressedKey(KeyIndicator.KEY_LEFT, KeyIndicator.KEY_OFF);
+				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_OFF);
 			}
 			
 			if (key == KeyEvent.VK_UP) {
 				player.setDy(Player.STOP);
-				keys.setPressedKey(KeyIndicator.KEY_UP, KeyIndicator.KEY_OFF);
+				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_OFF);
 			}
 			
 			if (key == KeyEvent.VK_RIGHT) {
 				player.setDx(Player.STOP);
-				keys.setPressedKey(KeyIndicator.KEY_RIGHT, KeyIndicator.KEY_OFF);
+				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_OFF);
 			}	
 
 			if (key == KeyEvent.VK_DOWN) {
 				player.setDy(Player.STOP);
-				keys.setPressedKey(KeyIndicator.KEY_DOWN, KeyIndicator.KEY_OFF);
+				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
 			}
 			
 			if (key == KeyEvent.VK_ESCAPE) {

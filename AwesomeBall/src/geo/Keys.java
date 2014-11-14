@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class KeyIndicator extends Field {
+public class Keys extends Field {
 	private ArrayList<Integer> pressedkeys;
 	
 	// constants
@@ -16,7 +16,7 @@ public class KeyIndicator extends Field {
 	public static final int KEY_RIGHT = 2;
 	public static final int KEY_DOWN = 3;
 	
-	public KeyIndicator() {
+	public Keys() {
 		pressedkeys = new ArrayList<Integer>();
 		
 		// initialize arrow keys

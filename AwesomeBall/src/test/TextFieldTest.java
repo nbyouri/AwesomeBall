@@ -6,8 +6,8 @@ import geo.*;
 
 public class TextFieldTest {
 
-	TextField test = new TextField();
-	TextField test_str = new TextField("text");
+	Text test = new Text();
+	Text test_str = new Text("text");
 	
 	@Test
 	public void test() {

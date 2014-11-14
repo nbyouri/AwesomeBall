@@ -29,10 +29,33 @@ public abstract class Shape extends Rectangle.Double {
 	private double dy;
 	private ArrayList<Line2D.Double> sides;
 	
-	public static final int SIDE_LEFT = 0;
+	public enum Side { 
+		LEFT (0, "left"), 
+		UP   (1, "up"), 
+		RIGHT(2, "right"), 
+		DOWN (3, "down");
+		
+		private final int id;
+		private final String name;
+		
+		private Side(int s, String n) {
+			this.id = s;
+			this.name = n;
+		}
+		
+		public int getId() {
+			return this.id;
+		}
+		
+		public String getName() {
+			return this.name;
+		}
+	};
+	
+	/*public static final int SIDE_LEFT = 0;
 	public static final int SIDE_UP = 1;
 	public static final int SIDE_RIGHT = 2;
-	public static final int SIDE_DOWN = 3;
+	public static final int SIDE_DOWN = 3;*/
 	public static final int CENTER_V = 4;
 	public static final int CENTER_H = 5;
 	
@@ -137,7 +160,7 @@ public abstract class Shape extends Rectangle.Double {
 	}
 	
 	// precise collision check of the shape relative to the field position
-	public Boolean insideRect(Field r) {
+	public Boolean insideRect(Rectangle r) {
 		if ((this.touchRectLeft(r)) || (this.touchRectRight(r)) ||
 				(this.touchRectTop(r)) || (this.touchRectBottom(r))) {
 			return false;
@@ -148,67 +171,71 @@ public abstract class Shape extends Rectangle.Double {
 
 	// returns true if the shape touches the inner left
 	// side of the Field minus the border
-	public Boolean touchRectLeft(Field r) {
+	public Boolean touchRectLeft(Rectangle r) {
 		return (this.getX() - 1 < r.getX());
 	}
 
-	public Boolean approachesLeftSide(Field r) {
+	public Boolean approachesLeftSide(Rectangle r) {
 		return (this.getX() - 2 < r.getX());
 	}
 
 	// returns true if the shape touches the top 
 	// side of the Field minus the border
-	public Boolean touchRectTop(Field r) {
+	public Boolean touchRectTop(Rectangle r) {
 		return (this.getY() - 1 < r.getY());
 	}
 
-	public Boolean approachesTopSide(Field r) {
+	public Boolean approachesTopSide(Rectangle r) {
 		return (this.getY() - 2 < r.getY());
+	}
+	
+	public Boolean approachesTopSideOut(Rectangle r) {
+		return (this.getY() - 2 == r.getY());
 	}
 
 	// returns true if the shape touches the inner right 
 	// side of the Field minus the border
-	public Boolean touchRectRight(Field r) {
+	public Boolean touchRectRight(Rectangle r) {
 		return (this.getX() + this.getWidth() - 
 				r.getX() + 1 > r.getWidth());
 	}
 
-	public Boolean approachesRightSide(Field r) {
+	public Boolean approachesRightSide(Rectangle r) {
 		return (this.getX() + this.getWidth() -
 				r.getX() + 2 > r.getWidth());
 	}
 
 	// returns true if the shape touches the inner bottom 
 	// side of the Field minus the border
-	public Boolean touchRectBottom(Field r) {
+	public Boolean touchRectBottom(Rectangle r) {
 		return (this.getY() + this.getHeight() -
 				r.getY() + 1 > r.getHeight());
 	}
 
-	public Boolean approachesBottomSide(Field r) {
+	public Boolean approachesBottomSide(Rectangle r) {
 		return (this.getY() + this.getHeight() -
 				r.getY() + 2 > r.getHeight());
 	}
 
 	// detect whether shape is in one of the field rectangle's 4 corners
 	// if so, return arraylist of sides indexes
-	public ArrayList<Integer> approaches(Field r) {
+	public ArrayList<Integer> approaches(Rectangle r) {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 
 		if (this.approachesLeftSide(r)) {
-			ids.add(Field.SIDE_LEFT);
+			ids.add(Field.Side.LEFT.id);
 		} 
 
 		if (this.approachesTopSide(r)) {
-			ids.add(Field.SIDE_UP);
+			ids.add(Field.Side.UP.id);
 		} 
 
 		if (this.approachesRightSide(r)) {
-			ids.add(Field.SIDE_RIGHT);
+			ids.add(Field.Side.RIGHT.id);
 		} 
 
 		if (this.approachesBottomSide(r)) {
-			ids.add(Field.SIDE_DOWN);
+			ids.add(Field.Side.DOWN.id);
 		}
 
 		return ids;
@@ -219,7 +246,7 @@ public abstract class Shape extends Rectangle.Double {
 	}
 	
 	// move shape in rectangle
-	public void move(Field r) {
+	public void move(Rectangle r) {
 		if (insideRect(r)){
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
@@ -240,16 +267,16 @@ public abstract class Shape extends Rectangle.Double {
 	}
 	
 	public void setSides() {
-		this.sides.get(SIDE_LEFT).setLine(this.getX(),  
+		this.sides.get(Side.LEFT.getId()).setLine(this.getX(),  
 				this.getY(), this.getDownX(), this.getDownY());
 		
-		this.sides.get(SIDE_UP).setLine(this.getX(),		
+		this.sides.get(Side.UP.getId()).setLine(this.getX(),		
 				this.getY(), this.getRightX(), this.getRightY());
 		
-		this.sides.get(SIDE_RIGHT).setLine(this.getRightX(), this.getRightY(), 
+		this.sides.get(Side.RIGHT.getId()).setLine(this.getRightX(), this.getRightY(), 
 				this.getRightDownX(), this.getRightDownY());
 		
-		this.sides.get(SIDE_DOWN).setLine(this.getDownX(),
+		this.sides.get(Side.DOWN.getId()).setLine(this.getDownX(),
 				this.getDownY(), this.getRightDownX(), this.getRightDownY());
 		
 		this.sides.get(CENTER_V).setLine(this.getCenterX(), this.getY(),

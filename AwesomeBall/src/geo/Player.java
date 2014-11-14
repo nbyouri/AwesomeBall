@@ -3,10 +3,6 @@ package geo;
 import gui.Images;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class Player extends Field {
@@ -21,15 +17,51 @@ public class Player extends Field {
 	public static final int SPEED_ONE = 1;
 	public static final int SPEED_TWO = 2;
 	public static final int STOP = 0;
-	public static final int INIT_X = 60;
-	public static final int INIT_Y = 80;
+	public static final int INIT_X = 400;
+	public static final int INIT_Y = 200;
 	public static final int INIT_ROT = 0;
 
+	public enum Direction { 
+		LEFT (180, "left"), 
+		UP   (-90, "up"), 
+		RIGHT(0, "right"), 
+		DOWN (90, "down");
+		
+		private final int id;
+		private final String name;
+		
+		private Direction(int s, String n) {
+			this.id = s;
+			this.name = n;
+		}
+		
+		public int getId() {
+			return this.id;
+		}
+		
+		public String getName() {
+			return this.name;
+		}
+		
+		public static String getNameFromRotation(int rotation) {
+			for (Direction d : Direction.values()) {
+				if (d.getId() == rotation) {
+					return d.getName();
+				}
+			}
+			return null;
+		}
+	};
+	
+	public static String getDirection(int i) {
+		return Direction.getNameFromRotation(i);
+	}
+	
 	public Player() {  
 		// load image
 		try { 
 			img = new Images();
-		} catch (IOException ioex) {
+		} catch (Exception ioex) {
 			System.out.println("couldn't load image");
 			System.exit(0);
 		}
@@ -61,8 +93,7 @@ public class Player extends Field {
 				(int)this.getY(), 
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
-		//g2.setColor(Color.red);
-		//g2.draw(this);
+		g2.draw(this);
 	}
 
 	// different cases of rotating and flipping

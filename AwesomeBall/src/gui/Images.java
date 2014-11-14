@@ -3,7 +3,6 @@ package gui;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
@@ -12,18 +11,17 @@ public class Images {
 	private int width;
 	private int height;
 	private int rotation;
-	
-	public Images() throws IOException {
+
+	public Images() {
 		player = load("images/craft.png");
 	}
 
 
 	// load image
-	public Image load(String path) throws IOException {
+	public Image load(String path) {
 		ImageIcon ii = new ImageIcon(getClass().getResource(path));
 		width = ii.getIconWidth();
 		height = ii.getIconHeight();
-		
 		return ii.getImage();
 	}
 
@@ -56,19 +54,18 @@ public class Images {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
+
 	// return normalised angle
-	// but don't change 360 to 0
 	public int getRotation() {
-	    while (rotation <= -180) rotation += 360;
-	    while (rotation > 180) rotation -= 360;
+		while (rotation <= -180) rotation += 360;
+		while (rotation > 180) rotation -= 360;
 		return rotation;
 	}
 
 	public void setRotation(int rotation) {
 		this.rotation = rotation;
 	}
-	
+
 	// rotate the image
 	public void rotate(Image img, int rotation) {
 		// only rotate if change of key
@@ -84,7 +81,7 @@ public class Images {
 			this.setPlayer(blankCanvas);
 		}
 	}
-	
+
 	// flip image around vertical axis
 	public void flip(Image img, int rotation) {
 		if (this.getRotation() != rotation) {

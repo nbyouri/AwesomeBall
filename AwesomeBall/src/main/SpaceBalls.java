@@ -37,10 +37,7 @@ import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
 public class SpaceBalls extends JFrame {
-	
-	// constantes
-	public static final int EXIT_SUCCESS = 0;
-	public static final int EXIT_FAILURE = 1;
+
 	
 	public SpaceBalls() {
 
