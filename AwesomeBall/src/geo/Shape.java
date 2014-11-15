@@ -19,12 +19,6 @@ public abstract class Shape extends Rectangle.Double {
 	 * |--> downx, downy
 	 * 
 	 */
-	private double downx;
-	private double downy;
-	private double rightx;
-	private double righty;
-	private double rightdownx;
-	private double rightdowny;
 	private double dx;
 	private double dy;
 	private ArrayList<Line2D.Double> sides;
@@ -70,57 +64,6 @@ public abstract class Shape extends Rectangle.Double {
 			sides.add(new Line2D.Double(0,0,0,0));
 	}
 
-	public double getRightX() {
-		return rightx;
-	}
-
-
-	public void setRightX() {
-		this.rightx = x + width;
-	}
-
-
-	public double getRightY() {
-		return righty;
-	}
-
-
-	public void setRightY() {
-		this.righty = y;
-	}
-	
-	public double getRightDownX() {
-		return rightdownx;
-	}
-
-	public void setRightDownX() {
-		this.rightdownx = rightx;
-	}
-
-	public double getRightDownY() {
-		return rightdowny;
-	}
-
-	public void setRightDownY() {
-		this.rightdowny = righty + height;
-	}
-	
-	public double getDownX() {
-		return downx;
-	}
-
-	public void setDownX() {
-		this.downx = x;
-	}
-
-	public double getDownY() {
-		return downy;
-	}
-
-	public void setDownY() {
-		this.downy = y + height;
-	}
-	
 	public double getDx() {
 		return dx;
 	}
@@ -140,19 +83,24 @@ public abstract class Shape extends Rectangle.Double {
 		this.dy = dy;
 	}
 
+	// check collision of two Shapes based on the sides.
+	public Boolean intersectSide(Shape s, int i) {
+		
+		this.setSides();
+		
+		if (i == Side.UP.getId())
+			return (this.getSide(i).intersectsLine(s.getSide(Side.DOWN.getId())));
+		
+		if (i == Side.DOWN.getId()) 
+			return (this.getSide(i).intersectsLine(s.getSide(Side.UP.getId())));
+		
+		if (i == Side.LEFT.getId()) 
+			return (this.getSide(i).intersectsLine(s.getSide(Side.RIGHT.getId())));
+		
+		if (i == Side.RIGHT.getId())
+			return (this.getSide(i).intersectsLine(s.getSide(Side.LEFT.getId())));
 
-	public void setPoints() {
-		this.setDownX();
-		this.setDownY();
-		this.setRightX();
-		this.setRightY();
-		this.setRightDownX();
-		this.setRightDownY();
-	}
-
-	public void setSize(double x, double y, double width, double height) {
-		this.setRect(x, y, width, height);
-		this.setPoints();
+		return false;
 	}
 	
 	// precise collision check of the shape relative to the field position
@@ -219,30 +167,36 @@ public abstract class Shape extends Rectangle.Double {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 
 		if (this.approachesLeftSide(r)) {
-			ids.add(Field.Side.LEFT.id);
+			ids.add(Field.Side.LEFT.getId());
 		} 
 
 		if (this.approachesTopSide(r)) {
-			ids.add(Field.Side.UP.id);
+			ids.add(Field.Side.UP.getId());
 		} 
 
 		if (this.approachesRightSide(r)) {
-			ids.add(Field.Side.RIGHT.id);
+			ids.add(Field.Side.RIGHT.getId());
 		} 
 
 		if (this.approachesBottomSide(r)) {
-			ids.add(Field.Side.DOWN.id);
+			ids.add(Field.Side.DOWN.getId());
 		}
 
 		return ids;
 	}
 
 	public void setLocation(double x, double y) {
-		this.setSize(x, y, this.getWidth(), this.getHeight());
+		this.setRect(x, y, this.getWidth(), this.getHeight());
+		this.setSides();
+	}
+	
+	
+	public void setSize(double x, double y, double width, double height) {
+		super.setRect(x, y, width, height);
 	}
 	
 	// move shape in rectangle
-	public void move(Rectangle r) {
+	public void moveIn(Rectangle r) {
 		if (insideRect(r)){
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
@@ -262,18 +216,35 @@ public abstract class Shape extends Rectangle.Double {
 
 	}
 	
+	// move shape near rectangle
+	public void moveOut(Rectangle r) {
+		
+		if (this.touchRectLeft(r))
+			this.setLocation(this.getX() - this.getDx(), this.getY());
+
+		if (this.approachesTopSideOut(r))
+			this.setLocation(this.getX(), this.getY() - this.getDy());
+
+		if (this.touchRectRight(r))
+			this.setLocation(this.getX() - this.getDx(), this.getY());
+
+		if (this.touchRectBottom(r))
+			this.setLocation(this.getX(), this.getY() - this.getDy());
+
+	}
+		
 	public void setSides() {
 		this.sides.get(Side.LEFT.getId()).setLine(this.getX(),  
-				this.getY(), this.getDownX(), this.getDownY());
+				this.getY(), this.getX(), this.getMaxY());
 		
 		this.sides.get(Side.UP.getId()).setLine(this.getX(),		
-				this.getY(), this.getRightX(), this.getRightY());
+				this.getY(), this.getMaxX(), this.getY());
 		
-		this.sides.get(Side.RIGHT.getId()).setLine(this.getRightX(), this.getRightY(), 
-				this.getRightDownX(), this.getRightDownY());
+		this.sides.get(Side.RIGHT.getId()).setLine(this.getMaxX(), this.getY(), 
+				this.getMaxX(), this.getMaxY());
 		
-		this.sides.get(Side.DOWN.getId()).setLine(this.getDownX(),
-				this.getDownY(), this.getRightDownX(), this.getRightDownY());
+		this.sides.get(Side.DOWN.getId()).setLine(this.getX(),
+				this.getMaxY(), this.getMaxX(), this.getMaxY());
 		
 		this.sides.get(CENTER_V).setLine(this.getCenterX(), this.getY(),
 				this.getCenterX(), this.getY() + this.getHeight());

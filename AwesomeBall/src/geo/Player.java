@@ -9,11 +9,6 @@ public class Player extends Field {
 	private Images img;
 
 	// constants
-	// ball rotation angles
-	public static final int UP = -90;
-	public static final int LEFT = 180;
-	public static final int RIGHT = 0;
-	public static final int DOWN = 90;
 	public static final int SPEED_ONE = 1;
 	public static final int SPEED_TWO = 2;
 	public static final int STOP = 0;
@@ -43,7 +38,7 @@ public class Player extends Field {
 			return this.name;
 		}
 		
-		public static String getNameFromRotation(int rotation) {
+		public static String getName(int rotation) {
 			for (Direction d : Direction.values()) {
 				if (d.getId() == rotation) {
 					return d.getName();
@@ -72,6 +67,7 @@ public class Player extends Field {
 		this.x = INIT_X;
 		this.y = INIT_Y;
 
+		this.setSides();
 	}
 
 	public Images getImg() {
@@ -89,88 +85,60 @@ public class Player extends Field {
 				(int)this.getY(), 
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
-		g2.draw(this);
+		//g2.draw(this);
 	}
 
 	// different cases of rotating and flipping
 	public void drawLeft() {
-		switch(img.getRotation()) {
-
-		case RIGHT:
-			img.flip(img.getPlayer(), LEFT);
-			break;
-
-		case UP:
-			img.rotate(img.getPlayer(), DOWN);
-			img.flip(img.getPlayer(), LEFT);
-			break;
-
-		case DOWN:
-			img.rotate(img.getPlayer(), UP);
-			img.flip(img.getPlayer(), LEFT);
-			break;
-
+		int rotation = img.getRotation();
+		if (rotation == Player.Direction.RIGHT.getId()) {
+			img.flip(img.getPlayer(), Player.Direction.LEFT.getId());
+		} else if (rotation == Player.Direction.UP.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
+			img.flip(img.getPlayer(), Player.Direction.LEFT.getId());
+		} else if (rotation == Player.Direction.DOWN.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.UP.getId());
+			img.flip(img.getPlayer(), Player.Direction.LEFT.getId());
 		}
-		img.setRotation(LEFT);
+		img.setRotation(Player.Direction.LEFT.getId());
 	}
 
 	public void drawRight() {
-		switch(img.getRotation()) {
-
-		case LEFT:
-			img.flip(img.getPlayer(), RIGHT);
-			break;
-
-		case UP:
-			img.rotate(img.getPlayer(), DOWN);
-			break;
-
-		case DOWN:
-			img.rotate(img.getPlayer(), UP);
-			break;
-
+		int rotation = img.getRotation();
+		if (rotation == Player.Direction.LEFT.getId()) {
+			img.flip(img.getPlayer(), Player.Direction.RIGHT.getId());
+		} else if (rotation == Player.Direction.UP.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
+		} else if (rotation == Player.Direction.DOWN.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.UP.getId());
 		}
-		img.setRotation(RIGHT);
+		img.setRotation(Player.Direction.RIGHT.getId());
 	}
 
 	public void drawUp() {
-		switch(img.getRotation()) {
-
-		case LEFT:
-			img.rotate(img.getPlayer(), DOWN);
-			img.flip(img.getPlayer(), UP);
-			break;
-
-		case RIGHT:
-			img.rotate(img.getPlayer(), UP);
-			break;
-
-		case DOWN:
-			img.rotate(img.getPlayer(), LEFT);
-			break;
-
+		int rotation = img.getRotation();
+		if (rotation == Player.Direction.LEFT.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
+			img.flip(img.getPlayer(), Player.Direction.UP.getId());
+		} else if (rotation == Player.Direction.RIGHT.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.UP.getId());
+		} else if (rotation == Player.Direction.DOWN.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.LEFT.getId());
 		}
-		img.setRotation(UP);
+		img.setRotation(Player.Direction.UP.getId());
 	}
 
 	public void drawDown() {
-		switch(img.getRotation()) {
-
-		case LEFT:
-			img.flip(img.getPlayer(), DOWN);
-			img.rotate(img.getPlayer(), DOWN);
-			break;
-
-		case UP:
-			img.rotate(img.getPlayer(), LEFT);
-			break;
-
-		case RIGHT:
-			img.rotate(img.getPlayer(), DOWN);
-			break;
-
+		int rotation = img.getRotation();
+		if (rotation == Player.Direction.LEFT.getId()) {
+			img.flip(img.getPlayer(), Player.Direction.DOWN.getId());
+			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
+		} else if (rotation == Player.Direction.UP.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.LEFT.getId());
+		} else if (rotation == Player.Direction.RIGHT.getId()) {
+			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
 		}
-		img.setRotation(DOWN);
+		img.setRotation(Player.Direction.DOWN.getId());
 	}
 
 }

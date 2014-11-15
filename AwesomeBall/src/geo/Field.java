@@ -3,7 +3,6 @@ package geo;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -20,12 +19,6 @@ public class Field extends Shape {
 		// center circle
 		center = new Ellipse2D.Double(0, 0, 
 				CENTER_CIRCLE_DIAMETER, CENTER_CIRCLE_DIAMETER);
-	}
-	
-	@Override
-	public void setSize(double x, double y, double width, double height) {
-		super.setSize(x, y, width, height);
-		this.setSides();
 	}
 	
 	public void setCenterCircle() {
