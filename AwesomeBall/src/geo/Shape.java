@@ -19,9 +19,9 @@ public abstract class Shape extends Rectangle.Double {
 	 * |--> downx, downy
 	 * 
 	 */
-	private double dx;
-	private double dy;
-	private ArrayList<Line2D.Double> sides;
+	public double dx;
+	public double dy;
+	public ArrayList<Line2D.Double> sides;
 	
 	public enum Side { 
 		LEFT (0, "left"), 
@@ -206,23 +206,6 @@ public abstract class Shape extends Rectangle.Double {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 
 		if (this.touchRectTop(r))
-			this.setLocation(this.getX(), this.getY() - this.getDy());
-
-		if (this.touchRectRight(r))
-			this.setLocation(this.getX() - this.getDx(), this.getY());
-
-		if (this.touchRectBottom(r))
-			this.setLocation(this.getX(), this.getY() - this.getDy());
-
-	}
-	
-	// move shape near rectangle
-	public void moveOut(Rectangle r) {
-		
-		if (this.touchRectLeft(r))
-			this.setLocation(this.getX() - this.getDx(), this.getY());
-
-		if (this.approachesTopSideOut(r))
 			this.setLocation(this.getX(), this.getY() - this.getDy());
 
 		if (this.touchRectRight(r))

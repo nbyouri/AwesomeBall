@@ -11,8 +11,8 @@ public class Ball extends Shape {
 
 	public Ball(double x, double y, double width, double height) {
 		// ball initialization, a normal ball is 22cm in diameter
-		super.setRect(x, y, width, height);
-		circle = new Ellipse2D.Double(x - (width / 2), y, width, height);
+		super.setRect(x - (width / 2), y, width, height);
+		circle = new Ellipse2D.Double(0, 0, 0, 0);
 		this.setSides();
 	}
 
@@ -35,12 +35,14 @@ public class Ball extends Shape {
 		}
 
 		if (this.intersectSide(p, Player.Side.LEFT.getId())) {
-			if (this.approachesRightSide(f.getBounds())) {
-				x -= Player.SPEED_ONE;
-				p.setDx(-Player.SPEED_ONE);
-			} else if (this.insideRect(f.getBounds())) {
-				x += Player.SPEED_ONE;
+			if ((this.intersects(f.getGoalright()))) {
+				System.out.println("GOLLL");
+				p.setScore(p.getScore()+1);
+				x += 20;
+			} else {
+				this.setDx(1);
 			}
+			
 		}
 
 		if (this.intersectSide(p, Player.Side.DOWN.getId())) {
@@ -60,6 +62,8 @@ public class Ball extends Shape {
 				x -= Player.SPEED_ONE;
 			}
 		}
+		
+		this.moveIn(f.getBounds());
 	}
 
 	public void draw(Graphics2D g2) {
@@ -67,7 +71,6 @@ public class Ball extends Shape {
 		g2.setColor(Color.yellow);
 		g2.draw(this.circle);
 		g2.fill(this.circle);
-		//g2.draw(this);
 	}
 
 	public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {

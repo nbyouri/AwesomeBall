@@ -24,8 +24,6 @@ import javax.swing.JFrame;
  * threading
  * 
  * QUICKFIX:
- * class for image loading
- * Shape points to Point2D.Double
  * update ball location on key release
  * show ball/spacecraft thruster
  * stick ball when in front + space key
@@ -47,7 +45,7 @@ public class SpaceBalls extends JFrame {
         setUndecorated(true);
         defaultScreen.setFullScreenWindow(this);*/
 		
-		// our main window is 800x600 for now.
+		// our main window is 850x600 for now.
 		this.setSize(850, 600);
 		
 		// initialize a board which takes the whole screen

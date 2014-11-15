@@ -7,7 +7,8 @@ import java.awt.Graphics2D;
 @SuppressWarnings("serial")
 public class Player extends Field {
 	private Images img;
-
+	private int score;
+	
 	// constants
 	public static final int SPEED_ONE = 1;
 	public static final int SPEED_TWO = 2;
@@ -76,6 +77,14 @@ public class Player extends Field {
 
 	public void setImg(Images img) {
 		this.img = img;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int sore) {
+		this.score = sore;
 	}
 
 	// draw rectangle and ball

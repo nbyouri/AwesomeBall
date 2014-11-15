@@ -24,13 +24,12 @@ public class Board extends JPanel implements ActionListener {
 	private Timer timer;
 	private Text title;
 	private Text rotation;
+	private Text score;
 	private Player player;
 	private Ball ball;
 	private Field field;
 	private Button exit;
 	private Keys keys;
-	private Field goalleft;
-	private Field goalright;
 	
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
@@ -39,12 +38,11 @@ public class Board extends JPanel implements ActionListener {
 	public static final int TOP_TITLE_WIDTH = 130;
 	public static final int BOARD_X_POS = 50;
 	public static final int BOARD_Y_POS = 50;
-	public static final int GOALS_LEFT_X = 20;
-	public static final int GOALS_WIDTH = 30;
-	public static final int GOALS_HEIGHT = 80;
 	public static final int KEYS_X_POS = 190;
 	public static final int KEYS_WIDTH = 20;
-	public static final int SCORES_X = 220;
+	public static final int ROTATION_X = 220;
+	public static final int ROTATION_WIDTH = 50;
+	public static final int SCORES_X = 290;
 	public static final int SCORES_WIDTH = 50;
 	public static final int FPS = 5;
 	public static final int EXIT_SUCCESS = 0;
@@ -58,7 +56,7 @@ public class Board extends JPanel implements ActionListener {
 		
 		// setup game title
 		title = new Text("SpaceShip Collider");
-		title.setSize(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 
+		title.setRect(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 
 				TOP_TITLE_WIDTH, TOP_MENUS_HEIGHT);
 		
 		// setup field 
@@ -66,12 +64,6 @@ public class Board extends JPanel implements ActionListener {
 		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
 				field_width, field_height);
 		field.setCenterCircle();
-		
-		// setup goals
-		goalleft = new Field();
-		goalright = new Field();
-		goalleft.setSize(GOALS_LEFT_X, field.getY() + (field_height / 3), GOALS_WIDTH, field_height / 3);
-		goalright.setSize(BOARD_X_POS + field_width, field.getY() + (field_height / 3), GOALS_WIDTH, field_height / 3);
 		
 		// setup player
 		player = new Player();
@@ -88,8 +80,11 @@ public class Board extends JPanel implements ActionListener {
 		
 		// setup rotation indicator
 		rotation = new Text(null);
-		rotation.setSize(SCORES_X, TOP_MENUS_Y_POS, SCORES_WIDTH, TOP_MENUS_HEIGHT);
+		rotation.setRect(ROTATION_X, TOP_MENUS_Y_POS, ROTATION_WIDTH, TOP_MENUS_HEIGHT);
 		
+		// setup score indicator
+		score = new Text(null);
+		score.setRect(SCORES_X, TOP_MENUS_Y_POS, SCORES_WIDTH, TOP_MENUS_HEIGHT);
 		
 		// key listener and window settings
 		addKeyListener(new TAdapter());
@@ -135,10 +130,6 @@ public class Board extends JPanel implements ActionListener {
 		field.drawSides(g2, player.approaches(field.getBounds()));
 		field.drawCenterLines(g2);
 		
-		// draw goals
-		goalleft.draw(g2);
-		goalright.draw(g2);
-		
 		// draw player
 		player.draw(g2);
 		player.drawSides(g2, player.approaches(field.getBounds()));
@@ -152,10 +143,14 @@ public class Board extends JPanel implements ActionListener {
 		keys.setSides();
 		keys.drawSides(g2, keys.getPressedKeys());
 		
-		// draw rotation box => score box?
+		// draw rotation box
 		rotation.setStr(Player.Direction.getName(player.getImg().getRotation()));
 		rotation.draw(g2);
 
+		// draw score box
+		score.setStr(Integer.toString(player.getScore()));
+		score.draw(g2);
+		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();

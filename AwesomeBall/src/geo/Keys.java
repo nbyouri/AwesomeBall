@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class Keys extends Field {
+public class Keys extends Shape {
 	private ArrayList<Integer> pressedkeys;
 	
 	// constants
@@ -42,7 +42,11 @@ public class Keys extends Field {
 		this.pressedkeys.set(i, k);
 	}
 	
-	@Override
+	public void draw(Graphics2D g2) {
+		g2.setColor(Color.cyan);
+		g2.draw(this);
+	}
+	
 	public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
 		g2.setColor(Color.yellow);
 		
