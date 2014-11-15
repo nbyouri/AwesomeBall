@@ -116,7 +116,7 @@ public abstract class Shape extends Rectangle.Double {
 	// returns true if the shape touches the inner left
 	// side of the Field minus the border
 	public Boolean touchRectLeft(Rectangle r) {
-		return (this.getX() - 1 < r.getX());
+		return (this.getX() + 1 == r.getX());
 	}
 
 	public Boolean approachesLeftSide(Rectangle r) {
@@ -126,7 +126,7 @@ public abstract class Shape extends Rectangle.Double {
 	// returns true if the shape touches the top 
 	// side of the Field minus the border
 	public Boolean touchRectTop(Rectangle r) {
-		return (this.getY() - 1 < r.getY());
+		return (this.getY() < r.getY());
 	}
 
 	public Boolean approachesTopSide(Rectangle r) {
@@ -141,7 +141,7 @@ public abstract class Shape extends Rectangle.Double {
 	// side of the Field minus the border
 	public Boolean touchRectRight(Rectangle r) {
 		return (this.getX() + this.getWidth() - 
-				r.getX() + 1 > r.getWidth());
+				r.getX() > r.getWidth());
 	}
 
 	public Boolean approachesRightSide(Rectangle r) {
@@ -153,7 +153,7 @@ public abstract class Shape extends Rectangle.Double {
 	// side of the Field minus the border
 	public Boolean touchRectBottom(Rectangle r) {
 		return (this.getY() + this.getHeight() -
-				r.getY() + 1 > r.getHeight());
+				r.getY() > r.getHeight());
 	}
 
 	public Boolean approachesBottomSide(Rectangle r) {

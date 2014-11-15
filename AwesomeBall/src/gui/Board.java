@@ -132,7 +132,6 @@ public class Board extends JPanel implements ActionListener {
 		
 		// draw player
 		player.draw(g2);
-		player.drawSides(g2, player.approaches(field.getBounds()));
 		
 		// draw ball
 		ball.draw(g2);
@@ -150,7 +149,7 @@ public class Board extends JPanel implements ActionListener {
 		// draw score box
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
-		
+
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -214,6 +213,10 @@ public class Board extends JPanel implements ActionListener {
 			if (key == KeyEvent.VK_DOWN) {
 				player.setDy(Player.STOP);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
+			}
+			
+			if (key == KeyEvent.VK_ENTER) {
+				ball.centerBall(field);
 			}
 			
 			if (key == KeyEvent.VK_ESCAPE) {

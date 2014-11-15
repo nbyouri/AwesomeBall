@@ -21,49 +21,81 @@ public class Ball extends Shape {
 		circle = new Ellipse2D.Double(0, 0, 0, 0);
 	}
 
+	public Boolean touchRightGoal(Field f) {
+		return (this.getSide(Shape.Side.LEFT.getId()).intersectsLine(f.getSide(Field.GOAL_RIGHT)));
+	}
+
+	public Boolean touchLeftGoal(Field f) {
+		return (this.getSide(Shape.Side.RIGHT.getId()).intersectsLine(f.getSide(Field.GOAL_LEFT)));
+	}
+
+	// move shape in rectangle, check for goal collision
+	public void moveBall(Field f) {
+		//if (insideRect(r)){
+		this.setLocation(this.getX() + this.getDx(),
+				this.getY() + this.getDy());
+		//}
+
+		/*if (this.touchRectLeft(f.getBounds()) && this.touchLeftGoal(f)) {
+			System.out.println("gol");
+		} else if (this.touchRectLeft(f.getBounds())) {
+			this.setLocation(this.getX() - this.getDx(), this.getY());
+		}
+
+		if (this.touchRectTop(f.getBounds()))
+			this.setLocation(this.getX(), this.getY() - this.getDy());
+
+		//if (this.touchRectRight(f.getBounds()) && !this.touchRightGoal(f))
+		//	this.setLocation(this.getX() - this.getDx(), this.getY());
+
+
+		if (this.touchRectBottom(f.getBounds()))
+			this.setLocation(this.getX(), this.getY() - this.getDy());
+		*/
+	}
+
 	public void move(Player p, Field f) {
+
+		this.setDx(0);
+		this.setDy(0);
 
 		// if player hits the ball, move it along with the player
 		// if the ball touches the field sides, the ball stops.
 		if (this.intersectSide(p, Player.Side.UP.getId())) {
-			if (this.approachesBottomSide(f.getBounds())) {
-				y -= Player.SPEED_ONE;
-				p.setDy(-Player.SPEED_ONE);
-			} else if (this.insideRect(f.getBounds())){
-				y += Player.SPEED_ONE;
-			}
+			this.setDy(1);
 		}
 
 		if (this.intersectSide(p, Player.Side.LEFT.getId())) {
-			if ((this.intersects(f.getGoalright()))) {
-				System.out.println("GOLLL");
-				p.setScore(p.getScore()+1);
-				x += 20;
-			} else {
-				this.setDx(1);
+			// place ball back to center
+			if (this.touchRightGoal(f)) {
+				this.goal(p, f);
 			}
-			
+			this.setDx(1);
+
 		}
 
 		if (this.intersectSide(p, Player.Side.DOWN.getId())) {
-			if (this.approachesTopSide(f.getBounds())) {
-				y += Player.SPEED_ONE;
-				p.setDy(Player.SPEED_ONE);
-			} else if (this.insideRect(f.getBounds())) {
-				y -= Player.SPEED_ONE;
-			}
+			this.setDy(-1);
 		}
 
 		if (this.intersectSide(p, Player.Side.RIGHT.getId())) {
-			if (this.approachesLeftSide(f.getBounds())) {
-				x += Player.SPEED_ONE;
-				p.setDx(Player.SPEED_ONE);
-			} else if (this.insideRect(f.getBounds())) {
-				x -= Player.SPEED_ONE;
+			if (this.touchLeftGoal(f)) {
+				this.goal(p, f);
 			}
+			this.setDx(-1);
 		}
-		
-		this.moveIn(f.getBounds());
+
+		this.moveBall(f);
+	}
+
+	public void goal(Player p, Field f) {
+		p.setScore(p.getScore() + 1);
+		this.centerBall(f);
+	}
+
+	public void centerBall(Field f) {
+		this.setLocation(f.getCenterX() - this.getWidth() / 2, 
+				f.getY() + (f.getHeight() / 2) - 10);
 	}
 
 	public void draw(Graphics2D g2) {
