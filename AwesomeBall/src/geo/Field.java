@@ -18,7 +18,11 @@ public class Field extends Shape {
 	public static final int GOALS_WIDTH = 30;
 	public static final int GOALS_HEIGHT = 80;
 	public static final int GOAL_LEFT = 6;
-	public static final int GOAL_RIGHT = 7;
+	public static final int GOAL_LEFT_UP = 7;
+	public static final int GOAL_LEFT_DOWN = 8;
+	public static final int GOAL_RIGHT = 9;
+	public static final int GOAL_RIGHT_UP = 10;
+	public static final int GOAL_RIGHT_DOWN = 11;
 
 	public Field() {
 		// center circle
@@ -51,10 +55,21 @@ public class Field extends Shape {
 		goalleft.setRect(x - GOALS_WIDTH, this.getY() + (height / 3), GOALS_WIDTH, height / 3);
 		goalright.setRect(x + width, this.getY() + (height / 3), GOALS_WIDTH, height / 3);
 
-		// left goal line
+		// left goal lines
+		// goal line 
 		this.sides.add(new Line2D.Double(x, this.getY() + (height / 3), x, this.getY() + 2 * (height / 3)));
+		// line above left goal
+		this.sides.add(new Line2D.Double(x, this.getY(), x, this.getY() + (height / 3)));
+		// line under left goal
+		this.sides.add(new Line2D.Double(x, this.getY() + 2 * (height / 3), x, this.getMaxY()));
+		
+		
 		// right goal line
-		this.sides.add(new Line2D.Double(x + width, this.getY() + (height / 3), x + width, this.getY() + 2 * (height / 3)));
+		this.sides.add(new Line2D.Double(this.getMaxX(), this.getY() + (height / 3), this.getMaxX(), this.getY() + 2 * (height / 3)));
+		// line above right goal 
+		this.sides.add(new Line2D.Double(this.getMaxX(), this.getY(), this.getMaxX(), this.getY() + (height / 3)));
+		// line under right goal
+		this.sides.add(new Line2D.Double(getMaxX(), this.getY() + 2 * (height / 3), this.getMaxX(), this.getMaxY()));
 	}
 
 	public void setCenterCircle() {
@@ -87,7 +102,7 @@ public class Field extends Shape {
 		g2.draw(this.goalright);
 
 		// draw goal lines in white
-		g2.setColor(Color.white);
+		g2.setColor(Color.black);
 		g2.draw(this.getSide(GOAL_LEFT));
 		g2.draw(this.getSide(GOAL_RIGHT));
 	}

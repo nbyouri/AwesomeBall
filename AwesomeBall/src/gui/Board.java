@@ -127,7 +127,7 @@ public class Board extends JPanel implements ActionListener {
 	    // draw field and it's center line
 		field.draw(g2);
 		field.setSides();
-		field.drawSides(g2, player.approaches(field.getBounds()));
+		field.drawSides(g2, player.approaches(field));
 		field.drawCenterLines(g2);
 		
 		// draw player
@@ -157,7 +157,7 @@ public class Board extends JPanel implements ActionListener {
 
 
 	public void actionPerformed(ActionEvent e) {
-		player.moveIn(field.getBounds());
+		player.moveIn(field);
 		repaint();
 	}
 	

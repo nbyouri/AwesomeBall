@@ -10,7 +10,7 @@ public class Player extends Field {
 	private int score;
 	
 	// constants
-	public static final int SPEED_ONE = 1;
+	public static final int SPEED_ONE = 5;
 	public static final int SPEED_TWO = 2;
 	public static final int STOP = 0;
 	public static final int INIT_X = 400;

@@ -21,39 +21,25 @@ public class Ball extends Shape {
 		circle = new Ellipse2D.Double(0, 0, 0, 0);
 	}
 
-	public Boolean touchRightGoal(Field f) {
-		return (this.getSide(Shape.Side.LEFT.getId()).intersectsLine(f.getSide(Field.GOAL_RIGHT)));
+	public Boolean touchRightGoal(Shape f) {
+		return (this.getSide(Shape.Side.RIGHT.getId()).intersectsLine(f.getSide(Field.GOAL_RIGHT)));
 	}
 
-	public Boolean touchLeftGoal(Field f) {
-		return (this.getSide(Shape.Side.RIGHT.getId()).intersectsLine(f.getSide(Field.GOAL_LEFT)));
+	public Boolean touchLeftGoal(Shape f) {
+		return (this.getSide(Shape.Side.LEFT.getId()).intersectsLine(f.getSide(Field.GOAL_LEFT)));
 	}
 
-	// move shape in rectangle, check for goal collision
-	public void moveBall(Field f) {
-		//if (insideRect(r)){
-		this.setLocation(this.getX() + this.getDx(),
-				this.getY() + this.getDy());
-		//}
-
-		/*if (this.touchRectLeft(f.getBounds()) && this.touchLeftGoal(f)) {
-			System.out.println("gol");
-		} else if (this.touchRectLeft(f.getBounds())) {
-			this.setLocation(this.getX() - this.getDx(), this.getY());
-		}
-
-		if (this.touchRectTop(f.getBounds()))
-			this.setLocation(this.getX(), this.getY() - this.getDy());
-
-		//if (this.touchRectRight(f.getBounds()) && !this.touchRightGoal(f))
-		//	this.setLocation(this.getX() - this.getDx(), this.getY());
-
-
-		if (this.touchRectBottom(f.getBounds()))
-			this.setLocation(this.getX(), this.getY() - this.getDy());
-		*/
+	@Override
+	public Boolean touchRectRight(Shape f) {
+		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP)) || 
+				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)));
 	}
 
+	@Override
+	public Boolean touchRectLeft(Shape f) {
+		return (this.intersectsLine(f.getSide(Field.GOAL_LEFT_UP)) ||
+				this.intersectsLine(f.getSide(Field.GOAL_LEFT_DOWN)));
+	}
 	public void move(Player p, Field f) {
 
 		this.setDx(0);
@@ -62,35 +48,47 @@ public class Ball extends Shape {
 		// if player hits the ball, move it along with the player
 		// if the ball touches the field sides, the ball stops.
 		if (this.intersectSide(p, Player.Side.UP.getId())) {
-			this.setDy(1);
+			if (this.insideRect(f))
+				this.setDy(5);
 		}
 
+		// left -> right
 		if (this.intersectSide(p, Player.Side.LEFT.getId())) {
-			// place ball back to center
-			if (this.touchRightGoal(f)) {
-				this.goal(p, f);
+			if (this.touchRectRight(f)) {
+				System.out.println("hit");
+				this.setDx(-5);
+			} else {
+				this.setDx(5);
 			}
-			this.setDx(1);
-
 		}
 
 		if (this.intersectSide(p, Player.Side.DOWN.getId())) {
-			this.setDy(-1);
+			if (this.insideRect(f))
+				this.setDy(-5);
 		}
 
+		// right -> left
 		if (this.intersectSide(p, Player.Side.RIGHT.getId())) {
-			if (this.touchLeftGoal(f)) {
-				this.goal(p, f);
+			if (this.touchRectLeft(f)) {
+				this.setDx(5);
+			} else {
+				this.setDx(-5);
 			}
-			this.setDx(-1);
 		}
 
-		this.moveBall(f);
+		this.setLocation(this.getX() + this.getDx(),
+				this.getY() + this.getDy());
+
+		this.goal(p, f);
+
 	}
 
 	public void goal(Player p, Field f) {
-		p.setScore(p.getScore() + 1);
-		this.centerBall(f);
+		if  (this.getSide(Shape.Side.LEFT.getId()).intersectsLine(f.getSide(Field.GOAL_RIGHT)) ||
+				this.getSide(Shape.Side.RIGHT.getId()).intersectsLine(f.getSide(Field.GOAL_LEFT))) {
+			p.setScore(p.getScore() + 1);
+			this.centerBall(f);
+		}
 	}
 
 	public void centerBall(Field f) {
