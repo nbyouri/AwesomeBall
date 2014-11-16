@@ -29,17 +29,13 @@ public class Ball extends Shape {
 		return (this.getSide(Shape.Side.LEFT.getId()).intersectsLine(f.getSide(Field.GOAL_LEFT)));
 	}
 
-	@Override
-	public Boolean touchRectRight(Shape f) {
-		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP)) || 
-				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)));
-	}
-
-	@Override
-	public Boolean touchRectLeft(Shape f) {
-		return (this.intersectsLine(f.getSide(Field.GOAL_LEFT_UP)) ||
+	public Boolean touchBorders(Shape f) {
+		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP))   || 
+				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)) ||
+				this.intersectsLine(f.getSide(Field.GOAL_LEFT_UP))    ||
 				this.intersectsLine(f.getSide(Field.GOAL_LEFT_DOWN)));
 	}
+
 	public void move(Player p, Field f) {
 
 		this.setDx(0);
@@ -48,14 +44,14 @@ public class Ball extends Shape {
 		// if player hits the ball, move it along with the player
 		// if the ball touches the field sides, the ball stops.
 		if (this.intersectSide(p, Player.Side.UP.getId())) {
-			if (this.insideRect(f))
+			if (this.insideRect(f)) {
 				this.setDy(5);
+			}
 		}
 
 		// left -> right
 		if (this.intersectSide(p, Player.Side.LEFT.getId())) {
-			if (this.touchRectRight(f)) {
-				System.out.println("hit");
+			if (this.touchBorders(f)) {
 				this.setDx(-5);
 			} else {
 				this.setDx(5);
@@ -63,13 +59,14 @@ public class Ball extends Shape {
 		}
 
 		if (this.intersectSide(p, Player.Side.DOWN.getId())) {
-			if (this.insideRect(f))
+			if (this.insideRect(f)) {
 				this.setDy(-5);
+			}
 		}
 
 		// right -> left
 		if (this.intersectSide(p, Player.Side.RIGHT.getId())) {
-			if (this.touchRectLeft(f)) {
+			if (this.touchBorders(f)) {
 				this.setDx(5);
 			} else {
 				this.setDx(-5);

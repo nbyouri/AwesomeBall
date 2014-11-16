@@ -9,11 +9,11 @@ public class Keys extends Shape {
 	private ArrayList<Integer> pressedkeys;
 	
 	// constants
-	public static final int KEY_OFF = 0;
-	public static final int KEY_ON = 1;
+	public static final int KEY_OFF  = 0;
+	public static final int KEY_ON   = 1;
 	public static final int KEY_LEFT = 0;
-	public static final int KEY_UP = 1;
-	public static final int KEY_RIGHT = 2;
+	public static final int KEY_UP   = 1;
+	public static final int KEY_RIGHT= 2;
 	public static final int KEY_DOWN = 3;
 	
 	public Keys() {

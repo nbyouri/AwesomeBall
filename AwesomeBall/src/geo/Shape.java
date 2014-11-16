@@ -55,7 +55,7 @@ public abstract class Shape extends Rectangle.Double {
 		
 		sides = new ArrayList<Line2D.Double>();
 
-		// 4 sides of field Shape, initialise to 0
+		// 4 sides of field Shape
 		for (int i = 0; i < 4; i++)
 			sides.add(new Line2D.Double(0,0,0,0));
 
@@ -131,10 +131,6 @@ public abstract class Shape extends Rectangle.Double {
 
 	public Boolean approachesTopSide(Shape r) {
 		return (this.getY() - 2 < r.getY());
-	}
-	
-	public Boolean approachesTopSideOut(Shape r) {
-		return (this.getY() - 2 == r.getY());
 	}
 
 	// returns true if the shape touches the inner right 
