@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 public class Player extends Field {
 	private Images img;
 	private int score;
-	
+
 	// constants
 	public static final int SPEED_ONE = 5;
 	public static final int SPEED_TWO = 2;
@@ -22,23 +22,23 @@ public class Player extends Field {
 		UP   (-90, "up"), 
 		RIGHT(0, "right"), 
 		DOWN (90, "down");
-		
+
 		private final int id;
 		private final String name;
-		
+
 		private Direction(int s, String n) {
 			this.id = s;
 			this.name = n;
 		}
-		
+
 		public int getId() {
 			return this.id;
 		}
-		
+
 		public String getName() {
 			return this.name;
 		}
-		
+
 		public static String getName(int rotation) {
 			for (Direction d : Direction.values()) {
 				if (d.getId() == rotation) {
@@ -48,7 +48,7 @@ public class Player extends Field {
 			return null;
 		}
 	};
-	
+
 	public Player() {  
 		// load image
 		try { 
@@ -94,7 +94,7 @@ public class Player extends Field {
 				(int)this.getY(), 
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
-		//g2.draw(this);
+		g2.draw(this);
 	}
 
 	// different cases of rotating and flipping
@@ -149,5 +149,86 @@ public class Player extends Field {
 		}
 		img.setRotation(Player.Direction.DOWN.getId());
 	}
+	
+	/*
+	 * 
+	 * Check whether the player is in a goal
+	 * 
+	 */
+	public Boolean insideGoals(Field f) {
+		return ((this.getMaxX() < f.getGoalright().getMaxX() &&
+				this.getY() - 1 >= f.getGoalright().getY()) ||
+				(this.getX() > f.getGoalleft().getX() &&
+				this.getY() - 1 >= f.getGoalleft().getY()));
+	}
 
+	/*
+	 * 
+	 * Right Goal Collisions
+	 * 
+	 */
+	public Boolean touchGoalRightTop(Field f) {
+		return (this.getX() >= f.getGoalright().getX() &&
+				this.getY() - 1 <= f.getGoalright().getY());
+	}
+	
+	public Boolean touchGoalRightBottom(Field f) {
+		return (this.getX() >= f.getGoalright().getX() &&
+				this.getMaxY() + 1 >= f.getGoalright().getMaxY());
+	}
+	
+	public Boolean touchRectRight(Field f) {
+		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP))   || 
+				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)) ||
+				this.getMaxX() + 1 >= f.getGoalright().getMaxX());
+	}
+	
+	/*
+	 * 
+	 * Left Goal Collisions
+	 * 
+	 */
+	public Boolean touchRectLeft(Field f) {
+		return (this.intersectsLine(f.getSide(Field.GOAL_LEFT_UP))	 ||
+				this.intersectsLine(f.getSide(Field.GOAL_LEFT_DOWN)) ||
+				this.getX() - 1 <= f.getGoalleft().getX());
+	}
+	
+	public Boolean touchGoalLeftBottom(Field f) {
+		return (this.getX() <= f.getGoalleft().getMaxX() &&
+				this.getMaxY() + 1 >= f.getGoalleft().getMaxY());
+	}
+	
+	public Boolean touchGoalLeftTop(Field f) {
+		return (this.getX() <= f.getGoalleft().getMaxX() &&
+				this.getY() - 1 <= f.getGoalleft().getY());
+	}
+	
+	
+	/*
+	 * 
+	 * 
+	 * Move the player in the field
+	 * 
+	 * 
+	 */
+	public void moveIn(Field f) {
+		if (insideRect(f) || this.insideGoals(f)){
+			this.setLocation(this.getX() + this.getDx(),
+					this.getY() + this.getDy());
+		}
+
+		if (this.touchRectLeft(f))
+			this.setLocation(this.getX() - this.getDx(), this.getY());
+
+		if (this.touchRectTop(f) || this.touchGoalRightTop(f) || this.touchGoalLeftTop(f))
+			this.setLocation(this.getX(), this.getY() - this.getDy());
+
+		if (this.touchRectRight(f))
+			this.setLocation(this.getX() - this.getDx(), this.getY());
+
+		if (this.touchRectBottom(f) || this.touchGoalRightBottom(f) || this.touchGoalLeftBottom(f))
+			this.setLocation(this.getX(), this.getY() - this.getDy());
+
+	}
 }

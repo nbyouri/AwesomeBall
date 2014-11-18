@@ -87,7 +87,7 @@ public class Board extends JPanel implements ActionListener {
 		score.setRect(SCORES_X, TOP_MENUS_Y_POS, SCORES_WIDTH, TOP_MENUS_HEIGHT);
 		
 		// key listener and window settings
-		addKeyListener(new TAdapter());
+		addKeyListener(new KeyEvents());
 		setFocusable(true);
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
@@ -127,7 +127,7 @@ public class Board extends JPanel implements ActionListener {
 	    // draw field and it's center line
 		field.draw(g2);
 		field.setSides();
-		field.drawSides(g2, player.approaches(field));
+		//field.drawSides(g2, player.approaches(field));
 		field.drawCenterLines(g2);
 		
 		// draw player
@@ -149,7 +149,11 @@ public class Board extends JPanel implements ActionListener {
 		// draw score box
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
-
+		
+		System.out.println(field.getGoalright().getBounds().getMaxX());
+		System.out.println(player.getBounds().getMaxX());
+		System.out.println(player.touchRectLeft(field));
+		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -162,7 +166,7 @@ public class Board extends JPanel implements ActionListener {
 	}
 	
 	// listen to key events and update player location
-	private class TAdapter extends KeyAdapter {
+	private class KeyEvents extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 
 			int key = e.getKeyCode();
@@ -217,6 +221,10 @@ public class Board extends JPanel implements ActionListener {
 			
 			if (key == KeyEvent.VK_ENTER) {
 				ball.centerBall(field);
+			}
+			
+			if (key == KeyEvent.VK_SPACE) {
+				ball.toggleSticky(player);
 			}
 			
 			if (key == KeyEvent.VK_ESCAPE) {

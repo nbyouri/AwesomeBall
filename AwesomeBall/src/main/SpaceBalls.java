@@ -16,6 +16,8 @@ import javax.swing.JFrame;
  * more constants
  * javadoc
  * block comments
+ * MVC
+ * 
  * 
  * FUNCTIONALITY:
  * acceleration

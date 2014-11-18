@@ -3,13 +3,16 @@ package geo;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class Ball extends Shape {
 	Ellipse2D circle;
+	Boolean sticky;
 
 	public Ball(double x, double y, double width, double height) {
+		// ball not sticky by default
+		sticky = false;
+
 		// ball initialization, a normal ball is 22cm in diameter
 		super.setRect(x - (width / 2), y, width, height);
 		circle = new Ellipse2D.Double(0, 0, 0, 0);
@@ -35,18 +38,62 @@ public class Ball extends Shape {
 				this.intersectsLine(f.getSide(Field.GOAL_LEFT_UP))    ||
 				this.intersectsLine(f.getSide(Field.GOAL_LEFT_DOWN)));
 	}
+	
+	// move ball in field
+	public void moveBall(Shape f, Player p) {
+		
+		this.setLocation(this.getX() + this.getDx(),
+				this.getY() + this.getDy());
+		
+	}
+
+	public Boolean getSticky() {
+		return this.sticky;
+	}
+
+	public void setSticky(Boolean s) {
+		this.sticky = s;
+	}
+
+	public void toggleSticky(Player p) {
+		// if we're near the ball and not sticky yet
+		// OR 
+		// if we're sticky and too far
+		if ((!sticky && this.near(p)) || sticky) {
+			sticky = !sticky;
+		}
+	}
+
+	public Boolean near(Shape s) {
+		// top or down side of the ball
+		// XXX replace with distance?
+		return (this.getY()    - 5 <= s.getMaxY() &&
+				this.getMaxY() + 5 >= s.getY()    &&
+				this.getX()    - 5 <= s.getMaxX() &&
+				this.getMaxX() + 5 >= s.getX());
+	}
 
 	public void move(Player p, Field f) {
 
 		this.setDx(0);
 		this.setDy(0);
 
+		// if the ball is in sticky mode
+		// just follow the player
+		if (sticky) {
+			this.setDx(p.getDx());
+			this.setDy(p.getDy());
+		}
+
 		// if player hits the ball, move it along with the player
 		// if the ball touches the field sides, the ball stops.
 		if (this.intersectSide(p, Player.Side.UP.getId())) {
 			if (this.insideRect(f)) {
-				this.setDy(5);
+				this.setDy(5); 
+			} else {
+				this.setDy(-5);
 			}
+		
 		}
 
 		// left -> right
@@ -56,26 +103,30 @@ public class Ball extends Shape {
 			} else {
 				this.setDx(5);
 			}
+
 		}
 
+		// bottom -> top
 		if (this.intersectSide(p, Player.Side.DOWN.getId())) {
-			if (this.insideRect(f)) {
+			if (this.insideRect(f)) { 
 				this.setDy(-5);
+			} else {
+				this.setDy(5);
 			}
 		}
 
 		// right -> left
 		if (this.intersectSide(p, Player.Side.RIGHT.getId())) {
-			if (this.touchBorders(f)) {
-				this.setDx(5);
+			if (this.touchBorders(f)) { 
+				this.setDx(5); 
 			} else {
 				this.setDx(-5);
 			}
+
+
 		}
 
-		this.setLocation(this.getX() + this.getDx(),
-				this.getY() + this.getDy());
-
+		this.moveBall(f, p);
 		this.goal(p, f);
 
 	}
@@ -83,6 +134,7 @@ public class Ball extends Shape {
 	public void goal(Player p, Field f) {
 		if  (this.getSide(Shape.Side.LEFT.getId()).intersectsLine(f.getSide(Field.GOAL_RIGHT)) ||
 				this.getSide(Shape.Side.RIGHT.getId()).intersectsLine(f.getSide(Field.GOAL_LEFT))) {
+			this.setSticky(false);
 			p.setScore(p.getScore() + 1);
 			this.centerBall(f);
 		}
@@ -96,11 +148,8 @@ public class Ball extends Shape {
 	public void draw(Graphics2D g2) {
 		this.circle.setFrame(this.getBounds2D());
 		g2.setColor(Color.yellow);
+		g2.draw(this);
 		g2.draw(this.circle);
 		g2.fill(this.circle);
 	}
-
-	public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
-	}
-
 }

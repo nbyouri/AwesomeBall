@@ -1,6 +1,5 @@
 package geo;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -149,7 +148,7 @@ public abstract class Shape extends Rectangle.Double {
 	// side of the Field minus the border
 	public Boolean touchRectBottom(Shape r) {
 		return (this.getY() + this.getHeight() -
-				r.getY() + 2 > r.getHeight());
+				r.getY() - 2 > r.getHeight());
 	}
 
 	public Boolean approachesBottomSide(Shape r) {
@@ -239,7 +238,4 @@ public abstract class Shape extends Rectangle.Double {
 	public Line2D getSide(int i) {
 		return sides.get(i);
 	}
-	
-	public abstract void draw(Graphics2D g2);
-	public abstract void drawSides(Graphics2D g2, ArrayList<Integer> ar);
 }
