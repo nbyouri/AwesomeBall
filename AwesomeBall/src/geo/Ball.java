@@ -85,22 +85,6 @@ public class Ball extends Shape {
 			sticky = !sticky;
 		}
 	}
-	
-	/*
-	 * 
-	 * Is the ball near a player?
-	 * 
-	 * 5 pixels around the ball means near.
-	 * 
-	 */
-	public Boolean near(Shape s) {
-		// top or down side of the ball
-		// XXX replace with distance?
-		return (this.getY()    - 5 <= s.getMaxY() &&
-				this.getMaxY() + 5 >= s.getY()    &&
-				this.getX()    - 5 <= s.getMaxX() &&
-				this.getMaxX() + 5 >= s.getX());
-	}
 
 	/*
 	 * 
@@ -127,40 +111,40 @@ public class Ball extends Shape {
 
 		// if player hits the ball, move it along with the player
 		// if the ball touches the field sides, the ball stops.
-		if (this.intersectSide(p, Player.Side.UP.getId())) {
+		if (p.near(this, Player.Side.UP.getId())) {
 			if (this.insideRect(f)) {
-				this.setDy(5); 
+				this.setDy(Player.SPEED_ONE); 
 			} else {
-				this.setDy(-5);
+				this.setDy(-Player.SPEED_ONE);
 			}
 		
 		}
 
 		// left -> right
-		if (this.intersectSide(p, Player.Side.LEFT.getId())) {
+		if (p.near(this, Player.Side.LEFT.getId())) {
 			if (this.touchBorders(f)) {
-				this.setDx(-5);
+				this.setDx(-Player.SPEED_ONE);
 			} else {
-				this.setDx(5);
+				this.setDx(Player.SPEED_ONE);
 			}
 
 		}
 
 		// bottom -> top
-		if (this.intersectSide(p, Player.Side.DOWN.getId())) {
+		if (p.near(this, Player.Side.DOWN.getId())) {
 			if (this.insideRect(f)) { 
-				this.setDy(-5);
+				this.setDy(-Player.SPEED_ONE);
 			} else {
-				this.setDy(5);
+				this.setDy(Player.SPEED_ONE);
 			}
 		}
 
 		// right -> left
-		if (this.intersectSide(p, Player.Side.RIGHT.getId())) {
+		if (p.near(this, Player.Side.RIGHT.getId())) {
 			if (this.touchBorders(f)) { 
-				this.setDx(5); 
+				this.setDx(Player.SPEED_ONE); 
 			} else {
-				this.setDx(-5);
+				this.setDx(-Player.SPEED_ONE);
 			}
 
 
@@ -207,7 +191,7 @@ public class Ball extends Shape {
 	public void draw(Graphics2D g2) {
 		this.circle.setFrame(this.getBounds2D());
 		g2.setColor(Color.yellow);
-		g2.draw(this);
+		//g2.draw(this);
 		g2.draw(this.circle);
 		g2.fill(this.circle);
 	}

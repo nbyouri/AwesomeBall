@@ -2,10 +2,11 @@ package geo;
 
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public abstract class Shape extends Rectangle.Double {
+public abstract class Shape extends Rectangle2D.Double {
 	/*
 	 * Speed
 	 */
@@ -98,15 +99,15 @@ public abstract class Shape extends Rectangle.Double {
 	 * 
 	 * 
 	 */
-	public Boolean intersectSide(Shape s, int i) {
+	/*public Boolean intersectSide(Shape s, int i) {
 		
 		this.setSides();
 		
 		if (i == Side.UP.getId())
-			return (this.getSide(i).intersectsLine(s.getSide(Side.DOWN.getId())));
+			return (this.getY() <= s.getMaxY());
 		
 		if (i == Side.DOWN.getId()) 
-			return (this.getSide(i).intersectsLine(s.getSide(Side.UP.getId())));
+			return (this.getMaxY() <= s.getY());
 		
 		if (i == Side.LEFT.getId()) 
 			return (this.getSide(i).intersectsLine(s.getSide(Side.RIGHT.getId())));
@@ -115,6 +116,77 @@ public abstract class Shape extends Rectangle.Double {
 			return (this.getSide(i).intersectsLine(s.getSide(Side.LEFT.getId())));
 
 		return false;
+	}*/
+	
+	/*
+	 * 
+	 * Near any side
+	 * 
+	 */
+	public Boolean near(Shape s) {
+		// top or down side of the ball
+		// XXX replace with distance?
+		return (this.getY()    - 5 <= s.getMaxY() &&
+				this.getMaxY() + 5 >= s.getY()    &&
+				this.getX()    - 5 <= s.getMaxX() &&
+				this.getMaxX() + 5 >= s.getX());
+	}
+	
+	/*
+	 * 
+	 * Near vertically
+	 * 
+	 */
+	public Boolean nearX(Shape s) {
+		return (this.getX()    - 5 <= s.getMaxX() &&
+				this.getMaxX() + 5 >= s.getX());
+	}
+	
+	/*
+	 * 
+	 * Near horizontally
+	 * 
+	 */
+	public Boolean nearY(Shape s) {
+		return (this.getY()    - 5 <= s.getMaxY() &&
+				this.getMaxY() + 5 >= s.getY());
+	}
+	
+	/*
+	 * 
+	 * Near a specific side
+	 * 
+	 */
+	public Boolean near(Shape s, int line) {
+		
+		// changes values to int to avoid 
+		// confusion after diagonal change
+		int x = (int)this.getX();
+		int mx = (int)this.getMaxX();
+		int y = (int)this.getY();
+		int my = (int)this.getMaxY();
+		
+		if (line == Side.UP.getId()) {
+		
+			return (this.nearX(s)) && (my + 1 >= s.getY());
+			
+		} else if (line == Side.DOWN.getId()) {
+			
+			return (this.nearX(s)) && (y + 1 >= s.getMaxY());
+		
+		} else if (line == Side.LEFT.getId()) {
+			
+			return (this.nearY(s)) && (mx + 1 >= s.getX());
+			
+		} else if (line == Side.RIGHT.getId()) {
+			
+			return (this.nearY(s)) && (x + 1 >= s.getMaxX());
+			
+		} else {
+			
+			return false;
+			
+		}
 	}
 	
 	/*

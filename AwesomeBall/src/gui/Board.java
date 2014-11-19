@@ -148,6 +148,9 @@ public class Board extends JPanel implements ActionListener {
 		// draw score box
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
+		
+		System.out.println(ball.getX() + " " + ball.getY());
+		System.out.println(player.getMaxX() + "  " + player.getY());
 
 		// clean
 		Toolkit.getDefaultToolkit().sync();

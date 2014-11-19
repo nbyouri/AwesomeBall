@@ -10,11 +10,11 @@ public class Player extends Field {
 	private int score;
 
 	// constants
-	public static final int SPEED_ONE = 5;
+	public static final int SPEED_ONE = 1;
 	// since Dx and Dy can be the same, 
 	// pythagore the two as a constant to
-	// save jvm cycles.
-	public static final double SPEED_ONE_DIAG = 3.16227766016838;
+	// save jvm cycles. sqrt(2);
+	public static final double SPEED_ONE_DIAG = 1.414213562373095;
 	public static final int SPEED_TWO = 2;
 	public static final int STOP = 0;
 	public static final int INIT_X = 400;
@@ -111,7 +111,7 @@ public class Player extends Field {
 				(int)this.getY(), 
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
-		g2.draw(this);
+		//g2.draw(this);
 	}
 
 	/*
