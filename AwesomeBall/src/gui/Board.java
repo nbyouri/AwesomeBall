@@ -127,7 +127,6 @@ public class Board extends JPanel implements ActionListener {
 	    // draw field and it's center line
 		field.draw(g2);
 		field.setSides();
-		//field.drawSides(g2, player.approaches(field));
 		field.drawCenterLines(g2);
 		
 		// draw player
@@ -149,7 +148,7 @@ public class Board extends JPanel implements ActionListener {
 		// draw score box
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
-		
+
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -171,21 +170,15 @@ public class Board extends JPanel implements ActionListener {
 				player.setDx(-Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_ON);
 				player.drawLeft();
-			}
-			
-			if (key == KeyEvent.VK_UP) {
+			} else if (key == KeyEvent.VK_UP) {
 				player.setDy(-Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_ON);
 				player.drawUp();
-			}
-
-			if (key == KeyEvent.VK_RIGHT) {
+			} else if (key == KeyEvent.VK_RIGHT) {
 				player.setDx(Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_ON);
 				player.drawRight();
-			}
-			
-			if (key == KeyEvent.VK_DOWN) {
+			} else if (key == KeyEvent.VK_DOWN) {
 				player.setDy(Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
 				player.drawDown();
@@ -198,32 +191,20 @@ public class Board extends JPanel implements ActionListener {
 			if (key == KeyEvent.VK_LEFT) {
 				player.setDx(Player.STOP);
 				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_OFF);
-			}
-			
-			if (key == KeyEvent.VK_UP) {
+			} else if (key == KeyEvent.VK_UP) {
 				player.setDy(Player.STOP);
 				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_OFF);
-			}
-			
-			if (key == KeyEvent.VK_RIGHT) {
+			} else if (key == KeyEvent.VK_RIGHT) {
 				player.setDx(Player.STOP);
 				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_OFF);
-			}	
-
-			if (key == KeyEvent.VK_DOWN) {
+			} else if (key == KeyEvent.VK_DOWN) {
 				player.setDy(Player.STOP);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
-			}
-			
-			if (key == KeyEvent.VK_ENTER) {
+			} else if (key == KeyEvent.VK_ENTER) {
 				ball.centerBall(field);
-			}
-			
-			if (key == KeyEvent.VK_SPACE) {
+			} else if (key == KeyEvent.VK_SPACE) {
 				ball.toggleSticky(player);
-			}
-			
-			if (key == KeyEvent.VK_ESCAPE) {
+			} else if (key == KeyEvent.VK_ESCAPE) {
 				exitProgram();
 			}
 		}

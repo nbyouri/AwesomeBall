@@ -7,20 +7,11 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public abstract class Shape extends Rectangle.Double {
 	/*
-	 *  coordonnees de droite
-	 * |--> x,y
-	 * |      
-	 * +–––––+--> rightx, righty
-	 * |     |
-	 * |     |
-	 * +–––––+--> rightdownx, rightdowny
-	 * |
-	 * |--> downx, downy
-	 * 
+	 * Speed
 	 */
-	public double dx;
-	public double dy;
-	public ArrayList<Line2D.Double> sides;
+	private double dx;
+	private double dy;
+	private ArrayList<Line2D.Double> sides;
 	
 	/*
 	 * 
@@ -146,61 +137,17 @@ public abstract class Shape extends Rectangle.Double {
 	public Boolean touchRectLeft(Shape r) {
 		return (this.getX() + 1 < r.getX());
 	}
-
-	public Boolean approachesLeftSide(Shape r) {
-		return (this.getX() - 2 < r.getX());
-	}
 	
 	public Boolean touchRectTop(Shape r) {
 		return (this.getY() - 1 < r.getY());
-	}
-	
-
-	public Boolean approachesTopSide(Shape r) {
-		return (this.getY() < r.getY());
 	}
 	
 	public Boolean touchRectRight(Shape r) {
 		return (this.getMaxX() + 1 > r.getMaxX());
 	}
 
-	public Boolean approachesRightSide(Shape r) {
-		return (this.getMaxX() + 2 > r.getMaxX());
-	}
-
 	public Boolean touchRectBottom(Shape r) {
 		return (this.getMaxY() + 1 > r.getMaxY());
-	}
-
-	public Boolean approachesBottomSide(Shape r) {
-		return (this.getMaxY() + 2 > r.getMaxY());
-	}
-
-	/*
-	 * 
-	 * Grow the arraylist of sides with the approaching side(s).
-	 * 
-	 */
-	public ArrayList<Integer> approaches(Shape r) {
-		ArrayList<Integer> ids = new ArrayList<Integer>();
-
-		if (this.approachesLeftSide(r)) {
-			ids.add(Field.Side.LEFT.getId());
-		} 
-
-		if (this.approachesTopSide(r)) {
-			ids.add(Field.Side.UP.getId());
-		} 
-
-		if (this.approachesRightSide(r)) {
-			ids.add(Field.Side.RIGHT.getId());
-		} 
-
-		if (this.approachesBottomSide(r)) {
-			ids.add(Field.Side.DOWN.getId());
-		}
-
-		return ids;
 	}
 
 	/*
@@ -229,7 +176,7 @@ public abstract class Shape extends Rectangle.Double {
 	 * 
 	 */
 	public void moveIn(Shape r) {
-		if (insideRect(r)){
+		if (this.insideRect(r)){
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}

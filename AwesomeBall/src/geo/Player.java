@@ -11,6 +11,10 @@ public class Player extends Field {
 
 	// constants
 	public static final int SPEED_ONE = 5;
+	// since Dx and Dy can be the same, 
+	// pythagore the two as a constant to
+	// save jvm cycles.
+	public static final double SPEED_ONE_DIAG = 3.16227766016838;
 	public static final int SPEED_TWO = 2;
 	public static final int STOP = 0;
 	public static final int INIT_X = 400;
@@ -81,6 +85,7 @@ public class Player extends Field {
 		this.y = INIT_Y;
 
 		this.setSides();
+
 	}
 
 	public Images getImg() {
@@ -167,7 +172,7 @@ public class Player extends Field {
 		}
 		img.setRotation(Player.Direction.DOWN.getId());
 	}
-	
+
 	/*
 	 * 
 	 * Check whether the player is in a goal
@@ -177,7 +182,7 @@ public class Player extends Field {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() &&
 				this.getY() - 1 >= f.getGoalright().getY()) ||
 				(this.getX() > f.getGoalleft().getX() &&
-				this.getY() - 1 >= f.getGoalleft().getY()));
+						this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/*
@@ -189,18 +194,18 @@ public class Player extends Field {
 		return (this.getX() >= f.getGoalright().getX() &&
 				this.getY() - 1 <= f.getGoalright().getY());
 	}
-	
+
 	public Boolean touchGoalRightBottom(Field f) {
 		return (this.getX() >= f.getGoalright().getX() &&
 				this.getMaxY() + 1 >= f.getGoalright().getMaxY());
 	}
-	
+
 	public Boolean touchRectRight(Field f) {
 		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP))   || 
 				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)) ||
 				this.getMaxX() + 1 >= f.getGoalright().getMaxX());
 	}
-	
+
 	/*
 	 * 
 	 * Left Goal Collisions
@@ -211,17 +216,44 @@ public class Player extends Field {
 				this.intersectsLine(f.getSide(Field.GOAL_LEFT_DOWN)) ||
 				this.getX() - 1 <= f.getGoalleft().getX());
 	}
-	
+
 	public Boolean touchGoalLeftBottom(Field f) {
 		return (this.getX() <= f.getGoalleft().getMaxX() &&
 				this.getMaxY() + 1 >= f.getGoalleft().getMaxY());
 	}
-	
+
 	public Boolean touchGoalLeftTop(Field f) {
 		return (this.getX() <= f.getGoalleft().getMaxX() &&
 				this.getY() - 1 <= f.getGoalleft().getY());
 	}
-	
+
+	/*
+	 * 
+	 * Set Dy and Dx based on the direction
+	 * when two keys are pressed at the same 
+	 * time so the movement is realistic.
+	 * 
+	 */
+	public void setMovement() {
+		if (this.getDx() == Player.SPEED_ONE) {
+			if (this.getDy() == Player.SPEED_ONE) {
+				this.setDx(Player.SPEED_ONE_DIAG);
+				this.setDy(Player.SPEED_ONE_DIAG);
+			} else if (this.getDy() == -Player.SPEED_ONE) {
+				this.setDx(Player.SPEED_ONE_DIAG);
+				this.setDy(-Player.SPEED_ONE_DIAG);
+			}
+		} else if (this.getDx() == -Player.SPEED_ONE) {
+			if (this.getDy() == Player.SPEED_ONE) {
+				this.setDx(-Player.SPEED_ONE_DIAG);
+				this.setDy(Player.SPEED_ONE_DIAG);
+			} else if (this.getDy() == -Player.SPEED_ONE) {
+				this.setDx(-Player.SPEED_ONE_DIAG);
+				this.setDy(-Player.SPEED_ONE_DIAG);
+			}
+		}
+	}
+
 	/*
 	 * 
 	 * 
@@ -230,13 +262,11 @@ public class Player extends Field {
 	 * 
 	 */
 	public void moveIn(Field f) {
-		
-		// pythagore if Dx == Dy
-		// if we move diagonally
-		//double speed = Math.hypot(this.getDx(), this.getDy());
-		
+		// update speed
+		this.setMovement();
+
 		// actually move if in the field or in a goal
-		if (insideRect(f) || this.insideGoals(f)){
+		if (this.insideRect(f) || this.insideGoals(f)){
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}
@@ -247,9 +277,9 @@ public class Player extends Field {
 		}
 
 		if (this.touchRectTop(f)      ||
-			this.touchGoalRightTop(f) ||
-			this.touchGoalLeftTop(f)) {
-				this.setLocation(this.getX(), this.getY() - this.getDy());
+				this.touchGoalRightTop(f) ||
+				this.touchGoalLeftTop(f)) {
+			this.setLocation(this.getX(), this.getY() - this.getDy());
 		}
 
 		if (this.touchRectRight(f)) {
@@ -257,9 +287,9 @@ public class Player extends Field {
 		}
 
 		if (this.touchRectBottom(f)      ||
-			this.touchGoalRightBottom(f) ||
-			this.touchGoalLeftBottom(f)) {
-				this.setLocation(this.getX(), this.getY() - this.getDy());
+				this.touchGoalRightBottom(f) ||
+				this.touchGoalLeftBottom(f)) {
+			this.setLocation(this.getX(), this.getY() - this.getDy());
 		}
 
 	}

@@ -57,19 +57,19 @@ public class Field extends Shape {
 
 		// left goal lines
 		// goal line 
-		this.sides.add(new Line2D.Double(x, this.getY() + (height / 3), x, this.getY() + 2 * (height / 3)));
+		this.getSides().add(new Line2D.Double(x, this.getY() + (height / 3), x, this.getY() + 2 * (height / 3)));
 		// line above left goal
-		this.sides.add(new Line2D.Double(x, this.getY(), x, this.getY() + (height / 3)));
+		this.getSides().add(new Line2D.Double(x, this.getY(), x, this.getY() + (height / 3)));
 		// line under left goal
-		this.sides.add(new Line2D.Double(x, this.getY() + 2 * (height / 3), x, this.getMaxY()));
+		this.getSides().add(new Line2D.Double(x, this.getY() + 2 * (height / 3), x, this.getMaxY()));
 		
 		
 		// right goal line
-		this.sides.add(new Line2D.Double(this.getMaxX(), this.getY() + (height / 3), this.getMaxX(), this.getY() + 2 * (height / 3)));
+		this.getSides().add(new Line2D.Double(this.getMaxX(), this.getY() + (height / 3), this.getMaxX(), this.getY() + 2 * (height / 3)));
 		// line above right goal 
-		this.sides.add(new Line2D.Double(this.getMaxX(), this.getY(), this.getMaxX(), this.getY() + (height / 3)));
+		this.getSides().add(new Line2D.Double(this.getMaxX(), this.getY(), this.getMaxX(), this.getY() + (height / 3)));
 		// line under right goal
-		this.sides.add(new Line2D.Double(getMaxX(), this.getY() + 2 * (height / 3), this.getMaxX(), this.getMaxY()));
+		this.getSides().add(new Line2D.Double(getMaxX(), this.getY() + 2 * (height / 3), this.getMaxX(), this.getMaxY()));
 	}
 
 	public void setCenterCircle() {
