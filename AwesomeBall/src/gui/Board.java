@@ -64,6 +64,7 @@ public class Board extends JPanel implements ActionListener {
 		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
 				field_width, field_height);
 		field.setCenterCircle();
+
 		
 		// setup player
 		player = new Player();
@@ -149,9 +150,6 @@ public class Board extends JPanel implements ActionListener {
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
 		
-		System.out.println(ball.getX() + " " + ball.getY());
-		System.out.println(player.getMaxX() + "  " + player.getY());
-
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();

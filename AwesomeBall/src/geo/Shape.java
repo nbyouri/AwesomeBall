@@ -1,6 +1,5 @@
 package geo;
 
-import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -23,10 +22,12 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * 
 	 */
 	public enum Side { 
-		LEFT (0, "left"), 
-		UP   (1, "up"), 
-		RIGHT(2, "right"), 
-		DOWN (3, "down");
+		LEFT     (0, "left"), 
+		UP       (1, "up"), 
+		RIGHT    (2, "right"), 
+		DOWN     (3, "down"),
+		CENTER_V (4, "center_vertical"),
+		CENTER_H (5, "center_horizontal");
 		
 		private final int id;
 		private final String name;
@@ -45,31 +46,13 @@ public abstract class Shape extends Rectangle2D.Double {
 		}
 	};
 	
-	/*
-	 * CENTER_V is the line in the vertical 
-	 * center of the shape.
-	 * 
-	 */
-	public static final int CENTER_V = 4;
-	/*
-	 * CENTER_H is the line in the horizontal 
-	 * center of the shape.
-	 * 
-	 */
-	public static final int CENTER_H = 5;
-	
 	public Shape() {
 		// initial values
 		super(0, 0, 0, 0);
 		
 		sides = new ArrayList<Line2D.Double>();
 
-		// 4 sides of field Shape
-		for (int i = 0; i < 4; i++)
-			sides.add(new Line2D.Double(0,0,0,0));
-
-		// center lines
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 6; i++)
 			sides.add(new Line2D.Double(0,0,0,0));
 	}
 
@@ -91,32 +74,14 @@ public abstract class Shape extends Rectangle2D.Double {
 	public void setDy(double dy) {
 		this.dy = dy;
 	}
-
-	/*
-	 * 
-	 * Check collision with an other shape,
-	 * so down side with top side, etc..
-	 * 
-	 * 
-	 */
-	/*public Boolean intersectSide(Shape s, int i) {
-		
-		this.setSides();
-		
-		if (i == Side.UP.getId())
-			return (this.getY() <= s.getMaxY());
-		
-		if (i == Side.DOWN.getId()) 
-			return (this.getMaxY() <= s.getY());
-		
-		if (i == Side.LEFT.getId()) 
-			return (this.getSide(i).intersectsLine(s.getSide(Side.RIGHT.getId())));
-		
-		if (i == Side.RIGHT.getId())
-			return (this.getSide(i).intersectsLine(s.getSide(Side.LEFT.getId())));
-
-		return false;
-	}*/
+	
+	public ArrayList<Line2D.Double> getSides() {
+		return sides;
+	}
+	
+	public Line2D getSide(int i) {
+		return sides.get(i);
+	}
 	
 	/*
 	 * 
@@ -138,8 +103,8 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * 
 	 */
 	public Boolean nearX(Shape s) {
-		return (this.getX()    - 5 <= s.getMaxX() &&
-				this.getMaxX() + 5 >= s.getX());
+		return (this.getX()    <= s.getMaxX() &&
+				this.getMaxX() >= s.getX());
 	}
 	
 	/*
@@ -148,8 +113,8 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * 
 	 */
 	public Boolean nearY(Shape s) {
-		return (this.getY()    - 5 <= s.getMaxY() &&
-				this.getMaxY() + 5 >= s.getY());
+		return (this.getY()    <= s.getMaxY() &&
+				this.getMaxY() >= s.getY());
 	}
 	
 	/*
@@ -166,21 +131,26 @@ public abstract class Shape extends Rectangle2D.Double {
 		int y = (int)this.getY();
 		int my = (int)this.getMaxY();
 		
+		/*
+		 * 
+		 * Leave two pixels of space where a hit happens
+		 * 
+		 */
 		if (line == Side.UP.getId()) {
 		
-			return (this.nearX(s)) && (my + 1 >= s.getY());
+			return ((my + 1 == s.getY()) && (my - 1 <= s.getY()) && this.nearX(s));
 			
-		} else if (line == Side.DOWN.getId()) {
+		}  if (line == Side.DOWN.getId()) {
 			
-			return (this.nearX(s)) && (y + 1 >= s.getMaxY());
-		
-		} else if (line == Side.LEFT.getId()) {
+			return ((y - 1 == s.getMaxY()) && (y + 1 >= s.getMaxY()) && this.nearX(s));
+
+		}  if (line == Side.LEFT.getId()) {
 			
-			return (this.nearY(s)) && (mx + 1 >= s.getX());
+			return ((mx - 1 == s.getX()) && (mx + 1 >= s.getX()) && this.nearY(s));
 			
-		} else if (line == Side.RIGHT.getId()) {
+		}  if (line == Side.RIGHT.getId()) {
 			
-			return (this.nearY(s)) && (x + 1 >= s.getMaxX());
+			return ((x - 1 == s.getMaxX()) && (x + 1 >= s.getMaxX()) && this.nearY(s));
 			
 		} else {
 			
@@ -253,17 +223,21 @@ public abstract class Shape extends Rectangle2D.Double {
 					this.getY() + this.getDy());
 		}
 
-		if (this.touchRectLeft(r))
+		if (this.touchRectLeft(r)) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
+		}
 
-		if (this.touchRectTop(r))
+		if (this.touchRectTop(r)) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
+		}
 
-		if (this.touchRectRight(r))
+		if (this.touchRectRight(r)) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
+		}
 
-		if (this.touchRectBottom(r))
+		if (this.touchRectBottom(r)) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
+		}
 
 	}
 	
@@ -286,18 +260,10 @@ public abstract class Shape extends Rectangle2D.Double {
 		this.sides.get(Side.DOWN.getId()).setLine(this.getX(),
 				this.getMaxY(), this.getMaxX(), this.getMaxY());
 		
-		this.sides.get(CENTER_V).setLine(this.getCenterX(), this.getY(),
+		this.sides.get(Side.CENTER_V.getId()).setLine(this.getCenterX(), this.getY(),
 				this.getCenterX(), this.getY() + this.getHeight());
 		
-		this.sides.get(CENTER_H).setLine(this.getX(),  this.getCenterY(),
+		this.sides.get(Side.CENTER_H.getId()).setLine(this.getX(),  this.getCenterY(),
 				this.getWidth() + this.getX(), this.getCenterY()); 
-	}
-	
-	public ArrayList<Line2D.Double> getSides() {
-		return sides;
-	}
-	
-	public Line2D getSide(int i) {
-		return sides.get(i);
 	}
 }

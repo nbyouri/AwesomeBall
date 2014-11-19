@@ -24,6 +24,7 @@ import javax.swing.JFrame;
  * sounds
  * shoot bullets
  * threading
+ * other jpanel for ball / player bounds
  * 
  * QUICKFIX:
  * update ball location on key release

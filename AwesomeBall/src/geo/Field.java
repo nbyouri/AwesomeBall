@@ -82,7 +82,7 @@ public class Field extends Shape {
 
 	public void drawCenterLines(Graphics2D g2) {
 		g2.setColor(Color.magenta);
-		g2.draw(this.getSide(CENTER_V));
+		g2.draw(this.getSide(Side.CENTER_V.getId()));
 		//g2.draw(this.getSide(CENTER_H));
 		g2.draw(this.center);
 	}

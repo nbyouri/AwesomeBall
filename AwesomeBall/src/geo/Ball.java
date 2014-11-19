@@ -152,7 +152,6 @@ public class Ball extends Shape {
 
 		this.moveBall(f, p);
 		this.goal(p, f);
-
 	}
 
 	/*
@@ -191,7 +190,7 @@ public class Ball extends Shape {
 	public void draw(Graphics2D g2) {
 		this.circle.setFrame(this.getBounds2D());
 		g2.setColor(Color.yellow);
-		//g2.draw(this);
+		g2.draw(this);
 		g2.draw(this.circle);
 		g2.fill(this.circle);
 	}
