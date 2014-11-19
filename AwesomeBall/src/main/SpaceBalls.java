@@ -53,8 +53,11 @@ public class SpaceBalls extends JFrame {
 		// initialize a board which takes the whole screen
 		Board mainBoard = new Board(this.getSize());
 
+		// add the jpanel in the jframe
         add(mainBoard);
 
+        
+        // jframe settings
         this.setTitle("SpaceBalls");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,6 +66,7 @@ public class SpaceBalls extends JFrame {
     }    
 
     public static void main(String[] args) {
+    	// main loop
         EventQueue.invokeLater(new Runnable() {
         	// main application
             @Override

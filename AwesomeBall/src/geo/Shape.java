@@ -22,6 +22,14 @@ public abstract class Shape extends Rectangle.Double {
 	public double dy;
 	public ArrayList<Line2D.Double> sides;
 	
+	/*
+	 * 
+	 * 
+	 * Shape sides, defined by their
+	 * number and text identification.
+	 * 
+	 * 
+	 */
 	public enum Side { 
 		LEFT (0, "left"), 
 		UP   (1, "up"), 
@@ -45,7 +53,17 @@ public abstract class Shape extends Rectangle.Double {
 		}
 	};
 	
+	/*
+	 * CENTER_V is the line in the vertical 
+	 * center of the shape.
+	 * 
+	 */
 	public static final int CENTER_V = 4;
+	/*
+	 * CENTER_H is the line in the horizontal 
+	 * center of the shape.
+	 * 
+	 */
 	public static final int CENTER_H = 5;
 	
 	public Shape() {
@@ -82,7 +100,13 @@ public abstract class Shape extends Rectangle.Double {
 		this.dy = dy;
 	}
 
-	// check collision of two Shapes based on the sides.
+	/*
+	 * 
+	 * Check collision with an other shape,
+	 * so down side with top side, etc..
+	 * 
+	 * 
+	 */
 	public Boolean intersectSide(Shape s, int i) {
 		
 		this.setSides();
@@ -102,18 +126,23 @@ public abstract class Shape extends Rectangle.Double {
 		return false;
 	}
 	
-	// precise collision check of the shape relative to the field position
+	/*
+	 * 
+	 * If the shape isn't touching any side in the other shape.
+	 * 
+	 */
 	public Boolean insideRect(Shape r) {
-		if ((this.touchRectLeft(r)) || (this.touchRectRight(r)) ||
-				(this.touchRectTop(r)) || (this.touchRectBottom(r))) {
-			return false;
-		} else {
-			return true;
-		}
+		return (!((this.touchRectLeft(r)) ||
+				(this.touchRectRight(r))  ||
+				(this.touchRectTop(r))    ||
+				(this.touchRectBottom(r))));
 	}
 
-	// returns true if the shape touches the inner left
-	// side of the Field minus the border
+	/*
+	 * 
+	 * Does the shape touch or approach a shape's inner side?
+	 * 
+	 */
 	public Boolean touchRectLeft(Shape r) {
 		return (this.getX() + 1 < r.getX());
 	}
@@ -121,43 +150,37 @@ public abstract class Shape extends Rectangle.Double {
 	public Boolean approachesLeftSide(Shape r) {
 		return (this.getX() - 2 < r.getX());
 	}
-
-	// returns true if the shape touches the top 
-	// side of the Field minus the border
+	
 	public Boolean touchRectTop(Shape r) {
-		return (this.getY() + 2 < r.getY());
+		return (this.getY() - 1 < r.getY());
 	}
+	
 
 	public Boolean approachesTopSide(Shape r) {
-		return (this.getY() - 2 < r.getY());
+		return (this.getY() < r.getY());
 	}
-
-	// returns true if the shape touches the inner right 
-	// side of the Field minus the border
+	
 	public Boolean touchRectRight(Shape r) {
-		return (this.getX() + this.getWidth() - 
-				r.getX() > r.getWidth());
+		return (this.getMaxX() + 1 > r.getMaxX());
 	}
 
 	public Boolean approachesRightSide(Shape r) {
-		return (this.getX() + this.getWidth() -
-				r.getX() + 2 > r.getWidth());
+		return (this.getMaxX() + 2 > r.getMaxX());
 	}
 
-	// returns true if the shape touches the inner bottom 
-	// side of the Field minus the border
 	public Boolean touchRectBottom(Shape r) {
-		return (this.getY() + this.getHeight() -
-				r.getY() - 2 > r.getHeight());
+		return (this.getMaxY() + 1 > r.getMaxY());
 	}
 
 	public Boolean approachesBottomSide(Shape r) {
-		return (this.getY() + this.getHeight() -
-				r.getY() + 2 > r.getHeight());
+		return (this.getMaxY() + 2 > r.getMaxY());
 	}
 
-	// detect whether shape is in one of the field Shape's 4 corners
-	// if so, return arraylist of sides indexes
+	/*
+	 * 
+	 * Grow the arraylist of sides with the approaching side(s).
+	 * 
+	 */
 	public ArrayList<Integer> approaches(Shape r) {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 
@@ -180,17 +203,31 @@ public abstract class Shape extends Rectangle.Double {
 		return ids;
 	}
 
+	/*
+	 * 
+	 * Update location and sides location.
+	 * 
+	 */
 	public void setLocation(double x, double y) {
 		this.setRect(x, y, this.getWidth(), this.getHeight());
 		this.setSides();
 	}
 	
-	
+	/*
+	 * 
+	 * Set the shape position and size.
+	 * 
+	 * 
+	 */
 	public void setSize(double x, double y, double width, double height) {
 		super.setRect(x, y, width, height);
 	}
 	
-	// move shape in Shape
+	/*
+	 * 
+	 * Move shape in another shape.
+	 * 
+	 */
 	public void moveIn(Shape r) {
 		if (insideRect(r)){
 			this.setLocation(this.getX() + this.getDx(),
@@ -210,7 +247,13 @@ public abstract class Shape extends Rectangle.Double {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
 
 	}
-		
+	
+	/*
+	 * 
+	 * Set sides from shape location and size.
+	 * 
+	 * 
+	 */
 	public void setSides() {
 		this.sides.get(Side.LEFT.getId()).setLine(this.getX(),  
 				this.getY(), this.getX(), this.getMaxY());

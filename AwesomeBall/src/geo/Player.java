@@ -17,6 +17,13 @@ public class Player extends Field {
 	public static final int INIT_Y = 200;
 	public static final int INIT_ROT = 0;
 
+	/*
+	 * 
+	 * Structure containing the player's
+	 * direction defined by the rotation
+	 * and the english name of the rotation.
+	 * 
+	 */
 	public enum Direction { 
 		LEFT (180, "left"), 
 		UP   (-90, "up"), 
@@ -39,6 +46,11 @@ public class Player extends Field {
 			return this.name;
 		}
 
+		/*
+		 * 
+		 * Get the name from rotation
+		 * 
+		 */
 		public static String getName(int rotation) {
 			for (Direction d : Direction.values()) {
 				if (d.getId() == rotation) {
@@ -97,7 +109,13 @@ public class Player extends Field {
 		g2.draw(this);
 	}
 
-	// different cases of rotating and flipping
+	/*
+	 * 
+	 * Draw image left, right, up, down
+	 * and rotate and or flip the image
+	 * depending on the previous direction.
+	 * 
+	 */
 	public void drawLeft() {
 		int rotation = img.getRotation();
 		if (rotation == Player.Direction.RIGHT.getId()) {
@@ -204,7 +222,6 @@ public class Player extends Field {
 				this.getY() - 1 <= f.getGoalleft().getY());
 	}
 	
-	
 	/*
 	 * 
 	 * 
@@ -213,22 +230,37 @@ public class Player extends Field {
 	 * 
 	 */
 	public void moveIn(Field f) {
+		
+		// pythagore if Dx == Dy
+		// if we move diagonally
+		//double speed = Math.hypot(this.getDx(), this.getDy());
+		
+		// actually move if in the field or in a goal
 		if (insideRect(f) || this.insideGoals(f)){
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}
 
-		if (this.touchRectLeft(f))
+		// otherwise, back up a little
+		if (this.touchRectLeft(f)) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
+		}
 
-		if (this.touchRectTop(f) || this.touchGoalRightTop(f) || this.touchGoalLeftTop(f))
-			this.setLocation(this.getX(), this.getY() - this.getDy());
+		if (this.touchRectTop(f)      ||
+			this.touchGoalRightTop(f) ||
+			this.touchGoalLeftTop(f)) {
+				this.setLocation(this.getX(), this.getY() - this.getDy());
+		}
 
-		if (this.touchRectRight(f))
+		if (this.touchRectRight(f)) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
+		}
 
-		if (this.touchRectBottom(f) || this.touchGoalRightBottom(f) || this.touchGoalLeftBottom(f))
-			this.setLocation(this.getX(), this.getY() - this.getDy());
+		if (this.touchRectBottom(f)      ||
+			this.touchGoalRightBottom(f) ||
+			this.touchGoalLeftBottom(f)) {
+				this.setLocation(this.getX(), this.getY() - this.getDy());
+		}
 
 	}
 }

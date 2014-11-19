@@ -24,6 +24,11 @@ public class Ball extends Shape {
 		circle = new Ellipse2D.Double(0, 0, 0, 0);
 	}
 
+	/*
+	 * 
+	 * Does the ball's right/left side touch the goal's line?
+	 * 
+	 */
 	public Boolean touchRightGoal(Shape f) {
 		return (this.getSide(Shape.Side.RIGHT.getId()).intersectsLine(f.getSide(Field.GOAL_RIGHT)));
 	}
@@ -32,6 +37,11 @@ public class Ball extends Shape {
 		return (this.getSide(Shape.Side.LEFT.getId()).intersectsLine(f.getSide(Field.GOAL_LEFT)));
 	}
 
+	/*
+	 * 
+	 * Does the ball touch borders above and unders both goals?
+	 * 
+	 */
 	public Boolean touchBorders(Shape f) {
 		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP))   || 
 				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)) ||
@@ -39,7 +49,14 @@ public class Ball extends Shape {
 				this.intersectsLine(f.getSide(Field.GOAL_LEFT_DOWN)));
 	}
 	
-	// move ball in field
+	/*
+	 * 
+	 * Actually update the ball location.
+	 * 
+	 * Placeholder method waiting for 
+	 * multiplayer implementation.
+	 * 
+	 */
 	public void moveBall(Shape f, Player p) {
 		
 		this.setLocation(this.getX() + this.getDx(),
@@ -55,15 +72,27 @@ public class Ball extends Shape {
 		this.sticky = s;
 	}
 
+	/*
+	 * 
+	 *  Toggles the ball sticky state: 
+	 *  if we're near the ball and not sticky yet
+	 *	OR 
+	 *	if we're sticky and too far
+	 * 
+	 */
 	public void toggleSticky(Player p) {
-		// if we're near the ball and not sticky yet
-		// OR 
-		// if we're sticky and too far
 		if ((!sticky && this.near(p)) || sticky) {
 			sticky = !sticky;
 		}
 	}
-
+	
+	/*
+	 * 
+	 * Is the ball near a player?
+	 * 
+	 * 5 pixels around the ball means near.
+	 * 
+	 */
 	public Boolean near(Shape s) {
 		// top or down side of the ball
 		// XXX replace with distance?
@@ -73,6 +102,17 @@ public class Ball extends Shape {
 				this.getMaxX() + 5 >= s.getX());
 	}
 
+	/*
+	 * 
+	 * Move the ball from a player in a field.
+	 * 
+	 * First, the speed is set to 0 then, if the 
+	 * ball is sticky, simply follow the player around.
+	 * 
+	 * Then, depending on the side and if the ball is in 
+	 * the field, set the speed adequately.
+	 * 
+	 */
 	public void move(Player p, Field f) {
 
 		this.setDx(0);
@@ -131,6 +171,14 @@ public class Ball extends Shape {
 
 	}
 
+	/*
+	 * 
+	 * Score of player is incremented if the ball goes in 
+	 * either goal. 
+	 * 
+	 * XXX: Implement side detection for multiplayer.
+	 * 
+	 */
 	public void goal(Player p, Field f) {
 		if  (this.getSide(Shape.Side.LEFT.getId()).intersectsLine(f.getSide(Field.GOAL_RIGHT)) ||
 				this.getSide(Shape.Side.RIGHT.getId()).intersectsLine(f.getSide(Field.GOAL_LEFT))) {
@@ -140,11 +188,22 @@ public class Ball extends Shape {
 		}
 	}
 
+	/*
+	 * 
+	 * Put the ball in the center of the field.
+	 * 
+	 */
 	public void centerBall(Field f) {
 		this.setLocation(f.getCenterX() - this.getWidth() / 2, 
 				f.getY() + (f.getHeight() / 2) - 10);
 	}
 
+	/*
+	 * 
+	 * Draw the ball from the rectangle 
+	 * around it.
+	 * 
+	 */
 	public void draw(Graphics2D g2) {
 		this.circle.setFrame(this.getBounds2D());
 		g2.setColor(Color.yellow);
