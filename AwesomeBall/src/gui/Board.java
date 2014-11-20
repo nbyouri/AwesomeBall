@@ -93,7 +93,6 @@ public class Board extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
 		setLayout(null);
-		setDoubleBuffered(true);
 		
 		// quit button, add here and not in paint() 
 		// or it won't work
@@ -105,7 +104,7 @@ public class Board extends JPanel implements ActionListener {
 						(BOARD_Y_POS + field.getHeight())) / 4),
 				(int)field.getWidth(), TOP_MENUS_HEIGHT);
 		add(exit);
-		
+
 		// timer
 		timer = new Timer(FPS, this);
 		timer.start();
@@ -150,11 +149,20 @@ public class Board extends JPanel implements ActionListener {
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
 		
+		System.out.println(Math.abs(player.getDx()) + " " + Math.abs(player.getDy()));
+		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
 
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		player.moveIn(field);

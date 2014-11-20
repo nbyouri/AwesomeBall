@@ -1,10 +1,12 @@
 package main;
 
 import gui.Board;
+import gui.PositionBox;
 
 import java.awt.EventQueue;
 //import java.awt.GraphicsDevice;
 //import java.awt.GraphicsEnvironment;
+
 
 
 
@@ -39,7 +41,7 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class SpaceBalls extends JFrame {
 
-	
+	Board mainBoard;
 	public SpaceBalls() {
 
         // full screen code
@@ -52,13 +54,13 @@ public class SpaceBalls extends JFrame {
 		this.setSize(850, 600);
 		
 		// initialize a board which takes the whole screen
-		Board mainBoard = new Board(this.getSize());
+		mainBoard = new Board(this.getSize());
 
 		// add the jpanel in the jframe
         add(mainBoard);
-
-        
+    
         // jframe settings
+        this.setAlwaysOnTop(true);
         this.setTitle("SpaceBalls");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,7 +75,9 @@ public class SpaceBalls extends JFrame {
             @Override
             public void run() {
                 SpaceBalls ex = new SpaceBalls();
+                //PositionBox box = new PositionBox((JFrame)ex, ex.mainBoard.getPlayer());
                 ex.setVisible(true);
+                //box.setVisible(true);
             }
         });
     }

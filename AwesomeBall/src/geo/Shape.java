@@ -138,19 +138,19 @@ public abstract class Shape extends Rectangle2D.Double {
 		 */
 		if (line == Side.UP.getId()) {
 		
-			return ((my + 1 == s.getY()) && (my - 1 <= s.getY()) && this.nearX(s));
+			return ((my + 1 >= s.getY()) && (my - 1 <= s.getY()) && this.nearX(s));
 			
 		}  if (line == Side.DOWN.getId()) {
 			
-			return ((y - 1 == s.getMaxY()) && (y + 1 >= s.getMaxY()) && this.nearX(s));
+			return ((y - 1 <= s.getMaxY()) && (y + 1 >= s.getMaxY()) && this.nearX(s));
 
 		}  if (line == Side.LEFT.getId()) {
 			
-			return ((mx - 1 == s.getX()) && (mx + 1 >= s.getX()) && this.nearY(s));
+			return ((mx - 1 <= s.getX()) && (mx + 1 >= s.getX()) && this.nearY(s));
 			
 		}  if (line == Side.RIGHT.getId()) {
 			
-			return ((x - 1 == s.getMaxX()) && (x + 1 >= s.getMaxX()) && this.nearY(s));
+			return ((x - 1 <= s.getMaxX()) && (x + 1 >= s.getMaxX()) && this.nearY(s));
 			
 		} else {
 			
