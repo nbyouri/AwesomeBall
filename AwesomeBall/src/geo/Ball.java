@@ -7,8 +7,8 @@ import java.awt.geom.Ellipse2D;
 @SuppressWarnings("serial")
 public class Ball extends Shape {
 	Ellipse2D circle;
-	Boolean sticky;
-	Boolean free;
+	boolean sticky;
+	boolean free;
 
 	public Ball(double x, double y, double width, double height) {
 		// ball not sticky by default
@@ -31,11 +31,11 @@ public class Ball extends Shape {
 	 * Does the ball's right/left side touch the goal's line?
 	 * 
 	 */
-	public Boolean touchRightGoal(Field f) {
+	public boolean touchRightGoal(Field f) {
 		return (this.insideRect(f.getGoalright()));
 	}
 
-	public Boolean touchLeftGoal(Field f) {
+	public boolean touchLeftGoal(Field f) {
 		return (this.insideRect(f.getGoalleft()));
 	}
 
@@ -44,7 +44,7 @@ public class Ball extends Shape {
 	 * Does the ball touch borders above and unders both goals?
 	 * 
 	 */
-	public Boolean touchBorders(Shape f) {
+	public boolean touchBorders(Shape f) {
 		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP))   || 
 				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)) ||
 				this.intersectsLine(f.getSide(Field.GOAL_LEFT_UP))    ||
@@ -68,11 +68,11 @@ public class Ball extends Shape {
 		
 	}
 
-	public Boolean getSticky() {
+	public boolean getSticky() {
 		return this.sticky;
 	}
 
-	public void setSticky(Boolean s) {
+	public void setSticky(boolean s) {
 		this.sticky = s;
 	}
 
@@ -90,11 +90,11 @@ public class Ball extends Shape {
 		}
 	}
 	
-	public Boolean getFree() {
+	public boolean getFree() {
 		return this.free;
 	}
 	
-	public void setFree(Boolean tf) {
+	public void setFree(boolean tf) {
 		this.free = tf;
 	}
 	

@@ -88,7 +88,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Near any side
 	 * 
 	 */
-	public Boolean near(Rectangle2D s) {
+	public boolean near(Rectangle2D s) {
 		// top or down side of the ball
 		// XXX replace with distance?
 		return (this.getY()    - 5 <= s.getMaxY() &&
@@ -102,7 +102,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Near vertically
 	 * 
 	 */
-	public Boolean nearX(Rectangle2D s) {
+	public boolean nearX(Rectangle2D s) {
 		return (this.getX()    <= s.getMaxX() &&
 				this.getMaxX() >= s.getX());
 	}
@@ -112,7 +112,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Near horizontally
 	 * 
 	 */
-	public Boolean nearY(Rectangle2D s) {
+	public boolean nearY(Rectangle2D s) {
 		return (this.getY()    <= s.getMaxY() &&
 				this.getMaxY() >= s.getY());
 	}
@@ -122,7 +122,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Near a specific side
 	 * 
 	 */
-	public Boolean near(Rectangle2D s, int line) {
+	public boolean near(Rectangle2D s, int line) {
 		
 		// changes values to int to avoid 
 		// confusion after diagonal change
@@ -168,7 +168,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * If the shape isn't touching any side in the other shape.
 	 * 
 	 */
-	public Boolean insideRect(Rectangle2D r) {
+	public boolean insideRect(Rectangle2D r) {
 		return (!((this.touchRectLeft(r)) ||
 				(this.touchRectRight(r))  ||
 				(this.touchRectTop(r))    ||
@@ -180,19 +180,19 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Does the shape touch or approach a shape's inner side?
 	 * 
 	 */
-	public Boolean touchRectLeft(Rectangle2D r) {
+	public boolean touchRectLeft(Rectangle2D r) {
 		return (this.getX() + 1 < r.getX());
 	}
 	
-	public Boolean touchRectTop(Rectangle2D r) {
+	public boolean touchRectTop(Rectangle2D r) {
 		return (this.getY() - 1 < r.getY());
 	}
 	
-	public Boolean touchRectRight(Rectangle2D r) {
+	public boolean touchRectRight(Rectangle2D r) {
 		return (this.getMaxX() + 1 > r.getMaxX());
 	}
 
-	public Boolean touchRectBottom(Rectangle2D r) {
+	public boolean touchRectBottom(Rectangle2D r) {
 		return (this.getMaxY() + 1 > r.getMaxY());
 	}
 
