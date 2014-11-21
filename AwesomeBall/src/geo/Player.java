@@ -179,9 +179,9 @@ public class Player extends Field {
 	 */
 	public Boolean insideGoals(Field f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() &&
-				this.getY() - 1 >= f.getGoalright().getY()) ||
+				 this.getY() - 1 >= f.getGoalright().getY()) ||
 				(this.getX() > f.getGoalleft().getX() &&
-						this.getY() - 1 >= f.getGoalleft().getY()));
+				 this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/*
@@ -200,9 +200,11 @@ public class Player extends Field {
 	}
 
 	public Boolean touchRectRight(Field f) {
-		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP))   || 
-				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)) ||
-				this.getMaxX() + 1 >= f.getGoalright().getMaxX());
+	
+		return (f.getMaxX() - this.getMaxX() <= 1.5 && 
+				(this.getMaxY() < f.getGoalright().getY() ||
+						this.getY() > f.getGoalright().getMaxY()
+				) || this.getMaxX() + 1 >= f.getGoalright().getMaxX());
 	}
 
 	/*
@@ -211,14 +213,15 @@ public class Player extends Field {
 	 * 
 	 */
 	public Boolean touchRectLeft(Field f) {
-		return (this.intersectsLine(f.getSide(Field.GOAL_LEFT_UP))	 ||
-				this.intersectsLine(f.getSide(Field.GOAL_LEFT_DOWN)) ||
-				this.getX() - 1 <= f.getGoalleft().getX());
+		return (this.getX() - f.getX() <= 1.5 &&
+				(this.getMaxY() < f.getGoalright().getY() ||
+						this.getY() > f.getGoalright().getMaxY()
+				) || this.getX() <= f.getGoalleft().getX());
 	}
 
 	public Boolean touchGoalLeftBottom(Field f) {
 		return (this.getX() <= f.getGoalleft().getMaxX() &&
-				this.getMaxY() + 1 >= f.getGoalleft().getMaxY());
+				this.getMaxY() >= f.getGoalleft().getMaxY());
 	}
 
 	public Boolean touchGoalLeftTop(Field f) {
@@ -275,7 +278,7 @@ public class Player extends Field {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 		}
 
-		if (this.touchRectTop(f)      ||
+		if (this.touchRectTop(f) ||
 				this.touchGoalRightTop(f) ||
 				this.touchGoalLeftTop(f)) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
@@ -285,7 +288,7 @@ public class Player extends Field {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 		}
 
-		if (this.touchRectBottom(f)      ||
+		if (this.touchRectBottom(f) ||
 				this.touchGoalRightBottom(f) ||
 				this.touchGoalLeftBottom(f)) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());

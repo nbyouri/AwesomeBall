@@ -123,8 +123,8 @@ public class Ball extends Shape {
 			// move diagonally if necessary
 			this.setDx(oldspeedx > 0 ? 
 					Player.SPEED_TWO + 20: -Player.SPEED_ONE + 20);
-			this.setDy(oldspeedy > 0 ? 
-					Player.SPEED_TWO : -Player.SPEED_ONE + 20);
+			//this.setDy(oldspeedy > 0 ? 
+			//		Player.SPEED_TWO : -Player.SPEED_ONE + 20);
 			this.move(p, f);
 			
 			this.setDx(oldspeedx);
@@ -178,6 +178,7 @@ public class Ball extends Shape {
 				if (this.insideRect(f)) {
 					this.setDy(speed); 
 				} else {
+					p.setDy(Player.STOP);
 					this.setDy(-speed);
 				}
 			}
@@ -188,6 +189,7 @@ public class Ball extends Shape {
 				if (this.touchBorders(f)) {
 					this.setDx(-speed);
 				} else {
+					p.setDx(Player.STOP);
 					this.setDx(speed);
 				}
 
@@ -198,6 +200,7 @@ public class Ball extends Shape {
 				if (this.insideRect(f)) { 
 					this.setDy(-speed);
 				} else {
+					p.setDy(Player.STOP);
 					this.setDy(speed);
 				}
 			}
@@ -207,6 +210,7 @@ public class Ball extends Shape {
 				if (this.touchBorders(f)) { 
 					this.setDx(speed); 
 				} else {
+					p.setDy(Player.STOP);
 					this.setDx(-speed);
 				}
 			}

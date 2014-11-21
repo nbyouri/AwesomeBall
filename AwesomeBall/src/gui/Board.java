@@ -154,7 +154,7 @@ public class Board extends JPanel implements ActionListener {
 		// draw score box
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
-		
+
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
