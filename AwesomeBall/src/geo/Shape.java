@@ -139,7 +139,7 @@ public abstract class Shape extends Rectangle2D.Double {
 		if (line == Side.UP.getId()) {
 		
 			return ((my + 1 >= s.getY()) &&
-					(my - 1 <= s.getY()) && this.nearX(s));
+					(my - 1 <= s.getY()) && this.near(s));
 			
 		}  if (line == Side.DOWN.getId()) {
 			
@@ -169,10 +169,10 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * 
 	 */
 	public boolean insideRect(Rectangle2D r) {
-		return (!((this.touchRectLeft(r)) ||
-				(this.touchRectRight(r))  ||
-				(this.touchRectTop(r))    ||
-				(this.touchRectBottom(r))));
+		return (!((this.touchRectInLeft(r)) ||
+				(this.touchRectInRight(r))  ||
+				(this.touchRectInTop(r))    ||
+				(this.touchRectInBottom(r))));
 	}
 
 	/*
@@ -180,19 +180,19 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Does the shape touch or approach a shape's inner side?
 	 * 
 	 */
-	public boolean touchRectLeft(Rectangle2D r) {
+	public boolean touchRectInLeft(Rectangle2D r) {
 		return (this.getX() + 1 < r.getX());
 	}
 	
-	public boolean touchRectTop(Rectangle2D r) {
+	public boolean touchRectInTop(Rectangle2D r) {
 		return (this.getY() - 1 < r.getY());
 	}
 	
-	public boolean touchRectRight(Rectangle2D r) {
+	public boolean touchRectInRight(Rectangle2D r) {
 		return (this.getMaxX() + 1 > r.getMaxX());
 	}
 
-	public boolean touchRectBottom(Rectangle2D r) {
+	public boolean touchRectInBottom(Rectangle2D r) {
 		return (this.getMaxY() + 1 > r.getMaxY());
 	}
 
@@ -227,19 +227,19 @@ public abstract class Shape extends Rectangle2D.Double {
 					this.getY() + this.getDy());
 		}
 
-		if (this.touchRectLeft(r)) {
+		if (this.touchRectInLeft(r)) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 		}
 
-		if (this.touchRectTop(r)) {
+		if (this.touchRectInTop(r)) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
 		}
 
-		if (this.touchRectRight(r)) {
+		if (this.touchRectInRight(r)) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 		}
 
-		if (this.touchRectBottom(r)) {
+		if (this.touchRectInBottom(r)) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
 		}
 

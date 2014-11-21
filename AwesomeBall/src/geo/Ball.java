@@ -121,8 +121,7 @@ public class Ball extends Shape {
 
 			// use 1/sqrt(x) accel algorithm
 			// move diagonally if necessary
-			this.setDx(oldspeedx > 0 ? 
-					Player.SPEED_TWO + 20: -Player.SPEED_ONE + 20);
+			this.setDx(this.getDx() + ((oldspeedx > 0) ? 10 : -10));
 			//this.setDy(oldspeedy > 0 ? 
 			//		Player.SPEED_TWO : -Player.SPEED_ONE + 20);
 			this.move(p, f);
@@ -188,8 +187,8 @@ public class Ball extends Shape {
 			if (p.near(this, Player.Side.LEFT.getId())) {
 				if (this.touchBorders(f)) {
 					this.setDx(-speed);
-				} else {
 					p.setDx(Player.STOP);
+				} else {
 					this.setDx(speed);
 				}
 
@@ -254,7 +253,7 @@ public class Ball extends Shape {
 	public void draw(Graphics2D g2) {
 		this.circle.setFrame(this.getBounds2D());
 		g2.setColor(Color.yellow);
-		g2.draw(this);
+		//g2.draw(this);
 		g2.draw(this.circle);
 		g2.fill(this.circle);
 	}

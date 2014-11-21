@@ -110,7 +110,7 @@ public class Player extends Field {
 				(int)this.getY(), 
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
-		g2.draw(this);
+		//g2.draw(this);
 	}
 
 	/*
@@ -190,20 +190,20 @@ public class Player extends Field {
 	 * 
 	 */
 	public boolean touchGoalRightTop(Field f) {
-		return (this.getX() >= f.getGoalright().getX() &&
+		return (this.getMaxX() >= f.getGoalright().getX() &&
 				this.getY() - 1 <= f.getGoalright().getY());
 	}
 
 	public boolean touchGoalRightBottom(Field f) {
-		return (this.getX() >= f.getGoalright().getX() &&
+		return (this.getMaxX() >= f.getGoalright().getX() &&
 				this.getMaxY() + 1 >= f.getGoalright().getMaxY());
 	}
 
-	public boolean touchRectRight(Field f) {
+	public boolean touchRectInRight(Field f) {
 	
 		return (f.getMaxX() - this.getMaxX() <= 1.5 && 
-				(this.getMaxY() < f.getGoalright().getY() ||
-						this.getY() > f.getGoalright().getMaxY()
+				(this.getY() < f.getGoalright().getY() ||
+						this.getMaxY() > f.getGoalright().getMaxY()
 				) || this.getMaxX() + 1 >= f.getGoalright().getMaxX());
 	}
 
@@ -212,10 +212,10 @@ public class Player extends Field {
 	 * Left Goal Collisions
 	 * 
 	 */
-	public boolean touchRectLeft(Field f) {
+	public boolean touchRectInLeft(Field f) {
 		return (this.getX() - f.getX() <= 1.5 &&
-				(this.getMaxY() < f.getGoalright().getY() ||
-						this.getY() > f.getGoalright().getMaxY()
+				(this.getY() < f.getGoalright().getY() ||
+						this.getMaxY() > f.getGoalright().getMaxY()
 				) || this.getX() <= f.getGoalleft().getX());
 	}
 
@@ -274,21 +274,21 @@ public class Player extends Field {
 		}
 
 		// otherwise, back up a little
-		if (this.touchRectLeft(f)) {
+		if (this.touchRectInLeft(f)) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 		}
 
-		if (this.touchRectTop(f) ||
+		if (this.touchRectInTop(f) ||
 				this.touchGoalRightTop(f) ||
 				this.touchGoalLeftTop(f)) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
 		}
 
-		if (this.touchRectRight(f)) {
+		if (this.touchRectInRight(f)) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 		}
 
-		if (this.touchRectBottom(f) ||
+		if (this.touchRectInBottom(f) ||
 				this.touchGoalRightBottom(f) ||
 				this.touchGoalLeftBottom(f)) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
