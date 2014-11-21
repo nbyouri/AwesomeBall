@@ -77,15 +77,18 @@ public class Board extends JPanel implements ActionListener {
 		
 		// setup key indicator
 		keys = new Keys();
-		keys.setSize(KEYS_X_POS, TOP_MENUS_Y_POS, KEYS_WIDTH, TOP_MENUS_HEIGHT);
+		keys.setSize(KEYS_X_POS, TOP_MENUS_Y_POS, 
+				KEYS_WIDTH, TOP_MENUS_HEIGHT);
 		
 		// setup rotation indicator
 		rotation = new Text(null);
-		rotation.setRect(ROTATION_X, TOP_MENUS_Y_POS, ROTATION_WIDTH, TOP_MENUS_HEIGHT);
+		rotation.setRect(ROTATION_X, TOP_MENUS_Y_POS, 
+				ROTATION_WIDTH, TOP_MENUS_HEIGHT);
 		
 		// setup score indicator
 		score = new Text(null);
-		score.setRect(SCORES_X, TOP_MENUS_Y_POS, SCORES_WIDTH, TOP_MENUS_HEIGHT);
+		score.setRect(SCORES_X, TOP_MENUS_Y_POS, 
+				SCORES_WIDTH, TOP_MENUS_HEIGHT);
 		
 		// key listener and window settings
 		addKeyListener(new KeyEvents());
@@ -142,14 +145,15 @@ public class Board extends JPanel implements ActionListener {
 		keys.drawSides(g2, keys.getPressedKeys());
 		
 		// draw rotation box
-		rotation.setStr(Player.Direction.getName(player.getImg().getRotation()));
+		rotation.setStr(
+				Player.Direction.getName(player.getImg().getRotation())
+		);
+		
 		rotation.draw(g2);
 
 		// draw score box
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
-		
-		System.out.println(Math.abs(player.getDx()) + " " + Math.abs(player.getDy()));
 		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
@@ -191,6 +195,8 @@ public class Board extends JPanel implements ActionListener {
 				player.setDy(Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
 				player.drawDown();
+			} else if (key == KeyEvent.VK_S) {
+				ball.shoot(player, field);
 			}
 		}
 

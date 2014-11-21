@@ -88,7 +88,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Near any side
 	 * 
 	 */
-	public Boolean near(Shape s) {
+	public Boolean near(Rectangle2D s) {
 		// top or down side of the ball
 		// XXX replace with distance?
 		return (this.getY()    - 5 <= s.getMaxY() &&
@@ -102,7 +102,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Near vertically
 	 * 
 	 */
-	public Boolean nearX(Shape s) {
+	public Boolean nearX(Rectangle2D s) {
 		return (this.getX()    <= s.getMaxX() &&
 				this.getMaxX() >= s.getX());
 	}
@@ -112,7 +112,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Near horizontally
 	 * 
 	 */
-	public Boolean nearY(Shape s) {
+	public Boolean nearY(Rectangle2D s) {
 		return (this.getY()    <= s.getMaxY() &&
 				this.getMaxY() >= s.getY());
 	}
@@ -122,13 +122,13 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Near a specific side
 	 * 
 	 */
-	public Boolean near(Shape s, int line) {
+	public Boolean near(Rectangle2D s, int line) {
 		
 		// changes values to int to avoid 
 		// confusion after diagonal change
-		int x = (int)this.getX();
+		int x  = (int)this.getX();
 		int mx = (int)this.getMaxX();
-		int y = (int)this.getY();
+		int y  = (int)this.getY();
 		int my = (int)this.getMaxY();
 		
 		/*
@@ -138,19 +138,23 @@ public abstract class Shape extends Rectangle2D.Double {
 		 */
 		if (line == Side.UP.getId()) {
 		
-			return ((my + 1 >= s.getY()) && (my - 1 <= s.getY()) && this.nearX(s));
+			return ((my + 1 >= s.getY()) &&
+					(my - 1 <= s.getY()) && this.nearX(s));
 			
 		}  if (line == Side.DOWN.getId()) {
 			
-			return ((y - 1 <= s.getMaxY()) && (y + 1 >= s.getMaxY()) && this.nearX(s));
+			return ((y - 1 <= s.getMaxY()) &&
+					(y + 1 >= s.getMaxY()) && this.nearX(s));
 
 		}  if (line == Side.LEFT.getId()) {
 			
-			return ((mx - 1 <= s.getX()) && (mx + 1 >= s.getX()) && this.nearY(s));
+			return ((mx - 1 <= s.getX()) &&
+					(mx + 1 >= s.getX()) && this.nearY(s));
 			
 		}  if (line == Side.RIGHT.getId()) {
 			
-			return ((x - 1 <= s.getMaxX()) && (x + 1 >= s.getMaxX()) && this.nearY(s));
+			return ((x - 1 <= s.getMaxX()) &&
+					(x + 1 >= s.getMaxX()) && this.nearY(s));
 			
 		} else {
 			
@@ -164,7 +168,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * If the shape isn't touching any side in the other shape.
 	 * 
 	 */
-	public Boolean insideRect(Shape r) {
+	public Boolean insideRect(Rectangle2D r) {
 		return (!((this.touchRectLeft(r)) ||
 				(this.touchRectRight(r))  ||
 				(this.touchRectTop(r))    ||
@@ -176,19 +180,19 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Does the shape touch or approach a shape's inner side?
 	 * 
 	 */
-	public Boolean touchRectLeft(Shape r) {
+	public Boolean touchRectLeft(Rectangle2D r) {
 		return (this.getX() + 1 < r.getX());
 	}
 	
-	public Boolean touchRectTop(Shape r) {
+	public Boolean touchRectTop(Rectangle2D r) {
 		return (this.getY() - 1 < r.getY());
 	}
 	
-	public Boolean touchRectRight(Shape r) {
+	public Boolean touchRectRight(Rectangle2D r) {
 		return (this.getMaxX() + 1 > r.getMaxX());
 	}
 
-	public Boolean touchRectBottom(Shape r) {
+	public Boolean touchRectBottom(Rectangle2D r) {
 		return (this.getMaxY() + 1 > r.getMaxY());
 	}
 
@@ -217,7 +221,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * Move shape in another shape.
 	 * 
 	 */
-	public void moveIn(Shape r) {
+	public void moveIn(Rectangle2D r) {
 		if (this.insideRect(r)){
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
@@ -260,10 +264,11 @@ public abstract class Shape extends Rectangle2D.Double {
 		this.sides.get(Side.DOWN.getId()).setLine(this.getX(),
 				this.getMaxY(), this.getMaxX(), this.getMaxY());
 		
-		this.sides.get(Side.CENTER_V.getId()).setLine(this.getCenterX(), this.getY(),
-				this.getCenterX(), this.getY() + this.getHeight());
+		this.sides.get(Side.CENTER_V.getId()).setLine(this.getCenterX(), 
+				this.getY(), this.getCenterX(), this.getY() + this.getHeight());
 		
-		this.sides.get(Side.CENTER_H.getId()).setLine(this.getX(),  this.getCenterY(),
-				this.getWidth() + this.getX(), this.getCenterY()); 
+		this.sides.get(Side.CENTER_H.getId()).setLine(this.getX(), 
+				this.getCenterY(), this.getWidth() + this.getX(), 
+				this.getCenterY()); 
 	}
 }

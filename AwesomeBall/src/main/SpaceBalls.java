@@ -1,7 +1,7 @@
 package main;
 
 import gui.Board;
-import gui.PositionBox;
+//import gui.PositionBox;
 
 import java.awt.EventQueue;
 //import java.awt.GraphicsDevice;
@@ -45,7 +45,8 @@ public class SpaceBalls extends JFrame {
 	public SpaceBalls() {
 
         // full screen code
-        /*GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        /*GraphicsEnvironment env = 
+         	GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = env.getDefaultScreenDevice();
         setUndecorated(true);
         defaultScreen.setFullScreenWindow(this);*/
@@ -75,7 +76,9 @@ public class SpaceBalls extends JFrame {
             @Override
             public void run() {
                 SpaceBalls ex = new SpaceBalls();
-                //PositionBox box = new PositionBox((JFrame)ex, ex.mainBoard.getPlayer());
+                /*PositionBox box = new PositionBox(
+                	(JFrame)ex, ex.mainBoard.getPlayer()
+                );*/
                 ex.setVisible(true);
                 //box.setVisible(true);
             }

@@ -76,7 +76,9 @@ public class Images {
 			Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
 
 			// rotate around the center
-			g2.rotate(Math.toRadians(rotation), ii.getIconWidth() / 2, ii.getIconHeight() / 2);
+			g2.rotate(Math.toRadians(rotation), 
+					ii.getIconWidth() / 2, ii.getIconHeight() / 2);
+			
 			g2.drawImage(img, 0, 0, null);
 			this.setPlayer(blankCanvas);
 		}
