@@ -46,7 +46,23 @@ public class Board extends JPanel implements ActionListener {
 	public static final int SCORES_WIDTH = 50;
 	public static final int FPS = 5;
 	public static final int EXIT_SUCCESS = 0;
-	
+        
+	/**
+         * Propportionalising the field
+         * 
+         * Setup the game title, the field
+         * the player (two in the future), 
+         * the ball, key indicator,
+         * rotation indicator.
+         * 
+         * Configure the key listener
+         * and the window
+         * 
+         * Set a quit button and 
+         * a timer
+         *
+         * @param boardSize 
+         */
 	public Board(Dimension boardSize) {
 
 		// proportional field , H = 60yds, W = 100yds, Center radius = 10yds
@@ -112,7 +128,10 @@ public class Board extends JPanel implements ActionListener {
 		timer = new Timer(FPS, this);
 		timer.start();
 	}
-
+        /**
+         * Draw all stuff !
+         * @param g 
+         */
 	public void paint(Graphics g) {
 		super.paint(g);
 
@@ -159,21 +178,32 @@ public class Board extends JPanel implements ActionListener {
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
-
+        /**
+         * Get the player
+         * @return 
+         */
 	public Player getPlayer() {
 		return player;
 	}
-
+        /**
+         * Set the player
+         * @param player 
+         */
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-
+        /**
+         *  ????
+         * @param e 
+         */
 	public void actionPerformed(ActionEvent e) {
 		player.moveIn(field);
 		repaint();
 	}
-	
-	// listen to key events and update player location
+	/**
+         * Listen to key events and update player location
+         */
+
 	private class KeyEvents extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 
@@ -224,8 +254,9 @@ public class Board extends JPanel implements ActionListener {
 			}
 		}
 	}
-	
-	// exit button action implementation
+	/**
+         * Exit button action implementation
+         */
 	private class CloseListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -233,7 +264,9 @@ public class Board extends JPanel implements ActionListener {
 		}
 	}
 	
-	// exit in a clean way
+	/**
+         * Exit in a clean way
+         */
 	public void exitProgram() {
 		Container frame = this.getParent();
 		do {

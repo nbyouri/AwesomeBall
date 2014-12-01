@@ -4,13 +4,24 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
+/**
+ *
+ * @author Mouton Youri and Sias Nicolas
+ */
 @SuppressWarnings("serial")
 public class Ball extends Shape {
 	Ellipse2D circle;
 	boolean sticky;
 	boolean free;
 
-	public Ball(double x, double y, double width, double height) {
+    /**
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
+    public Ball(double x, double y, double width, double height) {
 		// ball not sticky by default
 		sticky = false;
 		free = false;
@@ -21,29 +32,42 @@ public class Ball extends Shape {
 		this.setSides();
 	}
 
-	public Ball() {
+    /**
+     *Drawing the ball
+     */
+    public Ball() {
 		super();
 		circle = new Ellipse2D.Double(0, 0, 0, 0);
 	}
 
-	/*
-	 * 
-	 * Does the ball's right/left side touch the goal's line?
-	 * 
-	 */
+
+    /**
+     * Does the ball's right side touch the goal's line ?
+     * @param f
+     * @return
+     */
+    
 	public boolean touchRightGoal(Field f) {
 		return (this.insideRect(f.getGoalright()));
 	}
 
-	public boolean touchLeftGoal(Field f) {
+    /**
+     * Does the ball's left side touch the goal's line ?
+     * @param f
+     * @return
+     */
+    public boolean touchLeftGoal(Field f) {
 		return (this.insideRect(f.getGoalleft()));
 	}
 
-	/*
-	 * 
-	 * Does the ball touch borders above and unders both goals?
-	 * 
-	 */
+
+
+    /**
+     * Does the ball touch borders above and unders both goals ?
+     * @param f
+     * @return
+     */
+    
 	public boolean touchBorders(Shape f) {
 		return (this.intersectsLine(f.getSide(Field.GOAL_RIGHT_UP))   || 
 				this.intersectsLine(f.getSide(Field.GOAL_RIGHT_DOWN)) ||
@@ -51,14 +75,16 @@ public class Ball extends Shape {
 				this.intersectsLine(f.getSide(Field.GOAL_LEFT_DOWN)));
 	}
 	
-	/*
-	 * 
-	 * Actually update the ball location.
-	 * 
-	 * Placeholder method waiting for 
-	 * multiplayer implementation.
-	 * 
-	 */
+
+    /**
+     * Actually update the ball location.
+     * 
+     * Placeholder method waiting for
+     * multiplayer implementation.
+     * @param f
+     * @param p
+     */
+    
 	public void moveBall(Field f, Player p) {
 		
 		this.setLocation(this.getX() + this.getDx(),
@@ -68,50 +94,73 @@ public class Ball extends Shape {
 		
 	}
 
-	public boolean getSticky() {
+    /**
+     * Stick the ball to a player ( getter )
+     * @return
+     */
+    public boolean getSticky() {
 		return this.sticky;
 	}
 
-	public void setSticky(boolean s) {
+    /**
+     * Stick the ball to a player ( setter )
+     * @param s
+     */
+    public void setSticky(boolean s) {
 		this.sticky = s;
 	}
 
-	/*
-	 * 
-	 *  Toggles the ball sticky state: 
-	 *  if we're near the ball and not sticky yet
-	 *	OR 
-	 *	if we're sticky and too far
-	 * 
-	 */
+    /**
+     *  Toggles the ball sticky state: 
+     *  if we're near the ball and not sticky yet
+     *	OR 
+     *	if we're sticky and too far
+     * @param p
+     */
+    
 	public void toggleSticky(Player p) {
 		if ((!sticky && this.near(p)) || sticky) {
 			sticky = !sticky;
 		}
 	}
 	
-	public boolean getFree() {
+    /**
+     * ?????
+     * @return
+     */
+    public boolean getFree() {
 		return this.free;
 	}
 	
-	public void setFree(boolean tf) {
+    /**
+     * ?????
+     * @param tf
+     */
+    public void setFree(boolean tf) {
 		this.free = tf;
 	}
 	
-	public void toggleFree() {
+    /**
+     * ?????
+     */
+    public void toggleFree() {
 		free = !free;
 	}
 	
-	/*
-	 * 
-	 * Shoot the ball by a player.
-	 * 
-	 * Calculate speed depending 
-	 * where it was shot from.
-	 * 
-	 * Accelerate statically for 20px
-	 * 
-	 */
+
+
+    /**
+     * Shoot the ball by a player.
+     * 
+     * Calculate speed depending 
+     * where it was shot from.
+     * 
+     * Accelerate statically for 20px
+     * 
+     * @param p
+     * @param f
+     */
+    
 	public void shoot(Player p, Field f) {
 		if (this.near(p)) {
 			double oldspeedx = this.getDx();
@@ -133,17 +182,22 @@ public class Ball extends Shape {
 		}
 	}
 
-	/*
-	 * 
-	 * Move the ball from a player in a field.
-	 * 
-	 * First, the speed is set to 0 then, if the 
-	 * ball is sticky, simply follow the player around.
-	 * 
-	 * Then, depending on the side and if the ball is in 
-	 * the field, set the speed adequately.
-	 * 
-	 */
+
+
+    /**
+     *
+     * Move the ball from a player in a field.
+     * 
+     * First, the speed is set to 0 then, if the
+     * ball is sticky, simply follow the player around.
+     * 
+     * Then, depending on the side and if the ball is in
+     * the field, set the speed adequately.
+     * 
+     * @param p
+     * @param f
+     */
+    
 	public void move(Player p, Field f) {
 
 		if (!this.getFree()) {
@@ -218,14 +272,19 @@ public class Ball extends Shape {
 		this.moveBall(f, p);
 	}
 
-	/*
-	 * 
-	 * Score of player is incremented if the ball goes in 
-	 * either goal. 
-	 * 
-	 * XXX: Implement side detection for multiplayer.
-	 * 
-	 */
+
+
+    /**
+     *
+     * Score of player is incremented if the ball goes in
+     * either goal.
+     * 
+     * XXX : Implement side detection for multiplayer.
+     * 
+     * @param p
+     * @param f
+     */
+    
 	public void goal(Player p, Field f) {
 		if  (this.touchLeftGoal(f) || this.touchRightGoal(f)) {
 			this.setSticky(false);
@@ -234,22 +293,27 @@ public class Ball extends Shape {
 		}
 	}
 
-	/*
-	 * 
-	 * Put the ball in the center of the field.
-	 * 
-	 */
+    /**
+     *
+     * Put the ball in the center of the field.
+     * 
+     * @param f
+     */
+    
 	public void centerBall(Field f) {
 		this.setLocation(f.getCenterX() - this.getWidth() / 2, 
 				f.getY() + (f.getHeight() / 2) - 10);
 	}
 
-	/*
-	 * 
-	 * Draw the ball from the rectangle 
-	 * around it.
-	 * 
-	 */
+
+    /**
+     *
+     * Draw the ball from the rectangle
+     * around it
+     * 
+     * @param g2
+     */
+    
 	public void draw(Graphics2D g2) {
 		this.circle.setFrame(this.getBounds2D());
 		g2.setColor(Color.yellow);
