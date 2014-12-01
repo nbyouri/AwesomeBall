@@ -227,7 +227,7 @@ public class Board extends JPanel implements ActionListener {
 				player.setDy(Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
 				player.drawDown();
-			} else if (key == KeyEvent.VK_S) {
+			} else if (key == KeyEvent.VK_SPACE) {
 				ball.shootBall(field,player);
 			}
 		}
@@ -248,7 +248,7 @@ public class Board extends JPanel implements ActionListener {
 				player.setDy(Player.STOP);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
 			} else if (key == KeyEvent.VK_ENTER) {
-				//ball.centerBall(field);
+				ball.centerBall(field);
 			} else if (key == KeyEvent.VK_SPACE) {
 				//ball.shoot(player, field);
 			} else if (key == KeyEvent.VK_ESCAPE) {
