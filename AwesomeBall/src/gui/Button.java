@@ -1,4 +1,4 @@
-package test_jeu;
+package gui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,13 +18,18 @@ public class Button extends JButton {
 	private Color buttonPressedFgColor;
 	private Border buttonBorder;
 	private Border buttonPressedBorder;
+	
+	// constants
+	public static final int FONT_SIZE_NORMAL = 12;
+	public static final int BORDER_NORMAL = 1;
+	
 	public Button(String title, ActionListener al) {
 		super(title);
 		
 		// default settings
-		buttonFont = new Font("Helvetica", Font.BOLD, 12);
-		buttonBorder = new LineBorder(Color.cyan, 1);
-		buttonPressedBorder = new LineBorder(Color.yellow, 1);
+		buttonFont = new Font("Helvetica", Font.BOLD, FONT_SIZE_NORMAL);
+		buttonBorder = new LineBorder(Color.cyan, BORDER_NORMAL);
+		buttonPressedBorder = new LineBorder(Color.yellow, BORDER_NORMAL);
 		buttonFgColor = Color.cyan;
 		buttonPressedFgColor = Color.yellow;
 		buttonFbColor = Color.black;

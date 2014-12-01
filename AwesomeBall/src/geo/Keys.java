@@ -1,22 +1,22 @@
-package test_jeu;
+package geo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class KeyIndicator extends Field {
+public class Keys extends Shape {
 	private ArrayList<Integer> pressedkeys;
 	
 	// constants
-	public static final int KEY_OFF = 0;
-	public static final int KEY_ON = 1;
+	public static final int KEY_OFF  = 0;
+	public static final int KEY_ON   = 1;
 	public static final int KEY_LEFT = 0;
-	public static final int KEY_UP = 1;
-	public static final int KEY_RIGHT = 2;
+	public static final int KEY_UP   = 1;
+	public static final int KEY_RIGHT= 2;
 	public static final int KEY_DOWN = 3;
 	
-	public KeyIndicator() {
+	public Keys() {
 		pressedkeys = new ArrayList<Integer>();
 		
 		// initialize arrow keys
@@ -42,7 +42,11 @@ public class KeyIndicator extends Field {
 		this.pressedkeys.set(i, k);
 	}
 	
-	@Override
+	public void draw(Graphics2D g2) {
+		g2.setColor(Color.cyan);
+		g2.draw(this);
+	}
+	
 	public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
 		g2.setColor(Color.yellow);
 		
