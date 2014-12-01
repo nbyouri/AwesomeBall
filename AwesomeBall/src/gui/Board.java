@@ -60,7 +60,7 @@ public class Board extends JPanel implements ActionListener {
          * 
          * Set a quit button and 
          * a timer
-         *
+         * 
          * @param boardSize 
          */
 	public Board(Dimension boardSize) {
@@ -109,7 +109,7 @@ public class Board extends JPanel implements ActionListener {
 		// key listener and window settings
 		addKeyListener(new KeyEvents());
 		setFocusable(true);
-		setBackground(Color.BLACK);
+		setBackground(Color.black);
 		setDoubleBuffered(true);
 		setLayout(null);
 		
@@ -156,7 +156,7 @@ public class Board extends JPanel implements ActionListener {
 		
 		// draw ball
 		ball.draw(g2);
-		ball.move(player, field);
+		//ball.move(player, field);
 		
 		// draw key box
 		keys.draw(g2);
@@ -198,6 +198,8 @@ public class Board extends JPanel implements ActionListener {
          */
 	public void actionPerformed(ActionEvent e) {
 		player.moveIn(field);
+                ball.move(field,player);
+                ball.brake();
 		repaint();
 	}
 	/**
@@ -226,7 +228,7 @@ public class Board extends JPanel implements ActionListener {
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
 				player.drawDown();
 			} else if (key == KeyEvent.VK_S) {
-				ball.shoot(player, field);
+				ball.shootBall(field,player);
 			}
 		}
 
@@ -246,9 +248,9 @@ public class Board extends JPanel implements ActionListener {
 				player.setDy(Player.STOP);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
 			} else if (key == KeyEvent.VK_ENTER) {
-				ball.centerBall(field);
+				//ball.centerBall(field);
 			} else if (key == KeyEvent.VK_SPACE) {
-				ball.toggleSticky(player);
+				//ball.shoot(player, field);
 			} else if (key == KeyEvent.VK_ESCAPE) {
 				exitProgram();
 			}
