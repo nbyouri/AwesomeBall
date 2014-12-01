@@ -12,8 +12,8 @@ import java.awt.geom.Ellipse2D;
 
 @SuppressWarnings("serial")
 public class Ball extends Ellipse2D.Double {
-    private final double SPEED_SHOT_X = 0.5;
-    private final double SPEED_SHOT_Y = 0.5;
+    private final double SPEED_SHOT_X = 0.25;
+    private final double SPEED_SHOT_Y = 0.25;
     private final double BRAKE = 0.001;
     private double vX ; // Velocity on axis X
     private double vY ; // Velocity on axis Y
