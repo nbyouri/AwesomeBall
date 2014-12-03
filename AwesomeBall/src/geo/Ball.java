@@ -16,8 +16,8 @@ public class Ball extends Ellipse2D.Double {
     private final int COLLISION_CORNER = 3;
     private final double SPEED_COLLISION_TOPLAYER_X = 0.0005;
     private final double SPEED_COLLISION_TOPLAYER_Y = 0.0005;
-    private final double SPEED_SHOT_X = 0.25;
-    private final double SPEED_SHOT_Y = 0.25;
+    private final double SPEED_SHOT_X = 0.05;
+    private final double SPEED_SHOT_Y = 0.05;
     private final double BRAKE = 0.001;
     private double vX; // Velocity on axis X
     private double vY;// Velocity on axis Y
@@ -143,7 +143,7 @@ public class Ball extends Ellipse2D.Double {
 
     public void shootBall(Field f, Player p) {
         if (touchPlayer(p)) {
-            this.moveBall(p , -SPEED_SHOT_X, -SPEED_SHOT_Y);
+            this.moveBall(p , SPEED_SHOT_X*Math.abs(x - p.getX()), SPEED_SHOT_Y*Math.abs(y-p.getY()));
         }
     }
 
@@ -235,7 +235,7 @@ public class Ball extends Ellipse2D.Double {
             this.centerBall(f);
             //For the field : borders collision
         if (this.touchRectInLeft(f)) {
-            if (!touchGoalLeft(f)) //this.setFrame(this.getX() - this.getVx(), this.getY(),width,height);
+            if (!touchGoalLeft(f))
             {
                 this.setVx(-vX);
             } else {
@@ -244,7 +244,7 @@ public class Ball extends Ellipse2D.Double {
         }
 
         if (this.touchRectInRight(f)) {
-            if (!touchGoalRight(f)) //this.setFrame(this.getX() - this.getVx(), this.getY(), width, height);
+            if (!touchGoalRight(f)) 
             {
                 this.setVx(-vX);
             } else {
@@ -253,32 +253,16 @@ public class Ball extends Ellipse2D.Double {
         }
 
         if (this.touchRectInBottom(f) || this.touchRectInTop(f)) {
-            //this.setFrame(this.getX(), this.getY() - this.getVy(),width, height);
             this.setVy(-vY);
         }
         
         //For the player - ball collision
-        /*
-        if (this.collisionShape(p) == COLLISION_X)
-            this.setVy(-vY - 10*BRAKE);
-        if (this.collisionShape(p) == COLLISION_Y)
-            this.setVx(-vX - 10*BRAKE);
-        if (this.collisionShape(p) == COLLISION_CORNER){
-            this.setVx(-vX - 10*BRAKE);
-            this.setVy(-vY - 10*BRAKE);
-        }*/
+
         //Just to prevent if the ball goes into the shape player
         if (this.intersects(p)){
             this.moveBall(p, SPEED_COLLISION_TOPLAYER_X *Math.abs(p.getX() - x),  SPEED_COLLISION_TOPLAYER_Y * Math.abs(p.getY()-y));
         }
         this.setMovement();
-        /*
-         if (this.touchPlayer(p)) {
-         if (this.touchRectInBottom(p) || this.touchRectInTop(p))
-         this.setVy(-vY + p.getDy());
-         if (this.touchRectInLeft(p) || this.touchRectInRight(p))
-         this.setVx(-vX + p.getDx());
-         }*/
     }
 
     /**
