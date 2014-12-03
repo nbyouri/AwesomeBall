@@ -14,8 +14,10 @@ public class Ball extends Ellipse2D.Double {
     private final int COLLISION_X = 1;
     private final int COLLISION_Y = 2;
     private final int COLLISION_CORNER = 3;
-    private final double SPEED_SHOT_X = 0.05;
-    private final double SPEED_SHOT_Y = 0.05;
+    private final double SPEED_COLLISION_TOPLAYER_X = 0.0005;
+    private final double SPEED_COLLISION_TOPLAYER_Y = 0.0005;
+    private final double SPEED_SHOT_X = 0.25;
+    private final double SPEED_SHOT_Y = 0.25;
     private final double BRAKE = 0.001;
     private double vX; // Velocity on axis X
     private double vY;// Velocity on axis Y
@@ -141,7 +143,7 @@ public class Ball extends Ellipse2D.Double {
 
     public void shootBall(Field f, Player p) {
         if (touchPlayer(p)) {
-            this.moveBall(p);
+            this.moveBall(p , -SPEED_SHOT_X, -SPEED_SHOT_Y);
         }
     }
 
@@ -149,41 +151,43 @@ public class Ball extends Ellipse2D.Double {
      * Ball's moving after a shooting, adding speed
      *
      * @param p
+     * @param velocityX
+     * @param velocityY
      */
-    public void moveBall(Player p) {
+    public void moveBall(Player p, double velocityX , double velocityY) {
         double vitX = 0;
         double vitY = 0;
-        if (x < p.getX() + p.getWidth() / 8) // when the ball moves right and/or hits the right              
+        if (x - p.getX() < p.getWidth()/4) // when the ball moves right and/or hits the right              
         {
            // vX is the ball velocity on X axis
             // set new velocity on x axis but convert it to negative
             // so the ball will move left
-            vitX = vX - 1 * SPEED_SHOT_X;
-            System.out.println("LEFT");
-        } else if (x > p.getX() + p.getWidth() / 8) // when the ball move left and 
+            vitX = vX - 1 * velocityX;
+            System.out.println("COLLISION RIGHT");
+        } else if (x - p.getX() > p.getWidth()/4) // when the ball move left and 
         //hits the left border of the shape
         {
            // set new velocity (Note that I didn't convert it to negative 
             // because i'm getting a positive value)
-            vitX = vX + SPEED_SHOT_X;
-            System.out.println("RIGHT");
+            vitX = vX + velocityX;
+            System.out.println("COLLISION LEFT");
         }
 
-        if (y < p.getY() + p.getHeight() / 8) // when the ball hits the bottom border of the  
+        if (y - p.getY() < p.getHeight()/4) // when the ball hits the bottom border of the  
         //shape
         {
            // vY is the ball velocity on Y axis
             // set new velocity and convert it to negative 
             // so the ball will move up
-            vitY = vY - 1 * SPEED_SHOT_Y;
-            System.out.println("TOP");
-        } else if (y > p.getY() + p.getHeight() / 8) // when the ball hits
+            vitY = vY - 1 * velocityY;
+            System.out.println("COLLISION BOTTOM");
+        } else if (y - p.getY() > p.getHeight()/4 ) // when the ball hits
         //the upper border of the shape
         {
            // set new velocity on Y axis
             // so the ball will move down
-            vitY = vY + SPEED_SHOT_Y;
-            System.out.println("BOTTOM");
+            vitY = vY + velocityY;
+            System.out.println("COLLISION TOP");
         }
         this.setVx(vitX);
         this.setVy(vitY);
@@ -252,19 +256,20 @@ public class Ball extends Ellipse2D.Double {
             //this.setFrame(this.getX(), this.getY() - this.getVy(),width, height);
             this.setVy(-vY);
         }
+        
         //For the player - ball collision
+        /*
         if (this.collisionShape(p) == COLLISION_X)
-            this.setVy(-vY + p.SPEED_ONE/2);
+            this.setVy(-vY - 10*BRAKE);
         if (this.collisionShape(p) == COLLISION_Y)
-            this.setVx(-vX + p.SPEED_ONE/2);
+            this.setVx(-vX - 10*BRAKE);
         if (this.collisionShape(p) == COLLISION_CORNER){
-            this.setVx(-vX + p.SPEED_ONE_DIAG/2);
-            this.setVy(-vY + p.SPEED_ONE_DIAG/2);
-        }
+            this.setVx(-vX - 10*BRAKE);
+            this.setVy(-vY - 10*BRAKE);
+        }*/
         //Just to prevent if the ball goes into the shape player
         if (this.intersects(p)){
-            this.setVx(-vX);
-            this.setVy(-vY);
+            this.moveBall(p, SPEED_COLLISION_TOPLAYER_X *Math.abs(p.getX() - x),  SPEED_COLLISION_TOPLAYER_Y * Math.abs(p.getY()-y));
         }
         this.setMovement();
         /*
@@ -328,11 +333,18 @@ public class Ball extends Ellipse2D.Double {
     double circleDistanceX = Math.abs(this.x - rect.x);
     double circleDistanceY = Math.abs(this.y - rect.y);
 
-    if (circleDistanceX > (rect.width/2 + this.width/2))  return NO_COLLISION; 
-    if (circleDistanceY > (rect.height/2 + this.height/2)) return NO_COLLISION; 
-
-    if (circleDistanceX <= (rect.width/2)) return COLLISION_X; 
-    if (circleDistanceY <= (rect.height/2)) return COLLISION_Y;
+    if (circleDistanceX > (rect.width/2 + this.width/2))  
+        return NO_COLLISION; 
+    if (circleDistanceY > (rect.height/2 + this.height/2)) 
+        return NO_COLLISION;
+    if (circleDistanceX <= rect.width/2) {
+        System.out.println("COLLISION X");
+       return COLLISION_X;
+    }
+    if (circleDistanceY <= rect.height/2){
+        System.out.println("COLLISION Y");
+        return COLLISION_Y;
+    }
 
     double cornerDistanceSQR = ((circleDistanceX - rect.width/2) * (circleDistanceX - rect.width/2) )+
                          ((circleDistanceY - rect.height/2) * (circleDistanceY - rect.height/2));
