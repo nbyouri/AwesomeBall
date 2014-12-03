@@ -7,6 +7,11 @@ import java.awt.geom.Ellipse2D;
 /**
  *
  * @author Mouton Youri and Sias Nicolas
+ * 
+ * TODO : Collision de poussée qui est chouette ( diagonale non stop )
+ *        Regler le tir de la balle ( là il détecte pas tout le temps )
+ *        La balle passe à travers le terrain si le joueur le pousse dedans
+ *        Nettoyer le code ( Bisous )
  */
 @SuppressWarnings("serial")
 public class Ball extends Ellipse2D.Double {
@@ -14,8 +19,8 @@ public class Ball extends Ellipse2D.Double {
     private final int COLLISION_X = 1;
     private final int COLLISION_Y = 2;
     private final int COLLISION_CORNER = 3;
-    private final double SPEED_COLLISION_TOPLAYER_X = 0.0005;
-    private final double SPEED_COLLISION_TOPLAYER_Y = 0.0005;
+    private final double SPEED_COLLISION_TOPLAYER_X = 0.005;
+    private final double SPEED_COLLISION_TOPLAYER_Y = 0.005;
     private final double SPEED_SHOT_X = 0.05;
     private final double SPEED_SHOT_Y = 0.05;
     private final double BRAKE = 0.001;
@@ -144,6 +149,7 @@ public class Ball extends Ellipse2D.Double {
     public void shootBall(Field f, Player p) {
         if (touchPlayer(p)) {
             this.moveBall(p , SPEED_SHOT_X*Math.abs(x - p.getX()), SPEED_SHOT_Y*Math.abs(y-p.getY()));
+            System.out.println("===== SHOOOOT ==== ");
         }
     }
 
@@ -230,6 +236,30 @@ public class Ball extends Ellipse2D.Double {
      * @param p Player
      */
     public void move(Field f, Player p) {
+                
+        //For the player - ball collision
+
+        //Just to prevent if the ball goes into the shape player
+        if (this.intersects(p)){
+           if( x - p.getX() > p.getWidth()/4 ){//RIGHT
+                this.setX( x + p.getDx() - p.getWidth()/30);
+                this.setVx(-vX);
+           }
+           else if ( x - p.getX() < p.getWidth()/4 ){ // LEFT
+                this.setX( x + p.getDx() - p.getWidth()/30);
+                this.setVx(-vX);
+           }
+            if ( y - p.getY() < p.getHeight()/4){ // TOP
+                this.setY( y + p.getDy() - p.getHeight()/30);
+                this.setVy(-vY);
+            }
+            else if ( y - p.getY() > p.getHeight()/4){ // BOTTOM
+                this.setY( y + p.getDy() + p.getHeight()/30);
+                this.setVy(-vY);
+            }
+            this.moveBall(p, SPEED_COLLISION_TOPLAYER_X *Math.abs(p.getX() - x),  SPEED_COLLISION_TOPLAYER_Y * Math.abs(p.getY()-y));
+        }
+       //Collision field-ball :
             //Prevent bug if it does : center the ball if it goes out the field
         if(!this.intersects(f))
             this.centerBall(f);
@@ -255,13 +285,7 @@ public class Ball extends Ellipse2D.Double {
         if (this.touchRectInBottom(f) || this.touchRectInTop(f)) {
             this.setVy(-vY);
         }
-        
-        //For the player - ball collision
 
-        //Just to prevent if the ball goes into the shape player
-        if (this.intersects(p)){
-            this.moveBall(p, SPEED_COLLISION_TOPLAYER_X *Math.abs(p.getX() - x),  SPEED_COLLISION_TOPLAYER_Y * Math.abs(p.getY()-y));
-        }
         this.setMovement();
     }
 
