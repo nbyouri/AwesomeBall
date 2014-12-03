@@ -44,44 +44,44 @@ public class SpaceBalls extends JFrame {
 	Board mainBoard;
 	public SpaceBalls() {
 
-        // full screen code
-        /*GraphicsEnvironment env = 
+		// full screen code
+		/*GraphicsEnvironment env = 
          	GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = env.getDefaultScreenDevice();
         setUndecorated(true);
         defaultScreen.setFullScreenWindow(this);*/
-		
+
 		// our main window is 850x600 for now.
 		this.setSize(850, 600);
-		
+
 		// initialize a board which takes the whole screen
 		mainBoard = new Board(this.getSize());
 
 		// add the jpanel in the jframe
-        add(mainBoard);
-    
-        // jframe settings
-        this.setAlwaysOnTop(true);
-        this.setTitle("SpaceBalls");
-        this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
-      
-    }    
+		add(mainBoard);
 
-    public static void main(String[] args) {
-    	// main loop
-        EventQueue.invokeLater(new Runnable() {
-        	// main application
-            @Override
-            public void run() {
-                SpaceBalls ex = new SpaceBalls();
-                /*PositionBox box = new PositionBox(
+		// jframe settings
+		this.setAlwaysOnTop(true);
+		this.setTitle("SpaceBalls");
+		this.setResizable(false);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+
+	}    
+
+	public static void main(String[] args) {
+		// main loop
+		EventQueue.invokeLater(new Runnable() {
+			// main application
+			@Override
+			public void run() {
+				SpaceBalls ex = new SpaceBalls();
+				/*PositionBox box = new PositionBox(
                 	(JFrame)ex, ex.mainBoard.getPlayer()
                 );*/
-                ex.setVisible(true);
-                //box.setVisible(true);
-            }
-        });
-    }
+				ex.setVisible(true);
+				//box.setVisible(true);
+			}
+		});
+	}
 }

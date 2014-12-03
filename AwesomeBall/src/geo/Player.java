@@ -179,9 +179,9 @@ public class Player extends Field {
 	 */
 	public boolean insideGoals(Field f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() &&
-				 this.getY() - 1 >= f.getGoalright().getY()) ||
+				this.getY() - 1 >= f.getGoalright().getY()) ||
 				(this.getX() > f.getGoalleft().getX() &&
-				 this.getY() - 1 >= f.getGoalleft().getY()));
+						this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/*
@@ -200,11 +200,11 @@ public class Player extends Field {
 	}
 
 	public boolean touchRectInRight(Field f) {
-	
+
 		return (f.getMaxX() - this.getMaxX() <= 1.5 && 
 				(this.getY() < f.getGoalright().getY() ||
 						this.getMaxY() > f.getGoalright().getMaxY()
-				) || this.getMaxX() + 1 >= f.getGoalright().getMaxX());
+						) || this.getMaxX() + 1 >= f.getGoalright().getMaxX());
 	}
 
 	/*
@@ -216,7 +216,7 @@ public class Player extends Field {
 		return (this.getX() - f.getX() <= 1.5 &&
 				(this.getY() < f.getGoalright().getY() ||
 						this.getMaxY() > f.getGoalright().getMaxY()
-				) || this.getX() <= f.getGoalleft().getX());
+						) || this.getX() <= f.getGoalleft().getX());
 	}
 
 	public boolean touchGoalLeftBottom(Field f) {

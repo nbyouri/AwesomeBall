@@ -19,14 +19,12 @@ public class Button extends JButton {
 	private Border buttonBorder;
 	private Border buttonPressedBorder;
 	
-	// constants
 	public static final int FONT_SIZE_NORMAL = 12;
 	public static final int BORDER_NORMAL = 1;
 	
 	public Button(String title, ActionListener al) {
 		super(title);
 		
-		// default settings
 		buttonFont = new Font("Helvetica", Font.BOLD, FONT_SIZE_NORMAL);
 		buttonBorder = new LineBorder(Color.cyan, BORDER_NORMAL);
 		buttonPressedBorder = new LineBorder(Color.yellow, BORDER_NORMAL);
@@ -43,12 +41,14 @@ public class Button extends JButton {
 		this.addActionListener(al);
 		this.setRolloverEnabled(true);
 
-		// change color when clicked
+		/**
+		 * change color when clicked
+		 * or hovered. 
+		 */
 		this.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent evt) {
 				if (getModel().isPressed()) {
-					// don't use this here
 					setForeground(buttonPressedFgColor);
 					setBorder(buttonPressedBorder);
 				} else if (getModel().isRollover()) {

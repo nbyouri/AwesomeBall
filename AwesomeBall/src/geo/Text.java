@@ -9,26 +9,32 @@ import java.awt.geom.Rectangle2D;
 public class Text extends Rectangle2D.Double {
 	private Font textFont;
 	private String str;
+	
 	public Text() {
 		super(0, 0, 0, 0);
 		this.str = null;
 		textFont = null;
 	}
+	
+	/**
+	 * Set the text to Helvetica.
+	 * @param str
+	 */
 	public Text(String str) {
 		super(0, 0, 0, 0);
 		this.str = str;
-		
+
 		textFont = new Font("Helvetica", Font.BOLD, 12);
 	}
-	
+
 	public void setStr(String str) {
 		this.str = str;
 	}
-	
+
 	public String getStr() {
 		return this.str;
 	}
-	
+
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.cyan);
 		g2.setFont(this.textFont);

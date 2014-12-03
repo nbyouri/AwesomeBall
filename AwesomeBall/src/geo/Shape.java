@@ -12,7 +12,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	private double dx;
 	private double dy;
 	private ArrayList<Line2D.Double> sides;
-	
+
 	/*
 	 * 
 	 * 
@@ -28,28 +28,28 @@ public abstract class Shape extends Rectangle2D.Double {
 		DOWN     (3, "down"),
 		CENTER_V (4, "center_vertical"),
 		CENTER_H (5, "center_horizontal");
-		
+
 		private final int id;
 		private final String name;
-		
+
 		private Side(int s, String n) {
 			this.id = s;
 			this.name = n;
 		}
-		
+
 		public int getId() {
 			return this.id;
 		}
-		
+
 		public String getName() {
 			return this.name;
 		}
 	};
-	
+
 	public Shape() {
 		// initial values
 		super(0, 0, 0, 0);
-		
+
 		sides = new ArrayList<Line2D.Double>();
 
 		for (int i = 0; i < 6; i++)
@@ -74,15 +74,15 @@ public abstract class Shape extends Rectangle2D.Double {
 	public void setDy(double dy) {
 		this.dy = dy;
 	}
-	
+
 	public ArrayList<Line2D.Double> getSides() {
 		return sides;
 	}
-	
+
 	public Line2D getSide(int i) {
 		return sides.get(i);
 	}
-	
+
 	/*
 	 * 
 	 * Near any side
@@ -96,7 +96,7 @@ public abstract class Shape extends Rectangle2D.Double {
 				this.getX()    - 5 <= s.getMaxX() &&
 				this.getMaxX() + 5 >= s.getX());
 	}
-	
+
 	/*
 	 * 
 	 * Near vertically
@@ -106,7 +106,7 @@ public abstract class Shape extends Rectangle2D.Double {
 		return (this.getX()    <= s.getMaxX() &&
 				this.getMaxX() >= s.getX());
 	}
-	
+
 	/*
 	 * 
 	 * Near horizontally
@@ -116,53 +116,53 @@ public abstract class Shape extends Rectangle2D.Double {
 		return (this.getY()    <= s.getMaxY() &&
 				this.getMaxY() >= s.getY());
 	}
-	
+
 	/*
 	 * 
 	 * Near a specific side
 	 * 
 	 */
 	public boolean near(Rectangle2D s, int line) {
-		
+
 		// changes values to int to avoid 
 		// confusion after diagonal change
 		int x  = (int)this.getX();
 		int mx = (int)this.getMaxX();
 		int y  = (int)this.getY();
 		int my = (int)this.getMaxY();
-		
+
 		/*
 		 * 
 		 * Leave two pixels of space where a hit happens
 		 * 
 		 */
 		if (line == Side.UP.getId()) {
-		
+
 			return ((my + 1 >= s.getY()) &&
 					(my - 1 <= s.getY()) && this.near(s));
-			
+
 		}  if (line == Side.DOWN.getId()) {
-			
+
 			return ((y - 1 <= s.getMaxY()) &&
 					(y + 1 >= s.getMaxY()) && this.nearX(s));
 
 		}  if (line == Side.LEFT.getId()) {
-			
+
 			return ((mx - 1 <= s.getX()) &&
 					(mx + 1 >= s.getX()) && this.nearY(s));
-			
+
 		}  if (line == Side.RIGHT.getId()) {
-			
+
 			return ((x - 1 <= s.getMaxX()) &&
 					(x + 1 >= s.getMaxX()) && this.nearY(s));
-			
+
 		} else {
-			
+
 			return false;
-			
+
 		}
 	}
-	
+
 	/*
 	 * 
 	 * If the shape isn't touching any side in the other shape.
@@ -183,11 +183,11 @@ public abstract class Shape extends Rectangle2D.Double {
 	public boolean touchRectInLeft(Rectangle2D r) {
 		return (this.getX() + 1 < r.getX());
 	}
-	
+
 	public boolean touchRectInTop(Rectangle2D r) {
 		return (this.getY() - 1 < r.getY());
 	}
-	
+
 	public boolean touchRectInRight(Rectangle2D r) {
 		return (this.getMaxX() + 1 > r.getMaxX());
 	}
@@ -205,7 +205,7 @@ public abstract class Shape extends Rectangle2D.Double {
 		this.setRect(x, y, this.getWidth(), this.getHeight());
 		this.setSides();
 	}
-	
+
 	/*
 	 * 
 	 * Set the shape position and size.
@@ -215,7 +215,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	public void setSize(double x, double y, double width, double height) {
 		super.setRect(x, y, width, height);
 	}
-	
+
 	/*
 	 * 
 	 * Move shape in another shape.
@@ -244,7 +244,7 @@ public abstract class Shape extends Rectangle2D.Double {
 		}
 
 	}
-	
+
 	/*
 	 * 
 	 * Set sides from shape location and size.
@@ -254,19 +254,19 @@ public abstract class Shape extends Rectangle2D.Double {
 	public void setSides() {
 		this.sides.get(Side.LEFT.getId()).setLine(this.getX(),  
 				this.getY(), this.getX(), this.getMaxY());
-		
+
 		this.sides.get(Side.UP.getId()).setLine(this.getX(),		
 				this.getY(), this.getMaxX(), this.getY());
-		
+
 		this.sides.get(Side.RIGHT.getId()).setLine(this.getMaxX(), this.getY(), 
 				this.getMaxX(), this.getMaxY());
-		
+
 		this.sides.get(Side.DOWN.getId()).setLine(this.getX(),
 				this.getMaxY(), this.getMaxX(), this.getMaxY());
-		
+
 		this.sides.get(Side.CENTER_V.getId()).setLine(this.getCenterX(), 
 				this.getY(), this.getCenterX(), this.getY() + this.getHeight());
-		
+
 		this.sides.get(Side.CENTER_H.getId()).setLine(this.getX(), 
 				this.getCenterY(), this.getWidth() + this.getX(), 
 				this.getCenterY()); 

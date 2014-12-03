@@ -30,7 +30,7 @@ public class Board extends JPanel implements ActionListener {
 	private Field field;
 	private Button exit;
 	private Keys keys;
-	
+
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
 	public static final int TOP_MENUS_Y_POS = 15;
@@ -46,73 +46,73 @@ public class Board extends JPanel implements ActionListener {
 	public static final int SCORES_WIDTH = 50;
 	public static final int FPS = 5;
 	public static final int EXIT_SUCCESS = 0;
-        
+
 	/**
-         * Propportionalising the field
-         * 
-         * Setup the game title, the field
-         * the player (two in the future), 
-         * the ball, key indicator,
-         * rotation indicator.
-         * 
-         * Configure the key listener
-         * and the window
-         * 
-         * Set a quit button and 
-         * a timer
-         * 
-         * @param boardSize 
-         */
+	 * Propportionalising the field
+	 * 
+	 * Setup the game title, the field
+	 * the player (two in the future), 
+	 * the ball, key indicator,
+	 * rotation indicator.
+	 * 
+	 * Configure the key listener
+	 * and the window
+	 * 
+	 * Set a quit button and 
+	 * a timer
+	 * 
+	 * @param Dimension : The screen size. 
+	 */
 	public Board(Dimension boardSize) {
 
 		// proportional field , H = 60yds, W = 100yds, Center radius = 10yds
 		double field_height = boardSize.getHeight() - (3 * BOARD_Y_POS);
 		double field_width = (field_height / 6)*10;
-		
-		
+
+
 		// setup game title
 		title = new Text("SpaceShip Collider");
 		title.setRect(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 
 				TOP_TITLE_WIDTH, TOP_MENUS_HEIGHT);
-		
+
 		// setup field 
 		field = new Field();
 		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
 				field_width, field_height);
 		field.setCenterCircle();
 
-		
+
 		// setup player
 		player = new Player();
-		
+
 		// setup ball
 		ball = new Ball(field.getCenterX(), 
 				field.getY() + (field_height / 2) - 10,
 				player.getWidth(), player.getHeight());
-				
-		
+
+
 		// setup key indicator
 		keys = new Keys();
 		keys.setSize(KEYS_X_POS, TOP_MENUS_Y_POS, 
 				KEYS_WIDTH, TOP_MENUS_HEIGHT);
-		
+
 		// setup rotation indicator
 		rotation = new Text(null);
 		rotation.setRect(ROTATION_X, TOP_MENUS_Y_POS, 
 				ROTATION_WIDTH, TOP_MENUS_HEIGHT);
-		
+
 		// setup score indicator
 		score = new Text(null);
 		score.setRect(SCORES_X, TOP_MENUS_Y_POS, 
 				SCORES_WIDTH, TOP_MENUS_HEIGHT);
-		
+
 		// key listener and window settings
 		addKeyListener(new KeyEvents());
 		setFocusable(true);
 		setBackground(Color.black);
 		setDoubleBuffered(true);
 		setLayout(null);
-		
+
 		// quit button, add here and not in paint() 
 		// or it won't work
 		exit = new Button("EXIT", new CloseListener());
@@ -121,53 +121,50 @@ public class Board extends JPanel implements ActionListener {
 				BOARD_X_POS + (int)field.getHeight() + 
 				(int)((boardSize.getHeight() - 
 						(BOARD_Y_POS + field.getHeight())) / 4),
-				(int)field.getWidth(), TOP_MENUS_HEIGHT);
+						(int)field.getWidth(), TOP_MENUS_HEIGHT);
 		add(exit);
 
 		// timer
 		timer = new Timer(FPS, this);
 		timer.start();
 	}
-        /**
-         * Draw all stuff !
-         * @param g 
-         */
+
 	public void paint(Graphics g) {
 		super.paint(g);
 
 		Graphics2D g2 = (Graphics2D)g;
-		
+
 		// smooth rendering, otherwise fonts look bad
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
-	    		RenderingHints.VALUE_ANTIALIAS_ON);
-	    g2.setRenderingHint(RenderingHints.KEY_RENDERING, 
-	    		RenderingHints.VALUE_RENDER_QUALITY);
-	    
-	    // draw title
-	    title.draw(g2);
-	    
-	    // draw field and it's center line
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_RENDERING, 
+				RenderingHints.VALUE_RENDER_QUALITY);
+
+		// draw title
+		title.draw(g2);
+
+		// draw field and it's center line
 		field.draw(g2);
 		field.setSides();
 		field.drawCenterLines(g2);
-		
+
 		// draw player
 		player.draw(g2);
-		
+
 		// draw ball
 		ball.draw(g2);
 		//ball.move(player, field);
-		
+
 		// draw key box
 		keys.draw(g2);
 		keys.setSides();
 		keys.drawSides(g2, keys.getPressedKeys());
-		
+
 		// draw rotation box
 		rotation.setStr(
 				Player.Direction.getName(player.getImg().getRotation())
-		);
-		
+				);
+
 		rotation.draw(g2);
 
 		// draw score box
@@ -178,34 +175,33 @@ public class Board extends JPanel implements ActionListener {
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
-        /**
-         * Get the player
-         * @return 
-         */
+	
+	/**
+	 * Get the player
+	 * @return 
+	 */
 	public Player getPlayer() {
 		return player;
 	}
-        /**
-         * Set the player
-         * @param player 
-         */
+	
+	/**
+	 * Set the player
+	 * @param player 
+	 */
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-        /**
-         *  ????
-         * @param e 
-         */
+
 	public void actionPerformed(ActionEvent e) {
 		player.moveIn(field);
-                ball.move(field,player);
-                ball.brake();
+		ball.move(field,player);
+		ball.brake();
 		repaint();
 	}
+	
 	/**
-         * Listen to key events and update player location
-         */
-
+	 * Listen to key events and update player location
+	 */
 	private class KeyEvents extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 
@@ -256,19 +252,20 @@ public class Board extends JPanel implements ActionListener {
 			}
 		}
 	}
+	
 	/**
-         * Exit button action implementation
-         */
+	 * Exit button action implementation
+	 */
 	private class CloseListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			exitProgram();
 		}
 	}
-	
+
 	/**
-         * Exit in a clean way
-         */
+	 * Exit in a clean way
+	 */
 	public void exitProgram() {
 		Container frame = this.getParent();
 		do {

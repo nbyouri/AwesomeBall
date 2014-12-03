@@ -17,7 +17,11 @@ public class Images {
 	}
 
 
-	// load image
+	/**
+	 * load image
+	 * @param path
+	 * @return
+	 */
 	public Image load(String path) {
 		ImageIcon ii = new ImageIcon(getClass().getResource(path));
 		width = ii.getIconWidth();
@@ -55,7 +59,10 @@ public class Images {
 		this.height = height;
 	}
 
-	// return normalised angle
+	/**
+	 * return normalised angle
+	 * @return int : rotation
+	 */
 	public int getRotation() {
 		while (rotation <= -180) rotation += 360;
 		while (rotation > 180) rotation -= 360;
@@ -66,7 +73,11 @@ public class Images {
 		this.rotation = rotation;
 	}
 
-	// rotate the image
+	/** 
+	 * rotate the image.
+	 * @param img
+	 * @param rotation
+	 */
 	public void rotate(Image img, int rotation) {
 		// only rotate if change of key
 		if (this.getRotation() != rotation) {
@@ -84,7 +95,11 @@ public class Images {
 		}
 	}
 
-	// flip image around vertical axis
+	/**
+	 * flip image around vertical axis
+	 * @param img
+	 * @param rotation
+	 */
 	public void flip(Image img, int rotation) {
 		if (this.getRotation() != rotation) {
 			ImageIcon ii = new ImageIcon(img);
