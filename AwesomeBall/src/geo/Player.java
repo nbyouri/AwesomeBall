@@ -144,7 +144,7 @@ public class Player extends Field {
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
 		g2.setColor(Color.WHITE);
-		g2.draw(this.ell);
+		//g2.draw(this.ell);
 	}
 
 	/*

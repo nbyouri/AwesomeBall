@@ -167,12 +167,6 @@ public class Board extends JPanel implements ActionListener {
 
 		rotation.draw(g2);
 		
-		// debug 
-		System.out.println("Left => " + player.left);
-		System.out.println("Right => " + player.right);
-		System.out.println("Up => " + player.up);
-		System.out.println("Down => " + player.down);
-
 		// draw score box
 		score.setStr(Integer.toString(player.getScore()));
 		score.draw(g2);
