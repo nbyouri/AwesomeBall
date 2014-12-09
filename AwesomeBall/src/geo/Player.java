@@ -295,4 +295,9 @@ public class Player extends Field {
 		}
 
 	}
+
+	@Override
+	public String toString() {
+		return "Player [x=" + x + ", y=" + y + "]";
+	}
 }

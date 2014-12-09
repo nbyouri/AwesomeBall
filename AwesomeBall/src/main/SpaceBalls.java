@@ -3,6 +3,7 @@ package main;
 import gui.Board;
 //import gui.PositionBox;
 
+
 import java.awt.EventQueue;
 //import java.awt.GraphicsDevice;
 //import java.awt.GraphicsEnvironment;
@@ -11,7 +12,10 @@ import java.awt.EventQueue;
 
 
 
+
 import javax.swing.JFrame;
+
+import net.Server;
 
 /*
  * TODO:
@@ -42,7 +46,7 @@ import javax.swing.JFrame;
 public class SpaceBalls extends JFrame {
 
 	Board mainBoard;
-	public SpaceBalls() {
+	public SpaceBalls() throws Exception {
 
 		// full screen code
 		/*GraphicsEnvironment env = 
@@ -60,8 +64,16 @@ public class SpaceBalls extends JFrame {
 		// add the jpanel in the jframe
 		add(mainBoard);
 
+		// server
+		try {
+			Server s = new Server(mainBoard.getPlayer());
+			s.start();
+			//s.run();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		// jframe settings
-		this.setAlwaysOnTop(true);
 		this.setTitle("SpaceBalls");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,12 +87,12 @@ public class SpaceBalls extends JFrame {
 			// main application
 			@Override
 			public void run() {
-				SpaceBalls ex = new SpaceBalls();
-				/*PositionBox box = new PositionBox(
-                	(JFrame)ex, ex.mainBoard.getPlayer()
-                );*/
-				ex.setVisible(true);
-				//box.setVisible(true);
+				try {
+					SpaceBalls ex = new SpaceBalls();
+					ex.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
