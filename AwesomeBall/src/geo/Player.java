@@ -2,12 +2,15 @@ package geo;
 
 import gui.Images;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 
 @SuppressWarnings("serial")
 public class Player extends Field {
 	private Images img;
 	private int score;
+	private Ellipse2D.Double ell;
 
 	// constants
 	public static final int SPEED_ONE = 1;
@@ -77,6 +80,10 @@ public class Player extends Field {
 		this.width = img.getWidth();
 		this.height = img.getHeight();
 
+		// set ellipse for ball collision
+		this.ell = new Ellipse2D.Double(
+				this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		
 		img.setRotation(INIT_ROT);
 
 		// initial position
@@ -103,6 +110,22 @@ public class Player extends Field {
 		this.score = sore;
 	}
 
+	
+	public Ellipse2D.Double getEll() {
+		return ell;
+	}
+
+	public void setEll(Ellipse2D.Double ell) {
+		this.ell = ell;
+	}
+
+	// set ellipse location as well
+	@Override
+	public void setLocation(double x, double y) {
+		this.setRect(x, y, this.getWidth(), this.getHeight());
+		this.ell.setFrame(x, y, this.getWidth(), this.getHeight());
+	}
+	
 	// draw rectangle and ball
 	public void draw(Graphics2D g2) {
 		g2.drawImage(img.getPlayer(), 
@@ -110,7 +133,8 @@ public class Player extends Field {
 				(int)this.getY(), 
 				(int)this.getWidth(), 
 				(int)this.getHeight(), null);
-		//g2.draw(this);
+		g2.setColor(Color.WHITE);
+		g2.draw(this.ell);
 	}
 
 	/*
