@@ -11,6 +11,10 @@ public class Player extends Field {
 	private Images img;
 	private int score;
 	private Ellipse2D.Double ell;
+	public Boolean left;
+	public Boolean right;
+	public Boolean up;
+	public Boolean down;
 
 	// constants
 	public static final int SPEED_ONE = 1;
@@ -83,12 +87,17 @@ public class Player extends Field {
 		// set ellipse for ball collision
 		this.ell = new Ellipse2D.Double(
 				this.getX(), this.getY(), this.getWidth(), this.getHeight());
-		
+
 		img.setRotation(INIT_ROT);
 
 		// initial position
 		this.x = INIT_X;
 		this.y = INIT_Y;
+
+		this.up = false;
+		this.down = false;
+		this.left = false;
+		this.right = false;
 
 		this.setSides();
 
@@ -110,7 +119,7 @@ public class Player extends Field {
 		this.score = sore;
 	}
 
-	
+
 	public Ellipse2D.Double getEll() {
 		return ell;
 	}
@@ -125,9 +134,10 @@ public class Player extends Field {
 		this.setRect(x, y, this.getWidth(), this.getHeight());
 		this.ell.setFrame(x, y, this.getWidth(), this.getHeight());
 	}
-	
+
 	// draw rectangle and ball
 	public void draw(Graphics2D g2) {
+		this.setRotation();
 		g2.drawImage(img.getPlayer(), 
 				(int)this.getX(), 
 				(int)this.getY(), 
@@ -138,62 +148,83 @@ public class Player extends Field {
 	}
 
 	/*
+	 * Set rotation from key events
+	 */
+	public void setRotation() {
+		if (left) { 
+			setLeft(); 
+		}
+
+		if (right) { 
+			setRight(); 
+		}
+
+		if (up) { 
+			setUp(); 
+		}
+
+		if (down) { 
+			setDown(); 
+		}
+	}
+
+	/*
 	 * 
 	 * Draw image left, right, up, down
 	 * and rotate and or flip the image
 	 * depending on the previous direction.
 	 * 
 	 */
-	public void drawLeft() {
+	public void setLeft() {
 		int rotation = img.getRotation();
-		if (rotation == Player.Direction.RIGHT.getId()) {
-			img.flip(img.getPlayer(), Player.Direction.LEFT.getId());
-		} else if (rotation == Player.Direction.UP.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
-			img.flip(img.getPlayer(), Player.Direction.LEFT.getId());
-		} else if (rotation == Player.Direction.DOWN.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.UP.getId());
-			img.flip(img.getPlayer(), Player.Direction.LEFT.getId());
+		if (rotation == Direction.RIGHT.getId()) {
+			img.flip(img.getPlayer(), Direction.LEFT.getId());
+		} else if (rotation == Direction.UP.getId()) {
+			img.rotate(img.getPlayer(), Direction.DOWN.getId());
+			img.flip(img.getPlayer(), Direction.LEFT.getId());
+		} else if (rotation == Direction.DOWN.getId()) {
+			img.rotate(img.getPlayer(), Direction.UP.getId());
+			img.flip(img.getPlayer(), Direction.LEFT.getId());
 		}
-		img.setRotation(Player.Direction.LEFT.getId());
+		img.setRotation(Direction.LEFT.getId());
 	}
 
-	public void drawRight() {
+	public void setRight() {
 		int rotation = img.getRotation();
-		if (rotation == Player.Direction.LEFT.getId()) {
-			img.flip(img.getPlayer(), Player.Direction.RIGHT.getId());
-		} else if (rotation == Player.Direction.UP.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
-		} else if (rotation == Player.Direction.DOWN.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.UP.getId());
+		if (rotation == Direction.LEFT.getId()) {
+			img.flip(img.getPlayer(), Direction.RIGHT.getId());
+		} else if (rotation == Direction.UP.getId()) {
+			img.rotate(img.getPlayer(), Direction.DOWN.getId());
+		} else if (rotation == Direction.DOWN.getId()) {
+			img.rotate(img.getPlayer(), Direction.UP.getId());
 		}
-		img.setRotation(Player.Direction.RIGHT.getId());
+		img.setRotation(Direction.RIGHT.getId());
 	}
 
-	public void drawUp() {
+	public void setUp() {
 		int rotation = img.getRotation();
-		if (rotation == Player.Direction.LEFT.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
-			img.flip(img.getPlayer(), Player.Direction.UP.getId());
-		} else if (rotation == Player.Direction.RIGHT.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.UP.getId());
-		} else if (rotation == Player.Direction.DOWN.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.LEFT.getId());
+		if (rotation == Direction.LEFT.getId()) {
+			img.rotate(img.getPlayer(), Direction.DOWN.getId());
+			img.flip(img.getPlayer(), Direction.UP.getId());
+		} else if (rotation == Direction.RIGHT.getId()) {
+			img.rotate(img.getPlayer(), Direction.UP.getId());
+		} else if (rotation == Direction.DOWN.getId()) {
+			img.rotate(img.getPlayer(), Direction.LEFT.getId());
 		}
-		img.setRotation(Player.Direction.UP.getId());
+		img.setRotation(Direction.UP.getId());
 	}
 
-	public void drawDown() {
+	public void setDown() {
 		int rotation = img.getRotation();
-		if (rotation == Player.Direction.LEFT.getId()) {
-			img.flip(img.getPlayer(), Player.Direction.DOWN.getId());
-			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
-		} else if (rotation == Player.Direction.UP.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.LEFT.getId());
-		} else if (rotation == Player.Direction.RIGHT.getId()) {
-			img.rotate(img.getPlayer(), Player.Direction.DOWN.getId());
+		if (rotation == Direction.LEFT.getId()) {
+			img.flip(img.getPlayer(), Direction.DOWN.getId());
+			img.rotate(img.getPlayer(), Direction.DOWN.getId());
+		} else if (rotation == Direction.UP.getId()) {
+			img.rotate(img.getPlayer(), Direction.LEFT.getId());
+		} else if (rotation == Direction.RIGHT.getId()) {
+			img.rotate(img.getPlayer(), Direction.DOWN.getId());
 		}
-		img.setRotation(Player.Direction.DOWN.getId());
+		img.setRotation(Direction.DOWN.getId());
 	}
 
 	/*
@@ -261,21 +292,21 @@ public class Player extends Field {
 	 * 
 	 */
 	public void setMovement() {
-		if (this.getDx() == Player.SPEED_ONE) {
-			if (this.getDy() == Player.SPEED_ONE) {
-				this.setDx(Player.SPEED_ONE_DIAG);
-				this.setDy(Player.SPEED_ONE_DIAG);
-			} else if (this.getDy() == -Player.SPEED_ONE) {
-				this.setDx(Player.SPEED_ONE_DIAG);
-				this.setDy(-Player.SPEED_ONE_DIAG);
+		if (this.getDx() == SPEED_ONE) {
+			if (this.getDy() == SPEED_ONE) {
+				this.setDx(SPEED_ONE_DIAG);
+				this.setDy(SPEED_ONE_DIAG);
+			} else if (this.getDy() == -SPEED_ONE) {
+				this.setDx(SPEED_ONE_DIAG);
+				this.setDy(-SPEED_ONE_DIAG);
 			}
-		} else if (this.getDx() == -Player.SPEED_ONE) {
-			if (this.getDy() == Player.SPEED_ONE) {
-				this.setDx(-Player.SPEED_ONE_DIAG);
-				this.setDy(Player.SPEED_ONE_DIAG);
-			} else if (this.getDy() == -Player.SPEED_ONE) {
-				this.setDx(-Player.SPEED_ONE_DIAG);
-				this.setDy(-Player.SPEED_ONE_DIAG);
+		} else if (this.getDx() == -SPEED_ONE) {
+			if (this.getDy() == SPEED_ONE) {
+				this.setDx(-SPEED_ONE_DIAG);
+				this.setDy(SPEED_ONE_DIAG);
+			} else if (this.getDy() == -SPEED_ONE) {
+				this.setDx(-SPEED_ONE_DIAG);
+				this.setDy(-SPEED_ONE_DIAG);
 			}
 		}
 	}

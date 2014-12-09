@@ -166,6 +166,12 @@ public class Board extends JPanel implements ActionListener {
 				);
 
 		rotation.draw(g2);
+		
+		// debug 
+		System.out.println("Left => " + player.left);
+		System.out.println("Right => " + player.right);
+		System.out.println("Up => " + player.up);
+		System.out.println("Down => " + player.down);
 
 		// draw score box
 		score.setStr(Integer.toString(player.getScore()));
@@ -204,25 +210,24 @@ public class Board extends JPanel implements ActionListener {
 	 */
 	private class KeyEvents extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
-
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_LEFT) {
 				player.setDx(-Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_ON);
-				player.drawLeft();
+				player.left = true;
 			} else if (key == KeyEvent.VK_UP) {
 				player.setDy(-Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_ON);
-				player.drawUp();
+				player.up = true;
 			} else if (key == KeyEvent.VK_RIGHT) {
 				player.setDx(Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_ON);
-				player.drawRight();
+				player.right = true;
 			} else if (key == KeyEvent.VK_DOWN) {
 				player.setDy(Player.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
-				player.drawDown();
+				player.down = true;
 			} else if (key == KeyEvent.VK_SPACE) {
 				ball.shootBall(field,player);
 			}
@@ -234,19 +239,21 @@ public class Board extends JPanel implements ActionListener {
 			if (key == KeyEvent.VK_LEFT) {
 				player.setDx(Player.STOP);
 				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_OFF);
+				player.left = false;
 			} else if (key == KeyEvent.VK_UP) {
 				player.setDy(Player.STOP);
 				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_OFF);
+				player.up = false;
 			} else if (key == KeyEvent.VK_RIGHT) {
 				player.setDx(Player.STOP);
 				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_OFF);
+				player.right = false;
 			} else if (key == KeyEvent.VK_DOWN) {
 				player.setDy(Player.STOP);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
+				player.down = false;
 			} else if (key == KeyEvent.VK_ENTER) {
 				ball.centerBall(field);
-			} else if (key == KeyEvent.VK_SPACE) {
-				//ball.shoot(player, field);
 			} else if (key == KeyEvent.VK_ESCAPE) {
 				exitProgram();
 			}
