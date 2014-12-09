@@ -23,23 +23,6 @@ import net.Server;
  * javadoc
  * block comments
  * MVC
- * 
- * 
- * FUNCTIONALITY:
- * acceleration
- * sounds
- * shoot bullets
- * threading
- * other jpanel for ball / player bounds
- * 
- * QUICKFIX:
- * update ball location on key release
- * show ball/spacecraft thruster
- * stick ball when in front + space key
- * shoot the ball when space key pressed
- * others can steal the ball if in front + space key
- * settings panel
- * 
  */
 
 @SuppressWarnings("serial")

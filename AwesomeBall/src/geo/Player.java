@@ -11,10 +11,10 @@ public class Player extends Field {
 	private Images img;
 	private int score;
 	private Ellipse2D.Double ell;
-	public Boolean left;
-	public Boolean right;
-	public Boolean up;
-	public Boolean down;
+	public  Boolean left;
+	public  Boolean right;
+	public  Boolean up;
+	public  Boolean down;
 
 	// constants
 	public static final int SPEED_ONE = 1;
