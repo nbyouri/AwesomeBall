@@ -9,16 +9,16 @@ import java.awt.geom.Ellipse2D;
  * @author Mouton Youri and Sias Nicolas
  * 
  * TODO : Les goals
- *        Collision corner player-ball
- *        Bug borders
  *        
  */
 @SuppressWarnings("serial")
 public class Ball extends Ellipse2D.Double {
     private double vX;
     private double vY;
+    public final int STOP = 0;
     public final double SPEED_SHOOT = 0.05;
     public final double BRAKE = -0.005;
+    public final double SPEED_COLLISION = 0.005;
     public Ball(double x, double y, double width, double height) {
         // Initialisation de la balle
         super.setFrame(x - (width / 2), y, width, height);
@@ -55,22 +55,30 @@ public class Ball extends Ellipse2D.Double {
         if(this.intersects(p)){
             if(this.IsTouchBorderOuterShapeX(p)){
                 if(this.IsBallLeftShape(p)){
-                    this.setVx(-vX);
-                    this.setX(p.getX() - this.getWidth());
+                    if(!this.IsTouchBorderInnerShapeX(f)){
+                        this.setX(p.getEll().getX() - this.getWidth());
+                    }
+                        this.setVx(-vX);
                 }
                 else if (this.IsBallRightShape(p)){
-                    this.setVx(-vX);
-                    this.setX(p.getX() + this.getWidth());
+                    if(!this.IsTouchBorderInnerShapeX(f)){
+                        this.setX(p.getEll().getX() + this.getWidth());
+                    }
+                        this.setVx(-vX);
                 }
             }
             if(this.IsTouchBorderOuterShapeY(p)){
                 if(this.IsBallAboveShape(p)){
-                  this.setVy(-vY);
-                  this.setY(p.getY() + this.getHeight());
+                  if(!this.IsTouchBorderInnerShapeY(f)){
+                  this.setY(p.getEll().getY()+ this.getHeight());
+                  }
+                      this.setVy(-vY);
                 }
                 else if(this.IsBallUnderShape(p)){
-                    this.setVy(-vY);
-                    this.setY(p.getY() - this.getHeight());
+                    if(!this.IsTouchBorderInnerShapeY(f)){
+                    this.setY(p.getEll().getY() - this.getHeight());
+                    }
+                        this.setVy(-vY);
                 }
             }
         }
@@ -117,10 +125,32 @@ public class Ball extends Ellipse2D.Double {
     public void centerBall(Field f){
         this.setFrame(f.getCenterX()-this.getWidth()/ 2, 
                     f.getY() + (f.getHeight() / 2) - 10, width, height);
-        this.setVx(0);
-        this.setVy(0);
+        this.setVx(STOP);
+        this.setVy(STOP);
     }
-    
+    /**
+     * Modifie la vitesse de la balle en rapport à la position du joueur p
+     * @param speed
+     * @param p 
+     */
+    public void modifySpeed(double speed, Player p){
+        if(this.IsBallRightShape(p)){
+            this.setVx(this.getVx() +
+                    Math.abs(this.getX()-p.getX())*speed);
+        }
+        else if(this.IsBallLeftShape(p)){
+            this.setVx(this.getVx() -
+                    Math.abs(this.getX()-p.getX())*speed);
+        }
+        if(this.IsBallAboveShape(p)){
+            this.setVy(this.getVy() +
+                   (Math.abs(this.getY()-p.getY())*speed));
+        }
+        else if(this.IsBallUnderShape(p)){
+            this.setVy(this.getVy() -
+                    (Math.abs(this.getY()-p.getY())*speed));
+        }
+    }
     /**
      * Methode pour le tir de la balle
      * @param p Player
@@ -128,22 +158,7 @@ public class Ball extends Ellipse2D.Double {
      */
     public void shootBall(Field f, Player p){
        if(this.IsTouchBorderOuterShapeX(p) || this.IsTouchBorderOuterShapeY(p)){ 
-        if(this.IsBallRightShape(p)){
-            this.setVx(this.getVx() +
-                    Math.abs(this.getX()-p.getX())*SPEED_SHOOT);
-        }
-        else if(this.IsBallLeftShape(p)){
-            this.setVx(this.getVx() -
-                    Math.abs(this.getX()-p.getX())*SPEED_SHOOT);
-        }
-        if(this.IsBallAboveShape(p)){
-            this.setVy(this.getVy() +
-                   (Math.abs(this.getY()-p.getY())*SPEED_SHOOT));
-        }
-        else if(this.IsBallUnderShape(p)){
-            this.setVy(this.getVy() -
-                    (Math.abs(this.getY()-p.getY())*SPEED_SHOOT));
-        }
+           this.modifySpeed(SPEED_SHOOT,p);
        }
     }
     /**
@@ -220,11 +235,6 @@ public class Ball extends Ellipse2D.Double {
     public boolean IsBallLeftShape(Shape r){
         return (this.getX() < r.getX());
     }
-    /**
-     * Est-ce que la balle touche le rectangle ?
-     * @param r Shape
-     * @return 
-     */
     
     /**
      * Est-ce que la balle est dans le goal gauche?
