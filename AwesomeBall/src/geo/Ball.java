@@ -8,35 +8,26 @@ import java.awt.geom.Ellipse2D;
  *
  * @author Mouton Youri and Sias Nicolas
  * 
- * TODO : Collision de poussée qui est chouette ( diagonale non stop )
- *        Regler le tir de la balle ( là il détecte pas tout le temps )
- *        La balle passe à travers le terrain si le joueur le pousse dedans
- *        Nettoyer le code ( Bisous )
+ * TODO : Les goals
+ *        Collision corner player-ball
+ *        Bug borders
+ *        
  */
 @SuppressWarnings("serial")
 public class Ball extends Ellipse2D.Double {
-    private final int NO_COLLISION = 0;
-    private final int COLLISION_X = 1;
-    private final int COLLISION_Y = 2;
-    private final int COLLISION_CORNER = 3;
-    private final double SPEED_COLLISION_TOPLAYER_X = 0.005;
-    private final double SPEED_COLLISION_TOPLAYER_Y = 0.005;
-    private final double SPEED_SHOT_X = 0.05;
-    private final double SPEED_SHOT_Y = 0.05;
-    private final double BRAKE = 0.001;
-    private double vX; // Velocity on axis X
-    private double vY;// Velocity on axis Y
-
+    private double vX;
+    private double vY;
+    public final double SPEED_SHOOT = 0.05;
+    public final double BRAKE = -0.005;
     public Ball(double x, double y, double width, double height) {
-        // ball initialization
+        // Initialisation de la balle
         super.setFrame(x - (width / 2), y, width, height);
-        this.setVx(0);
-        this.setVy(0);
-
+        vX = 0;
+        vY = 0;
     }
 
     /**
-     * Drawing the ball
+     * Création graphique de la balle
      */
     public void draw(Graphics2D g2) {
         this.setFrame(this.getBounds2D());
@@ -44,298 +35,248 @@ public class Ball extends Ellipse2D.Double {
         g2.draw(this);
         g2.fill(this);
     }
-
+    
     /**
-     *
-     * Put the ball in the center of the field.
-     *
+     * Methode principale de la balle utilisé par actionPerformed :
+     * applique et modifie, si nécessaire,
+     * le mouvement après un check de toutes les collisions possibles.
      * @param f
+     * @param p 
      */
-    public void centerBall(Field f) {
-        this.setX(f.getCenterX() - this.getWidth() / 2);
-        this.setY(f.getY() + (f.getHeight() / 2) - 10);
+    public void move(Field f, Player p){
+        //Collision Field - Ball :
+        if(this.IsTouchBorderInnerShapeY(f)){
+            this.setVy(-vY);
+        }
+        if(this.IsTouchBorderInnerShapeX(f)){
+            this.setVx(-vX);
+        }
+        //Collision Joueur - Ball :
+        if(this.intersects(p)){
+            if(this.IsTouchBorderOuterShapeX(p)){
+                if(this.IsBallLeftShape(p)){
+                    this.setVx(-vX);
+                    this.setX(p.getX() - this.getWidth());
+                }
+                else if (this.IsBallRightShape(p)){
+                    this.setVx(-vX);
+                    this.setX(p.getX() + this.getWidth());
+                }
+            }
+            if(this.IsTouchBorderOuterShapeY(p)){
+                if(this.IsBallAboveShape(p)){
+                  this.setVy(-vY);
+                  this.setY(p.getY() + this.getHeight());
+                }
+                else if(this.IsBallUnderShape(p)){
+                    this.setVy(-vY);
+                    this.setY(p.getY() - this.getHeight());
+                }
+            }
+        }
+        //Après tous ces checks de collision, applique un mouvement
+        this.setMovement();
+    }
+    
+        ///////// ====> METHODES SECONDAIRES <==== //////////
+    
+    /**
+     * Repositionne la balle
+     */
+    public void setMovement(){
+        this.setFrame( this.getX() + this.getVx(), this.getY() + this.getVy(), this.getWidth(), this.getHeight());
+    }
+    
+    /**
+     * Applique un freinage à la balle
+     */
+    public void brake(){
+        if(this.getVx() !=0){
+            if(this.getVx() > 0){
+                this.setVx(vX + BRAKE);
+            }
+            if (this.getVx() < 0){
+                this.setVx(vX - BRAKE);
+            }
+        }
+        if(this.getVy() != 0){
+            if(this.getVy() > 0){
+                this.setVy(vY + BRAKE);
+            }
+            if(this.getVy() < 0){
+                this.setVy(vY - BRAKE);
+            }
+        }
+    }
+    
+    /**
+     * Repositionne la balle au centre du field et
+     * réinitialise vX et vY à 0
+     * @param f Field
+     */
+    public void centerBall(Field f){
+        this.setFrame(f.getCenterX()-this.getWidth()/ 2, 
+                    f.getY() + (f.getHeight() / 2) - 10, width, height);
         this.setVx(0);
         this.setVy(0);
     }
-
+    
     /**
-     *
-     * Score of player is incremented if the ball goes in either goal.
-     *
-     * XXX : Implement side detection for multiplayer.
-     *
-     * @param p
-     * @param f
-     */
-    public void goal(Player p, Field f) {
-        //if  (this.touchRectInRight(f) || this.touchRectInLeft(f)) {
-        p.setScore(p.getScore() + 1);
-        this.centerBall(f);
-        //}
-    }
-
-    /**
-     * Does the ball's right side touch the goal's line ?
-     *
-     * @param f
-     * @return true if the ball is in the right goal
-     */
-    public boolean touchGoalRight(Field f) {
-        //return (this.getMaxX() + 5 < f.getGoalright().getMaxX());
-        return this.intersects(f.getGoalright());
-		    //return this.intersects(f.getGoalright().getX(),f.getGoalright().getY(),
-        //              f.getGoalright().getWidth(),f.getGoalright().getHeight());
-    }
-
-    /**
-     * Does the ball's left side touch the goal's line ?
-     *
-     * @param f
-     * @return true if the ball is in the left goal
-     */
-    public boolean touchGoalLeft(Field f) {
-        //return (this.getX() + 5 > f.getGoalleft().getX());
-        return this.intersects(f.getGoalleft());
-                //return this.intersects(f.getGoalleft().getX(),f.getGoalleft().getY(),
-        //                        f.getGoalleft().getWidth(),f.getGoalleft().getHeight());
-    }
-
-    /**
-     * Does the ball touch borders above and unders both goals ?
-     *
-     * @param f
-     * @return true if the ball is still the field, false if not
-     */
-    public boolean insideField(Field f) {
-        return (this.intersects(f.getX(), f.getY(), f.getWidth(), f.getHeight()));
-    }
-
-    /**
-     *
-     * @param p
-     * @return true if ball is touched by a shape
-     */
-    public boolean touchPlayer(Player p) {
-        return (this.intersects(p.getX() + 2, p.getY() + 2, p.getWidth() + 2, p.getHeight() + 2));
-               //return( (touchRectInBottom(p)) || (touchRectInTop(p)) 
-        //       || (touchRectInLeft(p)) || (touchRectInRight(p)) );
-    }
-
-/////////////////////
-    public double getVx() {
-        return vX;
-    }
-
-    public double getVy() {
-        return vY;
-    }
-
-    public void setVx(double v) {
-        vX = v;
-    }
-
-    public void setVy(double v) {
-        vY = v;
-    }
-
-    public void setX(double newX) {
-        this.x = newX;
-    }
-
-    public void setY(double newY) {
-        this.y = newY;
-    }
-
-    public void shootBall(Field f, Player p) {
-        if (touchPlayer(p)) {
-            this.moveBall(p , SPEED_SHOT_X*Math.abs(x - p.getX()), SPEED_SHOT_Y*Math.abs(y-p.getY()));
-            System.out.println("===== SHOOOOT ==== ");
-        }
-    }
-
-    /**
-     * Ball's moving after a shooting, adding speed
-     *
-     * @param p
-     * @param velocityX
-     * @param velocityY
-     */
-    public void moveBall(Player p, double velocityX , double velocityY) {
-        double vitX = 0;
-        double vitY = 0;
-        if (x - p.getX() < p.getWidth()/4) // when the ball moves right and/or hits the right              
-        {
-           // vX is the ball velocity on X axis
-            // set new velocity on x axis but convert it to negative
-            // so the ball will move left
-            vitX = vX - 1 * velocityX;
-            System.out.println("COLLISION RIGHT");
-        } else if (x - p.getX() > p.getWidth()/4) // when the ball move left and 
-        //hits the left border of the shape
-        {
-           // set new velocity (Note that I didn't convert it to negative 
-            // because i'm getting a positive value)
-            vitX = vX + velocityX;
-            System.out.println("COLLISION LEFT");
-        }
-
-        if (y - p.getY() < p.getHeight()/4) // when the ball hits the bottom border of the  
-        //shape
-        {
-           // vY is the ball velocity on Y axis
-            // set new velocity and convert it to negative 
-            // so the ball will move up
-            vitY = vY - 1 * velocityY;
-            System.out.println("COLLISION BOTTOM");
-        } else if (y - p.getY() > p.getHeight()/4 ) // when the ball hits
-        //the upper border of the shape
-        {
-           // set new velocity on Y axis
-            // so the ball will move down
-            vitY = vY + velocityY;
-            System.out.println("COLLISION TOP");
-        }
-        this.setVx(vitX);
-        this.setVy(vitY);
-    }
-
-    /**
-     * Localisation of the ball
-     */
-    public void setMovement() {
-        this.setFrame(x + vX, y + vY, width, height);
-    }
-
-    /**
-     * Function using to slow the ball
-     */
-
-    public void brake() {
-        if (vX != 0) {
-            if (vX > 0) {
-                this.setVx(vX - BRAKE);
-            }
-            if (vX < 0) {
-                this.setVx(vX + BRAKE);
-            }
-        }
-        if (vY != 0) {
-            if (vY > 0) {
-                this.setVy(vY - BRAKE);
-            }
-            if (vY < 0) {
-                this.setVy(vY + BRAKE);
-            }
-        }
-    }
-
-    /**
-     * Move the ball in the field Detecting goal
-     *
+     * Methode pour le tir de la balle
+     * @param p Player
      * @param f Field
+     */
+    public void shootBall(Field f, Player p){
+       if(this.IsTouchBorderOuterShapeX(p) || this.IsTouchBorderOuterShapeY(p)){ 
+        if(this.IsBallRightShape(p)){
+            this.setVx(this.getVx() +
+                    Math.abs(this.getX()-p.getX())*SPEED_SHOOT);
+        }
+        else if(this.IsBallLeftShape(p)){
+            this.setVx(this.getVx() -
+                    Math.abs(this.getX()-p.getX())*SPEED_SHOOT);
+        }
+        if(this.IsBallAboveShape(p)){
+            this.setVy(this.getVy() +
+                   (Math.abs(this.getY()-p.getY())*SPEED_SHOOT));
+        }
+        else if(this.IsBallUnderShape(p)){
+            this.setVy(this.getVy() -
+                    (Math.abs(this.getY()-p.getY())*SPEED_SHOOT));
+        }
+       }
+    }
+    /**
+     * Augmenter le score du joueur de 1
+     * A MODIFIER QUAND CE SERA MULTIJOUEUR ?
      * @param p Player
      */
-    public void move(Field f, Player p) {
-                
-        //For the player - ball collision
-
-        //Just to prevent if the ball goes into the shape player
-        if (this.intersects(p)){
-           if( x - p.getX() > p.getWidth()/4 ){//RIGHT
-                this.setX( x + p.getDx() - p.getWidth()/30);
-                this.setVx(-vX);
-           }
-           else if ( x - p.getX() < p.getWidth()/4 ){ // LEFT
-                this.setX( x + p.getDx() - p.getWidth()/30);
-                this.setVx(-vX);
-           }
-            if ( y - p.getY() < p.getHeight()/4){ // TOP
-                this.setY( y + p.getDy() - p.getHeight()/30);
-                this.setVy(-vY);
-            }
-            else if ( y - p.getY() > p.getHeight()/4){ // BOTTOM
-                this.setY( y + p.getDy() + p.getHeight()/30);
-                this.setVy(-vY);
-            }
-            this.moveBall(p, SPEED_COLLISION_TOPLAYER_X *Math.abs(p.getX() - x),  SPEED_COLLISION_TOPLAYER_Y * Math.abs(p.getY()-y));
-        }
-       //Collision field-ball :
-            //Prevent bug if it does : center the ball if it goes out the field
-        if(!this.intersects(f))
-            this.centerBall(f);
-            //For the field : borders collision
-        if (this.touchRectInLeft(f)) {
-            if (!touchGoalLeft(f))
-            {
-                this.setVx(-vX);
-            } else {
-                goal(p, f);
-            }
-        }
-
-        if (this.touchRectInRight(f)) {
-            if (!touchGoalRight(f)) 
-            {
-                this.setVx(-vX);
-            } else {
-                goal(p, f);
-            }
-        }
-
-        if (this.touchRectInBottom(f) || this.touchRectInTop(f)) {
-            this.setVy(-vY);
-        }
-
-        this.setMovement();
+    public void goal(Player p) {
+            p.setScore(p.getScore() + 1);
     }
-
+    
+            ////////===>LES METHODES CHECKS<====////////
     /**
-     * Does the ball touch or approach a shap's inner left side ?
-     *
-     * @param rect
+     * Est-ce que la balle touche les bordures haut ou dessous d'un rectangle
+     * dont la balle est à l'intérieur de ce rectangle ?
+     * @param r Shape
+     * @return 
+     */
+    public boolean IsTouchBorderInnerShapeY(Shape r){
+        return (this.getMaxY() + 1 > r.getMaxY()) //Bottom
+                || (this.getY() - 1 < r.getY()); //Top
+    }
+    /**
+     * Est-ce que la balle touche les bordures droite ou gauches d'un rectangle
+     * dont la balle est à l'intérieur de ce rectangle ?
+     * @param r Shape
+     * @return true if collision ball-right or left border, false if not
+     */
+    public boolean IsTouchBorderInnerShapeX(Shape r){
+        return ( (this.getX() + 1 < r.getX() )|| //Left
+                (this.getMaxX() + 1 > r.getMaxX()) ); //Right
+    }
+    
+    public boolean IsTouchBorderOuterShapeX(Shape r){
+        return (Math.abs(this.getMaxX() - r.getX()) <= r.getWidth()/2) ||
+                (Math.abs(this.getX() - r.getMaxX()) <= r.getWidth()/2);
+                //(this.getX() + 1 >= r.getMaxX()));
+    }
+    
+    public boolean IsTouchBorderOuterShapeY(Shape r){
+        return (Math.abs(this.getMaxY() - r.getY()) <= r.getHeight()/2) ||
+                (Math.abs(this.getY() - r.getMaxY()) <= r.getHeight()/2);
+    }
+    
+    /**
+     * Est-ce que la balle est au dessus du rectangle ?
+     * @param r Shape
      * @return
      */
-
-    public boolean touchRectInLeft(Shape rect) {
-        return (this.getX() + 1 < rect.getX());
-    }
-
-    /**
-     * Does the shape touch or approach a shape's inner top side ?
-     *
-     * @param rect
-     * @return
-     */
-    public boolean touchRectInTop(Shape rect) {
-        return (this.getY() - 1 < rect.getY());
-    }
-
-    /**
-     * Does the ball touch or approach a right border ?
-     *
-     * @param rect
-     * @return
-     */
-    public boolean touchRectInRight(Shape rect) {
-        return (this.getMaxX() - 1 > rect.getMaxX());
-    }
-
-    /**
-     * Does the ball touch or approach a field's inner bottom side ?
-     *
-     * @param rect
-     * @return
-     */
-    public boolean touchRectInBottom(Shape rect) {
-        return (this.getMaxY() - 1 > rect.getMaxY());
+    public boolean IsBallAboveShape(Shape r){
+        return(this.getY() > r.getY());
     }
     /**
-     * 
-     * @param rectangle
-     * @return 0 if no collision, 1 if collision on axis X, 
-     *          2 if collision on axis Y, 3 if collision on both axis
-     * 
+     * Est-ce que la balle est en dessous du rectangle ?
+     * @param r Shape
+     * @return 
      */
+    public boolean IsBallUnderShape(Shape r) {
+        return(this.getY() < r.getY());
+    }
+    /**
+     * Est-ce que la balle est à droite du rectangle ?
+     * @param r Shape
+     * @return 
+     */
+    public boolean IsBallRightShape(Shape r){
+        return(this.getX() > r.getX());
+    }
+    /**
+     * Est-ce que la balle est à gauche du rectangle ?
+     * @param r Shape
+     * @return 
+     */
+    public boolean IsBallLeftShape(Shape r){
+        return (this.getX() < r.getX());
+    }
+    /**
+     * Est-ce que la balle touche le rectangle ?
+     * @param r Shape
+     * @return 
+     */
+    
+    /**
+     * Est-ce que la balle est dans le goal gauche?
+     * @param f
+     * @return 
+     */
+    public boolean IsGoalLeft(Field f){
+        return true;
+    }
+    /**
+     * Est-ce que la balle est dans le goal droit?
+     * @param f
+     * @return 
+     */
+    public boolean IsGoalRight(Field f){
+        return true;
+    }
+    
+        //////====>LES GETTERS ET SETTERS <====///////
+    
+   public void setVx(double d){
+       this.vX = d;
+   }
+   
+   public void setVy(double d){
+       this.vY = d;
+   }
+   
+   public double getVx(){
+       return this.vX;
+   }
+   
+   public double getVy(){
+       return this.vY;
+   }
+   public double getX(){
+       return this.x;
+   }
+   public double getY(){
+       return this.y;
+   }
+   public void setY(double d){
+       this.y = d;
+   }
+   public void setX(double d){
+       this.x = d;
+   }
+}
+
+
+/*
+
  public int collisionShape (Shape rect)
 {
     double circleDistanceX = Math.abs(this.x - rect.x);
@@ -364,4 +305,4 @@ public class Ball extends Ellipse2D.Double {
     else 
         return NO_COLLISION;
 }
-}
+*/
