@@ -103,7 +103,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * 
 	 */
 	public boolean nearX(Rectangle2D s) {
-		return (this.getX()    <= s.getMaxX() &&
+		return (this.getX() <= s.getMaxX() &&
 				this.getMaxX() >= s.getX());
 	}
 
@@ -113,7 +113,7 @@ public abstract class Shape extends Rectangle2D.Double {
 	 * 
 	 */
 	public boolean nearY(Rectangle2D s) {
-		return (this.getY()    <= s.getMaxY() &&
+		return (this.getY() <= s.getMaxY() &&
 				this.getMaxY() >= s.getY());
 	}
 

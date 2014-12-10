@@ -24,7 +24,9 @@ public class Board extends JPanel implements ActionListener {
 	private Timer timer;
 	private Text title;
 	private Text score;
-	public PlayerControls player1;
+	public  PlayerControls player1;
+	public  PlayerControls player2;
+
 	private Ball ball;
 	private Field field;
 	private Button exit;
@@ -78,8 +80,11 @@ public class Board extends JPanel implements ActionListener {
 		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
 				field_width, field_height);
 		field.setCenterCircle();
+
 		// setup player 1
 		player1 = new PlayerControls(field, ball);
+		player2 = new PlayerControls(field, ball);
+		player2.player.setLocation(200,  200);
 
 
 		// setup ball
@@ -137,6 +142,9 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw player
 		player1.player.draw(g2);
+		
+		// draw player2
+		player2.player.draw(g2);
 
 		// draw ball
 		ball.draw(g2);
@@ -154,7 +162,8 @@ public class Board extends JPanel implements ActionListener {
 		player1.rotation.draw(g2);
 
 		// draw score box
-		score.setStr(Integer.toString(player1.player.getScore()));
+		score.setStr(Integer.toString(player1.player.getScore()) + " / " + 
+				Integer.toString(player2.player.getScore()));
 		score.draw(g2);
 
 		// clean
@@ -163,8 +172,12 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		player1.player.moveIn(field);
-		ball.move(field,player1.player);
+		player1.player.moveIn(field, player2.player);
+		player2.player.moveIn(field, player2.player);
+		
+		ball.move(field, player1.player);
+		ball.move(field, player2.player);
+		
 		ball.brake();
 		repaint();
 	}
@@ -172,7 +185,7 @@ public class Board extends JPanel implements ActionListener {
 	private class KeyEvents extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
-			
+
 			if (key == KeyEvent.VK_SPACE) {
 				ball.shootBall(field,player1.player);
 			}
