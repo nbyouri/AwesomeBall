@@ -23,13 +23,11 @@ import javax.swing.Timer;
 public class Board extends JPanel implements ActionListener {
 	private Timer timer;
 	private Text title;
-	private Text rotation;
 	private Text score;
-	private Player player;
+	public PlayerControls player1;
 	private Ball ball;
 	private Field field;
 	private Button exit;
-	private Keys keys;
 
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
@@ -80,26 +78,14 @@ public class Board extends JPanel implements ActionListener {
 		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
 				field_width, field_height);
 		field.setCenterCircle();
+		// setup player 1
+		player1 = new PlayerControls(field, ball);
 
-
-		// setup player
-		player = new Player();
 
 		// setup ball
 		ball = new Ball(field.getCenterX(), 
 				field.getY() + (field_height / 2) - 10,
-				player.getWidth(), player.getHeight());
-
-
-		// setup key indicator
-		keys = new Keys();
-		keys.setSize(KEYS_X_POS, TOP_MENUS_Y_POS, 
-				KEYS_WIDTH, TOP_MENUS_HEIGHT);
-
-		// setup rotation indicator
-		rotation = new Text(null);
-		rotation.setRect(ROTATION_X, TOP_MENUS_Y_POS, 
-				ROTATION_WIDTH, TOP_MENUS_HEIGHT);
+				player1.player.getWidth(), player1.player.getHeight());
 
 		// setup score indicator
 		score = new Text(null);
@@ -107,6 +93,7 @@ public class Board extends JPanel implements ActionListener {
 				SCORES_WIDTH, TOP_MENUS_HEIGHT);
 
 		// key listener and window settings
+		addKeyListener(player1.kev);
 		addKeyListener(new KeyEvents());
 		setFocusable(true);
 		setBackground(Color.black);
@@ -149,111 +136,58 @@ public class Board extends JPanel implements ActionListener {
 		field.drawCenterLines(g2);
 
 		// draw player
-		player.draw(g2);
+		player1.player.draw(g2);
 
 		// draw ball
 		ball.draw(g2);
-		//ball.move(player, field);
 
 		// draw key box
-		keys.draw(g2);
-		keys.setSides();
-		keys.drawSides(g2, keys.getPressedKeys());
+		player1.keys.draw(g2);
+		player1.keys.setSides();
+		player1.keys.drawSides(g2, player1.keys.getPressedKeys());
 
 		// draw rotation box
-		rotation.setStr(
-				Player.Direction.getName(player.getImg().getRotation())
+		player1.rotation.setStr(
+				Player.Direction.getName(player1.player.getImg().getRotation())
 				);
 
-		rotation.draw(g2);
-		
+		player1.rotation.draw(g2);
+
 		// draw score box
-		score.setStr(Integer.toString(player.getScore()));
+		score.setStr(Integer.toString(player1.player.getScore()));
 		score.draw(g2);
 
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
-	
-	/**
-	 * Get the player
-	 * @return 
-	 */
-	public Player getPlayer() {
-		return player;
-	}
-	
-	/**
-	 * Set the player
-	 * @param player 
-	 */
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
 
 	public void actionPerformed(ActionEvent e) {
-		player.moveIn(field);
-		ball.move(field,player);
+		player1.player.moveIn(field);
+		ball.move(field,player1.player);
 		ball.brake();
 		repaint();
 	}
-	
-	/**
-	 * Listen to key events and update player location
-	 */
+
 	private class KeyEvents extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
-
-			if (key == KeyEvent.VK_LEFT) {
-				player.setDx(-Player.SPEED_ONE);
-				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_ON);
-				player.left = true;
-			} else if (key == KeyEvent.VK_UP) {
-				player.setDy(-Player.SPEED_ONE);
-				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_ON);
-				player.up = true;
-			} else if (key == KeyEvent.VK_RIGHT) {
-				player.setDx(Player.SPEED_ONE);
-				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_ON);
-				player.right = true;
-			} else if (key == KeyEvent.VK_DOWN) {
-				player.setDy(Player.SPEED_ONE);
-				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
-				player.down = true;
-			} else if (key == KeyEvent.VK_SPACE) {
-				ball.shootBall(field,player);
+			
+			if (key == KeyEvent.VK_SPACE) {
+				ball.shootBall(field,player1.player);
 			}
 		}
 
 		public void keyReleased(KeyEvent e) {
 			int key = e.getKeyCode();
 
-			if (key == KeyEvent.VK_LEFT) {
-				player.setDx(Player.STOP);
-				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_OFF);
-				player.left = false;
-			} else if (key == KeyEvent.VK_UP) {
-				player.setDy(Player.STOP);
-				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_OFF);
-				player.up = false;
-			} else if (key == KeyEvent.VK_RIGHT) {
-				player.setDx(Player.STOP);
-				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_OFF);
-				player.right = false;
-			} else if (key == KeyEvent.VK_DOWN) {
-				player.setDy(Player.STOP);
-				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
-				player.down = false;
-			} else if (key == KeyEvent.VK_ENTER) {
+			if (key == KeyEvent.VK_ENTER) {
 				ball.centerBall(field);
 			} else if (key == KeyEvent.VK_ESCAPE) {
 				exitProgram();
 			}
 		}
 	}
-	
 	/**
 	 * Exit button action implementation
 	 */
