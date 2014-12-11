@@ -85,19 +85,6 @@ public class Shape extends Rectangle2D.Double {
 
 	/*
 	 * 
-	 * Near any side
-	 * 
-	 */
-	public boolean near(Rectangle2D s) {
-		// top or down side of the ball
-		return (this.getY()    - 5 <= s.getMaxY() &&
-				this.getMaxY() + 5 >= s.getY()    &&
-				this.getX()    - 5 <= s.getMaxX() &&
-				this.getMaxX() + 5 >= s.getX());
-	}
-
-	/*
-	 * 
 	 * Near vertically
 	 * 
 	 */
@@ -115,7 +102,16 @@ public class Shape extends Rectangle2D.Double {
 		return (this.getY() <= s.getMaxY() &&
 				this.getMaxY() >= s.getY());
 	}
-
+	
+	/*
+	 * 
+	 * Near any side
+	 * 
+	 */
+	public boolean near(Rectangle2D s) {
+		return (this.nearX(s) && this.nearY(s));
+	}
+	
 	/*
 	 * 
 	 * Near a specific side
