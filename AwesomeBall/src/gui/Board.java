@@ -157,10 +157,6 @@ public class Board extends JPanel implements ActionListener {
 				Integer.toString(player2.player.getScore()));
 		score.draw(g2);
 		
-		// debug
-		System.out.println(ball.rect.getFrame().toString());
-		System.out.println(ball.IsTouchBorderInnerShapeBottom(field.field));
-		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
