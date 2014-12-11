@@ -73,6 +73,7 @@ public class Player extends Field {
 	};
 
 	public Player() {  
+		super(0, 0, 0, 0);
 		// load image
 		try { 
 			img = new Images();

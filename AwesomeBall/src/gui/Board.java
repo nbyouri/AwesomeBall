@@ -76,8 +76,7 @@ public class Board extends JPanel implements ActionListener {
 				TOP_TITLE_WIDTH, TOP_MENUS_HEIGHT);
 
 		// setup field 
-		field = new Field();
-		field.setSize(BOARD_X_POS, BOARD_Y_POS, 
+		field = new Field(BOARD_X_POS, BOARD_Y_POS, 
 				field_width, field_height);
 		field.setCenterCircle();
 
@@ -137,8 +136,6 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw field and it's center line
 		field.draw(g2);
-		field.setSides();
-		field.drawCenterLines(g2);
 
 		// draw player
 		player1.player.draw(g2);
@@ -151,21 +148,13 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw key box
 		player1.keys.draw(g2);
-		player1.keys.setSides();
 		player1.keys.drawSides(g2, player1.keys.getPressedKeys());
-
-		// draw rotation box
-		player1.rotation.setStr(
-				Player.Direction.getName(player1.player.getImg().getRotation())
-				);
-
-		player1.rotation.draw(g2);
 
 		// draw score box
 		score.setStr(Integer.toString(player1.player.getScore()) + " / " + 
 				Integer.toString(player2.player.getScore()));
 		score.draw(g2);
-
+		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();

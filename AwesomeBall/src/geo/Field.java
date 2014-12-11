@@ -24,12 +24,18 @@ public class Field extends Shape {
 	public static final int GOAL_RIGHT_UP = 10;
 	public static final int GOAL_RIGHT_DOWN = 11;
 
-	public Field() {
+	public Field(double x, double y, double width, double height) {
+		super(x, y, width, height);
+
+		this.setSides();
+
 		// center circle
 		center = new Ellipse2D.Double(0, 0, 
 				CENTER_CIRCLE_DIAMETER, CENTER_CIRCLE_DIAMETER);
 		goalleft = new Rectangle2D.Double(0, 0, 0, 0);
 		goalright = new Rectangle2D.Double(0, 0, 0, 0);
+
+		this.setSize(x,  y,  width,  height);
 	}
 
 	public Rectangle2D getGoalleft() {
@@ -136,5 +142,7 @@ public class Field extends Shape {
 		g2.setColor(Color.black);
 		g2.draw(this.getSide(GOAL_LEFT));
 		g2.draw(this.getSide(GOAL_RIGHT));
+		
+		this.drawCenterLines(g2);
 	}
 }

@@ -17,7 +17,6 @@ public class PlayerControls implements ActionListener {
 	public Ball ball;
 	public Keys keys;
 	public KeyEvents kev;
-	public Text rotation;
 	
 	public PlayerControls(Field f, Ball b) {
 		field = f;
@@ -28,18 +27,10 @@ public class PlayerControls implements ActionListener {
 		
 		// setup player
 		player = new Player();
-		keys = new Keys();
 		
 		// setup key indicator
-		keys = new Keys();
-		keys.setSize(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS, 
+		keys = new Keys(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS, 
 				Board.KEYS_WIDTH, Board.TOP_MENUS_HEIGHT);
-		
-		// setup rotation indicator
-		rotation = new Text(null);
-		rotation.setRect(Board.ROTATION_X, Board.TOP_MENUS_Y_POS, 
-				Board.ROTATION_WIDTH, Board.TOP_MENUS_HEIGHT);
-		
 	}
 	
 	/**
