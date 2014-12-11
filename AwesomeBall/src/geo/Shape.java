@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public abstract class Shape extends Rectangle2D.Double {
+public class Shape extends Rectangle2D.Double {
 	/*
 	 * Speed
 	 */
@@ -46,9 +46,9 @@ public abstract class Shape extends Rectangle2D.Double {
 		}
 	};
 
-	public Shape() {
+	public Shape(double x, double y, double width, double height) {
 		// initial values
-		super(0, 0, 0, 0);
+		super(x, y, width, height);
 
 		sides = new ArrayList<Line2D.Double>();
 
@@ -90,7 +90,6 @@ public abstract class Shape extends Rectangle2D.Double {
 	 */
 	public boolean near(Rectangle2D s) {
 		// top or down side of the ball
-		// XXX replace with distance?
 		return (this.getY()    - 5 <= s.getMaxY() &&
 				this.getMaxY() + 5 >= s.getY()    &&
 				this.getX()    - 5 <= s.getMaxX() &&

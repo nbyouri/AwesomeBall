@@ -16,7 +16,8 @@ public class Keys extends Shape {
 	public static final int KEY_RIGHT = 2;
 	public static final int KEY_DOWN  = 3;
 
-	public Keys() {
+	public Keys(double x, double y, double width, double height) {
+		super(x, y, width, height);
 		pressedkeys = new ArrayList<Integer>();
 
 		// initialize arrow keys
@@ -43,6 +44,7 @@ public class Keys extends Shape {
 	}
 
 	public void draw(Graphics2D g2) {
+		this.setSides();
 		g2.setColor(Color.cyan);
 		g2.draw(this);
 	}

@@ -28,11 +28,9 @@ public class PlayerControls implements ActionListener {
 		
 		// setup player
 		player = new Player();
-		keys = new Keys();
 		
 		// setup key indicator
-		keys = new Keys();
-		keys.setSize(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS, 
+		keys = new Keys(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS, 
 				Board.KEYS_WIDTH, Board.TOP_MENUS_HEIGHT);
 		
 		// setup rotation indicator

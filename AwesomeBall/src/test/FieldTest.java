@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class FieldTest {
 
-	Field test_field = new Field();
+	Field test_field = new Field(0, 0, 0, 0);
 	@Test
 	public void test() {
 		// test rectangle
