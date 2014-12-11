@@ -1,18 +1,17 @@
 package net;
 
-import geo.Player;
+import geo.PlayerModel;
 
 import java.net.*;
 import java.io.*;
 
 public class Server extends Thread {
 	private ServerSocket serverSocket;
-	private Player player;
+	private PlayerModel player;
 
 	public static final int port = 1337;
-	public static final String address = "localhost";
 
-	public Server(Player p) throws IOException {
+	public Server(PlayerModel p) throws IOException {
 		player = p;
 		serverSocket = new ServerSocket(port);
 	}

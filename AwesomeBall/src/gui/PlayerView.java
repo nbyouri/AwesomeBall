@@ -2,22 +2,25 @@ package gui;
 
 import geo.Ball;
 import geo.Keys;
-import geo.Player;
+import geo.PlayerController;
+import geo.PlayerModel;
 import geo.Field;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class PlayerControls implements ActionListener {
+public class PlayerView implements ActionListener {
 	public Field field;
-	public Player player;
+	public PlayerController player;
 	public Ball ball;
 	public Keys keys;
 	public KeyEvents kev;
 	
-	public PlayerControls(Field f, Ball b) {
+	public PlayerView(Field f, Ball b) {
 		field = f;
 		ball = b;
 		
@@ -25,11 +28,23 @@ public class PlayerControls implements ActionListener {
 		kev = new KeyEvents();
 		
 		// setup player
-		player = new Player();
+		player = new PlayerController();
 		
 		// setup key indicator
 		keys = new Keys(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS, 
 				Board.KEYS_WIDTH, Board.TOP_MENUS_HEIGHT);
+	}
+
+	// draw rectangle and ball
+	public void draw(Graphics2D g2) {
+		player.setRotation();
+		g2.drawImage(player.getImg().getPlayer(), 
+				(int)player.getX(), 
+				(int)player.getY(), 
+				(int)player.getWidth(), 
+				(int)player.getHeight(), null);
+		g2.setColor(Color.WHITE);
+		g2.draw(player.getEll());
 	}
 	
 	/**
@@ -40,19 +55,19 @@ public class PlayerControls implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_LEFT) {
-				player.setDx(-Player.SPEED_ONE);
+				player.setDx(-PlayerModel.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_ON);
 				player.left = true;
 			} else if (key == KeyEvent.VK_UP) {
-				player.setDy(-Player.SPEED_ONE);
+				player.setDy(-PlayerModel.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_ON);
 				player.up = true;
 			} else if (key == KeyEvent.VK_RIGHT) {
-				player.setDx(Player.SPEED_ONE);
+				player.setDx(PlayerModel.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_ON);
 				player.right = true;
 			} else if (key == KeyEvent.VK_DOWN) {
-				player.setDy(Player.SPEED_ONE);
+				player.setDy(PlayerModel.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
 				player.down = true;
 			} 
@@ -62,19 +77,19 @@ public class PlayerControls implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_LEFT) {
-				player.setDx(Player.STOP);
+				player.setDx(PlayerModel.STOP);
 				keys.setPressedKey(Keys.KEY_LEFT, Keys.KEY_OFF);
 				player.left = false;
 			} else if (key == KeyEvent.VK_UP) {
-				player.setDy(Player.STOP);
+				player.setDy(PlayerModel.STOP);
 				keys.setPressedKey(Keys.KEY_UP, Keys.KEY_OFF);
 				player.up = false;
 			} else if (key == KeyEvent.VK_RIGHT) {
-				player.setDx(Player.STOP);
+				player.setDx(PlayerModel.STOP);
 				keys.setPressedKey(Keys.KEY_RIGHT, Keys.KEY_OFF);
 				player.right = false;
 			} else if (key == KeyEvent.VK_DOWN) {
-				player.setDy(Player.STOP);
+				player.setDy(PlayerModel.STOP);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
 				player.down = false;
 			}

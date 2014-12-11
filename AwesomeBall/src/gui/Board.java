@@ -22,10 +22,12 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
 	private Timer timer;
+	
 	private Text title;
 	private Text score;
-	public  PlayerControls player1;
-	public  PlayerControls player2;
+	
+	public  PlayerView player1;
+	public  PlayerView player2;
 
 	private Ball ball;
 	private Field field;
@@ -81,8 +83,8 @@ public class Board extends JPanel implements ActionListener {
 		field.setCenterCircle();
 
 		// setup player 1
-		player1 = new PlayerControls(field, ball);
-		player2 = new PlayerControls(field, ball);
+		player1 = new PlayerView(field, ball);
+		player2 = new PlayerView(field, ball);
 		player2.player.setLocation(200,  200);
 
 
@@ -138,10 +140,10 @@ public class Board extends JPanel implements ActionListener {
 		field.draw(g2);
 
 		// draw player
-		player1.player.draw(g2);
+		player1.draw(g2);
 		
 		// draw player2
-		player2.player.draw(g2);
+		player2.draw(g2);
 
 		// draw ball
 		ball.draw(g2);
