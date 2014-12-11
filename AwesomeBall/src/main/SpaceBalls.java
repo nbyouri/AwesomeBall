@@ -49,7 +49,7 @@ public class SpaceBalls extends JFrame {
 
 		// server
 		try {
-			Server s = new Server(mainBoard.getPlayer());
+			Server s = new Server(mainBoard.player1.player);
 			s.start();
 			//s.run();
 		} catch (Exception e) {

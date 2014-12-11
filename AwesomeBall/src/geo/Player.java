@@ -5,6 +5,7 @@ import gui.Images;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 @SuppressWarnings("serial")
 public class Player extends Field {
@@ -255,7 +256,6 @@ public class Player extends Field {
 	}
 
 	public boolean touchRectInRight(Field f) {
-
 		return (f.getMaxX() - this.getMaxX() <= 1.5 && 
 				(this.getY() < f.getGoalright().getY() ||
 						this.getMaxY() > f.getGoalright().getMaxY()
@@ -318,7 +318,7 @@ public class Player extends Field {
 	 * 
 	 * 
 	 */
-	public void moveIn(Field f) {
+	public void moveIn(Field f, Player p) {
 		// update speed
 		this.setMovement();
 
@@ -329,23 +329,27 @@ public class Player extends Field {
 		}
 
 		// otherwise, back up a little
-		if (this.touchRectInLeft(f)) {
+		if (this.touchRectInLeft(f) ||
+				this.near((Rectangle2D)p, Side.RIGHT.getId())) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 		}
 
 		if (this.touchRectInTop(f) ||
 				this.touchGoalRightTop(f) ||
-				this.touchGoalLeftTop(f)) {
+				this.touchGoalLeftTop(f) ||
+				this.near((Rectangle2D)p, Side.UP.getId())) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
 		}
 
-		if (this.touchRectInRight(f)) {
+		if (this.touchRectInRight(f) ||
+				this.near((Rectangle2D)p, Side.LEFT.getId())) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
 		}
 
 		if (this.touchRectInBottom(f) ||
 				this.touchGoalRightBottom(f) ||
-				this.touchGoalLeftBottom(f)) {
+				this.touchGoalLeftBottom(f) ||
+				this.near((Rectangle2D)p, Side.DOWN.getId())) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
 		}
 
