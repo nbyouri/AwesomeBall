@@ -11,33 +11,37 @@ import java.awt.geom.Rectangle2D;
  */
 @SuppressWarnings("serial")
 public class Ball extends Ellipse2D.Double {
-    
+    private Shape rect;
     private double vX;
     private double vY;
     public final int STOP = 0;
     public final double SPEED_SHOOT = 0.05;
     public final double BRAKE = -0.005;
     public final double SPEED_COLLISION = 0.005;
+    public final double VELOCITY_LIMIT = 1;
 
     public Ball(double x, double y, double width, double height) {
         super.setFrame(x - (width / 2), y, width, height);
         vX = 0;
         vY = 0;
+        this.rect = new Shape();
     }
 
     /**
-     * Création graphique de la balle
+     * CrÃ©ation graphique de la balle
      */
     public void draw(Graphics2D g2) {
         this.setFrame(this.getBounds2D());
+        this.rect.setFrame(this.getBounds2D());
         g2.setColor(Color.yellow);
         g2.draw(this);
         g2.fill(this);
+        g2.draw(this.rect);
     }
 
     /**
-     * Methode principale de la balle utilisé par actionPerformed : applique et
-     * modifie, si nécessaire, le mouvement après un check de toutes les
+     * Methode principale de la balle utilisÃ© par actionPerformed : applique et
+     * modifie, si nÃ©cessaire, le mouvement aprÃ¨s un check de toutes les
      * collisions possibles.
      *
      * @param f
@@ -113,7 +117,7 @@ public class Ball extends Ellipse2D.Double {
     }
 
     /**
-     * Applique un freinage à la balle, limite la vitesse à 5
+     * Applique un freinage Ã  la balle, limite la vitesse Ã  5
      */
     public void brake() {
         //Freinage
@@ -135,18 +139,18 @@ public class Ball extends Ellipse2D.Double {
             }
         }
         //Limite de la vitesse
-        if(this.getVy() > 20){
-            this.setVy(20);
+        if(this.getVy() > VELOCITY_LIMIT){
+            this.setVy(VELOCITY_LIMIT);
         }
         
-        if(this.getVx() > 20){
-            this.setVx(20);
+        if(this.getVx() > VELOCITY_LIMIT){
+            this.setVx(VELOCITY_LIMIT);
         }
         
     }
 
     /**
-     * Repositionne la balle au centre du field et réinitialise vX et vY à 0
+     * Repositionne la balle au centre du field et rÃ©initialise vX et vY Ã  0
      *
      * @param f Field
      */
@@ -158,7 +162,7 @@ public class Ball extends Ellipse2D.Double {
     }
 
     /**
-     * Modifie la vitesse de la balle en rapport à la position du joueur p
+     * Modifie la vitesse de la balle en rapport Ã  la position du joueur p
      *
      * @param speed
      * @param p
@@ -187,8 +191,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f Field
      */
     public void shootBall(Field f, Player p) {
-        if (p.near(new Rectangle2D.Double(this.getX(), this.getY(), 
-                this.getWidth(),this.getHeight()))) {
+        if (p.near(this.rect)){
             this.modifySpeed(SPEED_SHOOT, p);
         }
     }
@@ -209,50 +212,50 @@ public class Ball extends Ellipse2D.Double {
 
      /**
      * Est-ce que la balle touche les bordures bas d'un rectangle dont la balle
-     * est à l'intérieur de ce rectangle ?
+     * est Ã  l'intÃ©rieur de ce rectangle ?
      * @param r
      * @return 
      */
     public boolean IsTouchBorderInnerShapeBottom(Shape r) {
-        return (this.getMaxY() - 1 > r.getMaxY());
+        return this.rect.touchRectInBottom(r);
     }
 
     /**
      * Est-ce que la balle touche les bordures hauts d'un rectangle dont la
-     * balle est à l'extérieur de ce rectangle ?
+     * balle est Ã  l'extÃ©rieur de ce rectangle ?
      *
      * @param r Shape
      * @return
      */
     public boolean IsTouchBorderInnerShapeTop(Shape r) {
-        return (this.getY() - 1 < r.getY()); //Top
+        return this.rect.touchRectInTop(r); //Top
     }
 
     /**
      * Est-ce que la balle touche les bordures gauches d'un rectangle dont la
-     * balle est à l'intérieur de ce rectangle ?
+     * balle est Ã  l'intÃ©rieur de ce rectangle ?
      *
      * @param r Shape
      * @return true if collision ball-right or left border, false if not
      */
     public boolean IsTouchBorderInnerShapeLeft(Shape r) {
-        return (this.getX() + 1 < r.getX()); //Right
+        return this.rect.touchRectInLeft(r); 
     }
 
     /**
      * Est-ce que la balle touche les bordures droites d'un rectangle dont la
-     * balle est à l'intérieur de ce rectangle ?
+     * balle est Ã  l'intÃ©rieur de ce rectangle ?
      *
      * @param r Shape
      * @return true if collision ball-right or left border, false if not
      */
     public boolean IsTouchBorderInnerShapeRight(Shape r) {
-        return (this.getMaxX() + 1 > r.getMaxX()); //Right
+        return this.rect.touchRectInRight(r);
     }
 
     /**
      * Est-ce que la balle touche les bordures droites ou gauches d'un rectangle
-     * dont la balle est à l'extérieur de ce rectangle ?
+     * dont la balle est Ã  l'extÃ©rieur de ce rectangle ?
      *
      * @param r
      * @return
@@ -265,7 +268,7 @@ public class Ball extends Ellipse2D.Double {
 
     /**
      * Est-ce que la balle touche les bordures hauts ou basses d'un rectangle
-     * dont la balle est à l'extérieur de ce rectangle ?
+     * dont la balle est Ã  l'extÃ©rieur de ce rectangle ?
      *
      * @param r
      * @return
@@ -296,7 +299,7 @@ public class Ball extends Ellipse2D.Double {
     }
 
     /**
-     * Est-ce que la balle est à droite du rectangle ?
+     * Est-ce que la balle est Ã  droite du rectangle ?
      *
      * @param r Shape
      * @return
@@ -306,7 +309,7 @@ public class Ball extends Ellipse2D.Double {
     }
 
     /**
-     * Est-ce que la balle est à gauche du rectangle ?
+     * Est-ce que la balle est Ã  gauche du rectangle ?
      *
      * @param r Shape
      * @return
@@ -341,7 +344,7 @@ public class Ball extends Ellipse2D.Double {
                 && f.getGoalright().getMaxY() >= this.getMaxY());
     }
     /**
-     * Est-ce qu'il y a un goal à gauche ?
+     * Est-ce qu'il y a un goal Ã  gauche ?
      * @param f
      * @return 
      */
@@ -349,7 +352,7 @@ public class Ball extends Ellipse2D.Double {
         return (f.getGoalleft().getMaxX() - this.getX() >= this.getWidth());
     }
     /**
-     * Est-ce qu'il y a un goal à droite ?
+     * Est-ce qu'il y a un goal Ã  droite ?
      * @param f
      * @return 
      */
