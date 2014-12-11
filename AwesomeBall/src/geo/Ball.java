@@ -46,7 +46,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f
      * @param p
      */
-    public void move(Field f, Player p) {
+    public void move(FieldController f, PlayerController p) {
         
         //Applique le mouvement de la balle si celle-ci est dans le terrain
         if (this.intersects(f)
@@ -105,7 +105,7 @@ public class Ball extends Ellipse2D.Double {
      *
      * @param f Field
      */
-    public void centerBall(Field f) {
+    public void centerBall(FieldController f) {
         this.setFrame(f.getCenterX() - this.getWidth() / 2,
                 f.getY() + (f.getHeight() / 2) - 10, width, height);
         this.setVx(STOP);
@@ -118,7 +118,7 @@ public class Ball extends Ellipse2D.Double {
      * @param speed
      * @param p
      */
-    public void modifySpeed(double speed, Player p) {
+    public void modifySpeed(double speed, PlayerController p) {
         if (this.IsBallRightShape(p)) {
             this.setVx(this.getVx()
                     + Math.abs(this.getX() - p.getX()) * speed);
@@ -141,7 +141,7 @@ public class Ball extends Ellipse2D.Double {
      * @param p Player
      * @param f Field
      */
-    public void shootBall(Field f, Player p) {
+    public void shootBall(FieldController f, PlayerController p) {
         if (p.near(this.rect)){
             this.modifySpeed(SPEED_SHOOT, p);
         }
@@ -154,7 +154,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f Field
      * @param p Player
      */
-    public void goal(Field f, Player p) {
+    public void goal(FieldController f, PlayerController p) {
         if (this.IsGoalLeft(f) || this.IsGoalRight(f)) {
             this.centerBall(f);
             p.setScore(p.getScore() + 1);
@@ -165,7 +165,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f Field
      * @param p Player
      */
-    public void checkCollisionPlayer(Field f,Player p){
+    public void checkCollisionPlayer(FieldController f,PlayerController p){
         if (this.intersects(p)) {
             if (this.IsTouchBorderOuterShapeX(p)) {
                 if (this.IsBallLeftShape(p)) {
@@ -209,7 +209,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f Field
      * @param p Player
      */
-    public void checkCollisionField(Field f, Player p){
+    public void checkCollisionField(FieldController f, PlayerController p){
         if (this.IsTouchBorderInnerShapeTop(f)
                 || this.IsTouchBorderInnerShapeBottom(f)) {
             this.setVy(-vY);
@@ -338,7 +338,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f
      * @return
      */
-    public boolean IsTouchGoalLeftX(Field f) {
+    public boolean IsTouchGoalLeftX(FieldController f) {
         return (f.getGoalleft().getX() - this.getX() <= this.getWidth()
                 && f.getGoalleft().getY() <= this.getY()
                 && f.getGoalleft().getMaxY() >= this.getMaxY());
@@ -351,7 +351,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f
      * @return
      */
-    public boolean IsTouchGoalRightX(Field f) {
+    public boolean IsTouchGoalRightX(FieldController f) {
         return (f.getGoalright().getX() - this.getX() <= this.getWidth()
                 && f.getGoalright().getY() <= this.getY()
                 && f.getGoalright().getMaxY() >= this.getMaxY());
@@ -361,7 +361,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f
      * @return 
      */
-    public boolean IsGoalLeft(Field f) {
+    public boolean IsGoalLeft(FieldController f) {
         return (f.getGoalleft().getMaxX() - this.getX() >= this.getWidth());
     }
     /**
@@ -369,7 +369,7 @@ public class Ball extends Ellipse2D.Double {
      * @param f
      * @return 
      */
-    public boolean IsGoalRight(Field f) {
+    public boolean IsGoalRight(FieldController f) {
         return (this.getMaxX() - f.getGoalright().getX() >= this.getWidth());
     }
     public void setVx(double d) {
