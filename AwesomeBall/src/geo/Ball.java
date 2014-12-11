@@ -10,7 +10,7 @@ import java.awt.geom.Ellipse2D;
  */
 @SuppressWarnings("serial")
 public class Ball extends Ellipse2D.Double {
-    private Shape rect;
+    public Shape rect;
     private double vX;
     private double vY;
     public final int STOP = 0;
@@ -30,8 +30,6 @@ public class Ball extends Ellipse2D.Double {
      * CrÃ©ation graphique de la balle
      */
     public void draw(Graphics2D g2) {
-        this.setFrame(this.getBounds2D());
-        this.rect.setFrame(this.getBounds2D());
         g2.setColor(Color.yellow);
         g2.draw(this);
         g2.fill(this);
@@ -65,6 +63,7 @@ public class Ball extends Ellipse2D.Double {
      */
     public void setMovement() {
         this.setFrame(this.getX() + this.getVx(), this.getY() + this.getVy(), this.getWidth(), this.getHeight());
+        this.rect.setFrame(this.getFrame());
     }
 
     /**
