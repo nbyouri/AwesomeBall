@@ -4,7 +4,6 @@ import geo.Ball;
 import geo.Keys;
 import geo.Player;
 import geo.Field;
-import geo.Text;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
