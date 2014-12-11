@@ -8,9 +8,6 @@ import java.awt.geom.Rectangle2D;
 /**
  *
  * @author Mouton Youri and Sias Nicolas
- *
- * TODO : Les goals
- *
  */
 @SuppressWarnings("serial")
 public class Ball extends Ellipse2D.Double {
@@ -116,9 +113,11 @@ public class Ball extends Ellipse2D.Double {
     }
 
     /**
-     * Applique un freinage à la balle
+     * Applique un freinage à la balle, limite la vitesse à 5
      */
     public void brake() {
+        //Freinage
+        
         if (this.getVx() != 0) {
             if (this.getVx() > 0) {
                 this.setVx(vX + BRAKE);
@@ -135,6 +134,15 @@ public class Ball extends Ellipse2D.Double {
                 this.setVy(vY - BRAKE);
             }
         }
+        //Limite de la vitesse
+        if(this.getVy() > 20){
+            this.setVy(20);
+        }
+        
+        if(this.getVx() > 20){
+            this.setVx(20);
+        }
+        
     }
 
     /**
@@ -179,7 +187,8 @@ public class Ball extends Ellipse2D.Double {
      * @param f Field
      */
     public void shootBall(Field f, Player p) {
-        if (p.near(new Rectangle2D.Double(this.getX(), this.getY(), this.getWidth(),this.getHeight()))) {
+        if (p.near(new Rectangle2D.Double(this.getX(), this.getY(), 
+                this.getWidth(),this.getHeight()))) {
             this.modifySpeed(SPEED_SHOOT, p);
         }
     }
@@ -371,51 +380,6 @@ public class Ball extends Ellipse2D.Double {
         this.x = d;
     }
     
-    public boolean near(Shape s) {
-		// top or down side of the ball
-		// XXX replace with distance?
-		return (this.getY()    - 5 <= s.getMaxY() &&
-				this.getMaxY() + 5 >= s.getY()    &&
-				this.getX()    - 5 <= s.getMaxX() &&
-				this.getMaxX() + 5 >= s.getX());
-}
-
 
 }
 
-
-/*
- public void moveIn(Field f) {
- // update speed
- this.setMovement();
-
- // actually move if in the field or in a goal
- if (this.insideRect(f) || this.insideGoals(f)){
- this.setLocation(this.getX() + this.getDx(),
- this.getY() + this.getDy());
- }
-
- // otherwise, back up a little
- if (this.touchRectInLeft(f)) {
- this.setLocation(this.getX() - this.getDx(), this.getY());
- }
-
- if (this.touchRectInTop(f) ||
- this.touchGoalRightTop(f) ||
- this.touchGoalLeftTop(f)) {
- this.setLocation(this.getX(), this.getY() - this.getDy());
- }
-
- if (this.touchRectInRight(f)) {
- this.setLocation(this.getX() - this.getDx(), this.getY());
- }
-
- if (this.touchRectInBottom(f) ||
- this.touchGoalRightBottom(f) ||
- this.touchGoalLeftBottom(f)) {
- this.setLocation(this.getX(), this.getY() - this.getDy());
- }
-
- }
-
- */
