@@ -30,7 +30,7 @@ public class Board extends JPanel implements ActionListener {
 	public  PlayerView player2;
 
 	private Ball ball;
-	private Field field;
+	private FieldView field;
 	private Button exit;
 
 	// constants
@@ -78,9 +78,9 @@ public class Board extends JPanel implements ActionListener {
 				TOP_TITLE_WIDTH, TOP_MENUS_HEIGHT);
 
 		// setup field 
-		field = new Field(BOARD_X_POS, BOARD_Y_POS, 
+		field = new FieldView(BOARD_X_POS, BOARD_Y_POS, 
 				field_width, field_height);
-		field.setCenterCircle();
+		field.field.setCenterCircle();
 
 		// setup player 1
 		player1 = new PlayerView(field, ball);
@@ -89,8 +89,8 @@ public class Board extends JPanel implements ActionListener {
 
 
 		// setup ball
-		ball = new Ball(field.getCenterX(), 
-				field.getY() + (field_height / 2) - 10,
+		ball = new Ball(field.field.getCenterX(), 
+				field.field.getY() + (field_height / 2) - 10,
 				player1.player.getWidth(), player1.player.getHeight());
 
 		// setup score indicator
@@ -111,10 +111,10 @@ public class Board extends JPanel implements ActionListener {
 		exit = new Button("EXIT", new CloseListener());
 		// place below the field
 		exit.setBounds(BOARD_X_POS,
-				BOARD_X_POS + (int)field.getHeight() + 
+				BOARD_X_POS + (int)field.field.getHeight() + 
 				(int)((boardSize.getHeight() - 
-						(BOARD_Y_POS + field.getHeight())) / 4),
-						(int)field.getWidth(), TOP_MENUS_HEIGHT);
+						(BOARD_Y_POS + field.field.getHeight())) / 4),
+						(int)field.field.getWidth(), TOP_MENUS_HEIGHT);
 		add(exit);
 
 		// timer
@@ -163,11 +163,11 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		player1.player.moveIn(field, player2.player);
-		player2.player.moveIn(field, player2.player);
+		player1.player.moveIn(field.field, player2.player);
+		player2.player.moveIn(field.field, player2.player);
 		
-		ball.move(field, player1.player);
-		ball.move(field, player2.player);
+		ball.move(field.field, player1.player);
+		ball.move(field.field, player2.player);
 		
 		ball.brake();
 		repaint();
@@ -178,7 +178,7 @@ public class Board extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_SPACE) {
-				ball.shootBall(field,player1.player);
+				ball.shootBall(field.field,player1.player);
 			}
 		}
 
@@ -186,7 +186,7 @@ public class Board extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_ENTER) {
-				ball.centerBall(field);
+				ball.centerBall(field.field);
 			} else if (key == KeyEvent.VK_ESCAPE) {
 				exitProgram();
 			}

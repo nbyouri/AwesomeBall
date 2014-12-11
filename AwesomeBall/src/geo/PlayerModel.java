@@ -5,7 +5,7 @@ import gui.Images;
 import java.awt.geom.Ellipse2D;
 
 @SuppressWarnings("serial")
-public class PlayerModel extends Field {
+public class PlayerModel extends FieldController {
 	public Images img;
 	public int score;
 	public Ellipse2D.Double ell;

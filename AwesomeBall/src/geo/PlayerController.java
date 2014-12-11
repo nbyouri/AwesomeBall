@@ -19,8 +19,8 @@ public class PlayerController extends PlayerModel {
 		return score;
 	}
 
-	public void setScore(int sore) {
-		this.score = sore;
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 
@@ -31,8 +31,7 @@ public class PlayerController extends PlayerModel {
 	public void setEll(Ellipse2D.Double ell) {
 		this.ell = ell;
 	}
-	
-	@Override
+
 	public void setLocation(double x, double y) {
 		this.setRect(x, y, this.getWidth(), this.getHeight());
 		this.getEll().setFrame(x, y, this.getWidth(), this.getHeight());
@@ -123,7 +122,7 @@ public class PlayerController extends PlayerModel {
 	 * Check whether the player is in a goal
 	 * 
 	 */
-	public boolean insideGoals(Field f) {
+	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() &&
 				this.getY() - 1 >= f.getGoalright().getY()) ||
 				(this.getX() > f.getGoalleft().getX() &&
@@ -135,17 +134,17 @@ public class PlayerController extends PlayerModel {
 	 * Right Goal Collisions
 	 * 
 	 */
-	public boolean touchGoalRightTop(Field f) {
+	public boolean touchGoalRightTop(FieldController f) {
 		return (this.getMaxX() >= f.getGoalright().getX() &&
 				this.getY() - 1 <= f.getGoalright().getY());
 	}
 
-	public boolean touchGoalRightBottom(Field f) {
+	public boolean touchGoalRightBottom(FieldController f) {
 		return (this.getMaxX() >= f.getGoalright().getX() &&
 				this.getMaxY() + 1 >= f.getGoalright().getMaxY());
 	}
 
-	public boolean touchRectInRight(Field f) {
+	public boolean touchRectInRight(FieldController f) {
 		return (f.getMaxX() - this.getMaxX() <= 1.5 && 
 				(this.getY() < f.getGoalright().getY() ||
 						this.getMaxY() > f.getGoalright().getMaxY()
@@ -157,19 +156,19 @@ public class PlayerController extends PlayerModel {
 	 * Left Goal Collisions
 	 * 
 	 */
-	public boolean touchRectInLeft(Field f) {
+	public boolean touchRectInLeft(FieldController f) {
 		return (this.getX() - f.getX() <= 1.5 &&
 				(this.getY() < f.getGoalright().getY() ||
 						this.getMaxY() > f.getGoalright().getMaxY()
 						) || this.getX() <= f.getGoalleft().getX());
 	}
 
-	public boolean touchGoalLeftBottom(Field f) {
+	public boolean touchGoalLeftBottom(FieldController f) {
 		return (this.getX() <= f.getGoalleft().getMaxX() &&
 				this.getMaxY() >= f.getGoalleft().getMaxY());
 	}
 
-	public boolean touchGoalLeftTop(Field f) {
+	public boolean touchGoalLeftTop(FieldController f) {
 		return (this.getX() <= f.getGoalleft().getMaxX() &&
 				this.getY() - 1 <= f.getGoalleft().getY());
 	}
@@ -208,7 +207,7 @@ public class PlayerController extends PlayerModel {
 	 * 
 	 * 
 	 */
-	public void moveIn(Field f, PlayerModel p) {
+	public void moveIn(FieldController f, PlayerModel p) {
 		// update speed
 		this.setMovement();
 

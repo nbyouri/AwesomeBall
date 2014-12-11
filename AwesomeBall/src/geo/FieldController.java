@@ -1,43 +1,15 @@
 package geo;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class Field extends Shape {
-	private Ellipse2D.Double center;
-	private Rectangle2D goalleft;
-	private Rectangle2D goalright;
-
-	// constants
-	public static final int CENTER_CIRCLE_DIAMETER = 120;
-	public static final int GOALS_WIDTH = 30;
-	public static final int GOALS_HEIGHT = 80;
-	public static final int GOAL_LEFT = 6;
-	public static final int GOAL_LEFT_UP = 7;
-	public static final int GOAL_LEFT_DOWN = 8;
-	public static final int GOAL_RIGHT = 9;
-	public static final int GOAL_RIGHT_UP = 10;
-	public static final int GOAL_RIGHT_DOWN = 11;
-
-	public Field(double x, double y, double width, double height) {
+public class FieldController extends FieldModel {
+	
+	public FieldController(double x, double y, double width, double height) {
 		super(x, y, width, height);
-
-		this.setSides();
-
-		// center circle
-		center = new Ellipse2D.Double(0, 0, 
-				CENTER_CIRCLE_DIAMETER, CENTER_CIRCLE_DIAMETER);
-		goalleft = new Rectangle2D.Double(0, 0, 0, 0);
-		goalright = new Rectangle2D.Double(0, 0, 0, 0);
-
-		this.setSize(x,  y,  width,  height);
 	}
-
+	
 	public Rectangle2D getGoalleft() {
 		return goalleft;
 	}
@@ -104,45 +76,5 @@ public class Field extends Shape {
 		double radius  = (this.getHeight() / 6)/2;
 		this.center.setFrameFromCenter(centerX, centerY, 
 				centerX + radius, centerY + radius);
-	}
-
-	/**
-	 * Draw the line vertically centered of the field.
-	 * @param g2
-	 */
-	public void drawCenterLines(Graphics2D g2) {
-		g2.setColor(Color.magenta);
-		g2.draw(this.getSide(Side.CENTER_V.getId()));
-		//g2.draw(this.getSide(CENTER_H));
-		g2.draw(this.center);
-	}
-
-	/**
-	 * Draw side(s) of Field.
-	 * 
-	 * @param g2
-	 * @param ar
-	 */
-	public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
-		g2.setColor(Color.magenta);
-		for (int i = 0; i < ar.size(); i++)
-			g2.draw(this.getSide(ar.get(i)));
-	}
-
-	/**
-	 * Draw field and goals.
-	 * @param g2
-	 */
-	public void draw(Graphics2D g2) {
-		g2.setColor(Color.cyan);
-		g2.draw(this);
-		g2.draw(this.goalleft);
-		g2.draw(this.goalright);
-
-		g2.setColor(Color.black);
-		g2.draw(this.getSide(GOAL_LEFT));
-		g2.draw(this.getSide(GOAL_RIGHT));
-		
-		this.drawCenterLines(g2);
 	}
 }

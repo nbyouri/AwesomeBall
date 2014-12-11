@@ -4,7 +4,6 @@ import geo.Ball;
 import geo.Keys;
 import geo.PlayerController;
 import geo.PlayerModel;
-import geo.Field;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -14,13 +13,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class PlayerView implements ActionListener {
-	public Field field;
+	public FieldView field;
 	public PlayerController player;
 	public Ball ball;
 	public Keys keys;
 	public KeyEvents kev;
 	
-	public PlayerView(Field f, Ball b) {
+	public PlayerView(FieldView f, Ball b) {
 		field = f;
 		ball = b;
 		
