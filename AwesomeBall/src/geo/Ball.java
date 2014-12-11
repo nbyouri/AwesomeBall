@@ -3,7 +3,6 @@ package geo;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  *
@@ -24,7 +23,7 @@ public class Ball extends Ellipse2D.Double {
         super.setFrame(x - (width / 2), y, width, height);
         vX = 0;
         vY = 0;
-        this.rect = new Shape();
+        this.rect = new Shape(this.getX(),this.getY(),this.getWidth(),this.getHeight());
     }
 
     /**
@@ -56,59 +55,11 @@ public class Ball extends Ellipse2D.Double {
         }
         
         //Sinon, check collisions :
-        //Collision Field - Ball :
-        if (this.IsTouchBorderInnerShapeTop(f)
-                || this.IsTouchBorderInnerShapeBottom(f)) {
-            this.setVy(-vY);
-        }
-        if (this.IsTouchBorderInnerShapeLeft(f)
-                || this.IsTouchBorderInnerShapeRight(f)) {
-            if ((!this.IsTouchGoalLeftX(f)) && (!this.IsTouchGoalRightX(f))) {
-                this.setVx(-vX);
-            } else {
-                this.goal(f, p);
-            }
-        }
+        this.checkCollisionField(f, p);
+        this.checkCollisionPlayer(f, p);
         
-        //Collision Player - Ball :
-        if (this.intersects(p)) {
-            if (this.IsTouchBorderOuterShapeX(p)) {
-                if (this.IsBallLeftShape(p)) {
-                    if ((!(this.IsTouchBorderInnerShapeLeft(f)
-                            || this.IsTouchBorderInnerShapeRight(f))
-                            || this.IsTouchGoalLeftX(f) || this.IsTouchGoalRightX(f))) {
-                        this.setX(p.getEll().getX() - this.getWidth());
-                    }
-                    this.setVx(-vX);
-                } else if (this.IsBallRightShape(p)) {
-                    if (!(this.IsTouchBorderInnerShapeLeft(f)
-                            || this.IsTouchBorderInnerShapeRight(f))
-                            || this.IsTouchGoalLeftX(f) || this.IsTouchGoalRightX(f)) {
-                        this.setX(p.getEll().getX() + this.getWidth());
-                    }
-                    this.setVx(-vX);
-                }
-            }
-            if (this.IsTouchBorderOuterShapeY(p)) {
-                if (this.IsBallAboveShape(p)) {
-                    if (!(this.IsTouchBorderInnerShapeBottom(f)
-                            || this.IsTouchBorderInnerShapeTop(f))
-                            || this.IsTouchGoalLeftX(f) || this.IsTouchGoalRightX(f)) {
-                        this.setY(p.getEll().getY() + this.getHeight());
-                    }
-                    this.setVy(-vY);
-                } else if (this.IsBallUnderShape(p)) {
-                    if (!(this.IsTouchBorderInnerShapeTop(f)
-                            || this.IsTouchBorderInnerShapeBottom(f))
-                            || this.IsTouchGoalLeftX(f) || this.IsTouchGoalRightX(f)) {
-                        this.setY(p.getEll().getY() - this.getHeight());
-                    }
-                    this.setVy(-vY);
-                }
-            }
-        }
     }
-
+    
     /**
      * Repositionne la balle
      */
@@ -209,7 +160,69 @@ public class Ball extends Ellipse2D.Double {
             p.setScore(p.getScore() + 1);
         }
     }
-
+    /**
+     * Verifie la collision joueur-balle
+     * @param f Field
+     * @param p Player
+     */
+    public void checkCollisionPlayer(Field f,Player p){
+        if (this.intersects(p)) {
+            if (this.IsTouchBorderOuterShapeX(p)) {
+                if (this.IsBallLeftShape(p)) {
+                    if ((!(this.IsTouchBorderInnerShapeLeft(f)
+                            || this.IsTouchBorderInnerShapeRight(f))
+                            || this.IsTouchGoalLeftX(f) || this.IsTouchGoalRightX(f))) {
+                        this.setX(p.getEll().getX() - this.getWidth());
+                    }
+                    this.setVx(-vX);
+                } else if (this.IsBallRightShape(p)) {
+                    if (!(this.IsTouchBorderInnerShapeLeft(f)
+                            || this.IsTouchBorderInnerShapeRight(f))
+                            || this.IsTouchGoalLeftX(f) || this.IsTouchGoalRightX(f)) {
+                        this.setX(p.getEll().getX() + this.getWidth());
+                    }
+                    this.setVx(-vX);
+                }
+            }
+            if (this.IsTouchBorderOuterShapeY(p)) {
+                if (this.IsBallAboveShape(p)) {
+                    if (!(this.IsTouchBorderInnerShapeBottom(f)
+                            || this.IsTouchBorderInnerShapeTop(f))
+                            || this.IsTouchGoalLeftX(f) || this.IsTouchGoalRightX(f)) {
+                        this.setY(p.getEll().getY() + this.getHeight());
+                    }
+                    this.setVy(-vY);
+                } else if (this.IsBallUnderShape(p)) {
+                    if (!(this.IsTouchBorderInnerShapeTop(f)
+                            || this.IsTouchBorderInnerShapeBottom(f))
+                            || this.IsTouchGoalLeftX(f) || this.IsTouchGoalRightX(f)) {
+                        this.setY(p.getEll().getY() - this.getHeight());
+                    }
+                    this.setVy(-vY);
+                }
+            }
+        }
+    }
+    /**
+     * Check collision entre la balle et les terrains ( dont les goals)
+     * Active la méthode goal si besoin.
+     * @param f Field
+     * @param p Player
+     */
+    public void checkCollisionField(Field f, Player p){
+        if (this.IsTouchBorderInnerShapeTop(f)
+                || this.IsTouchBorderInnerShapeBottom(f)) {
+            this.setVy(-vY);
+        }
+        if (this.IsTouchBorderInnerShapeLeft(f)
+                || this.IsTouchBorderInnerShapeRight(f)) {
+            if ((!this.IsTouchGoalLeftX(f)) && (!this.IsTouchGoalRightX(f))) {
+                this.setVx(-vX);
+            } else {
+                this.goal(f, p);
+            }
+        }
+    }
      /**
      * Est-ce que la balle touche les bordures bas d'un rectangle dont la balle
      * est Ã  l'intÃ©rieur de ce rectangle ?
