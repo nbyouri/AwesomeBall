@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -151,20 +150,11 @@ public class Board extends JPanel implements ActionListener {
 		player1.keys.draw(g2);
 		player1.keys.drawSides(g2, player1.keys.getPressedKeys());
 
-		// draw rotation box
-		player1.rotation.setStr(
-				Player.Direction.getName(player1.player.getImg().getRotation())
-				);
-
-		player1.rotation.draw(g2);
-
 		// draw score box
 		score.setStr(Integer.toString(player1.player.getScore()) + " / " + 
 				Integer.toString(player2.player.getScore()));
 		score.draw(g2);
-
-		// debug
-		System.out.println(player1.player.near(new Rectangle2D.Double(ball.x, ball.y, ball.width, ball.height)));
+		
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
