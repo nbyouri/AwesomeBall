@@ -102,7 +102,7 @@ public class Shape extends Rectangle2D.Double {
 		return (this.getY() <= s.getMaxY() &&
 				this.getMaxY() >= s.getY());
 	}
-	
+
 	/*
 	 * 
 	 * Near any side
@@ -111,7 +111,7 @@ public class Shape extends Rectangle2D.Double {
 	public boolean near(Rectangle2D s) {
 		return (this.nearX(s) && this.nearY(s));
 	}
-	
+
 	/*
 	 * 
 	 * Near a specific side
@@ -134,7 +134,7 @@ public class Shape extends Rectangle2D.Double {
 		if (line == Side.UP.getId()) {
 
 			return ((my + 1 >= s.getY()) &&
-					(my - 1 <= s.getY()) && this.near(s));
+					(my - 1 <= s.getY()) && this.nearX(s));
 
 		}  if (line == Side.DOWN.getId()) {
 
@@ -165,8 +165,8 @@ public class Shape extends Rectangle2D.Double {
 	 */
 	public boolean insideRect(Rectangle2D r) {
 		return (!((this.touchRectInLeft(r)) ||
-				(this.touchRectInRight(r))  ||
-				(this.touchRectInTop(r))    ||
+				(this.touchRectInRight(r)) ||
+				(this.touchRectInTop(r)) ||
 				(this.touchRectInBottom(r))));
 	}
 
