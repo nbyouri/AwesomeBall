@@ -29,7 +29,6 @@ public class ClientTest extends Socket implements Runnable {
 	public synchronized void sendMsg(String msg) throws IOException{
 		if (this.isConnected()){
 			PrintWriter sortie = new PrintWriter(this.getOutputStream());
-			//System.out.println(msg);
 			sortie.println(msg);
 			sortie.flush();
 		}
@@ -55,8 +54,12 @@ public class ClientTest extends Socket implements Runnable {
 	
 	public static void main(String[] args) throws IOException {
 		ClientTest ct = new ClientTest();
-		while (ct.isConnected() && ct.getMessage() != null) {
-			System.out.println(ct.getMessage());
+		while (ct.isConnected()) {
+			System.out.println("Waiting for info");
+			try {
+				Thread.sleep(20);
+			} catch (Exception e) {}
+			System.out.println("out <- " + ct.getMessage());
 		}
 	}
 }

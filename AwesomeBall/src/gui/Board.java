@@ -74,7 +74,6 @@ public class Board extends JPanel implements ActionListener {
 		// setup server
 		try {
 			serv = new initServer(host);
-			System.out.println(serv.getServ().getSocket().getPort());
 		} catch(Exception ex) {
 			System.out.println("Failed to initServer");
 		}
@@ -149,8 +148,7 @@ public class Board extends JPanel implements ActionListener {
 		if (serv.getHost() && serv.getServ().getSocket() != null &&
 				serv.getServ().getSocket().isConnected()) {
 			try {
-				System.out.println(player1.toString());
-				serv.getClient().sendMsg(player1.toString());
+				serv.getServ().sendMsg(player1.toString());
 			} catch (Exception ex) {
 				System.out.println("Failed to send player1 coordinates to server");
 			}
@@ -158,7 +156,7 @@ public class Board extends JPanel implements ActionListener {
 				serv.getClient() != null &&
 				serv.getClient().isConnected()) {
 			try {
-				serv.getServ().sendMsg(player1.toString());
+				serv.getClient().sendMsg(player1.toString());
 			} catch (Exception ex) {
 				System.out.println("Failed to send player1 coordinates to client");
 			}
@@ -199,12 +197,12 @@ public class Board extends JPanel implements ActionListener {
 		player2.player.moveIn(field.field, player1.player);
 
 		// receive player info
-		if (serv.getHost() && serv.getServ() != null) {
+		/*if (serv.getHost() && serv.getServ() != null) {
 			player2.player.msgToCoord(serv.getServ().getMessage());
 
 		} else if (!serv.getHost() && serv.getClient().isConnected()){
 			player2.player.msgToCoord(serv.getClient().getMessage());
-		}
+		}*/
 
 		// move ball
 		ball.move(field.field, player1.player);

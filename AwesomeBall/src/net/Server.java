@@ -36,7 +36,7 @@ public class Server extends ServerSocket implements Runnable {
 	}
 
 	public synchronized void sendMsg(String msg) throws IOException {
-		if (socket != null && socket.isConnected()){
+		if (socket != null && socket.isConnected() && msg != null) {
 			out = new PrintWriter(socket.getOutputStream());
 			out.println(msg);
 			out.flush();

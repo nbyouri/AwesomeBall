@@ -242,7 +242,6 @@ public class PlayerController extends PlayerModel {
 				this.near((Rectangle2D)p, Side.DOWN.getId())) {
 			this.setLocation(this.getX(), this.getY() - this.getDy());
 		}
-
 	}
 
 	/*
@@ -271,9 +270,9 @@ public class PlayerController extends PlayerModel {
 	public String toString() {
 		StringBuilder msg = new StringBuilder();
 
-		msg.append(Integer.parseInt(this.getX() + "/"));
-		msg.append(Integer.parseInt(this.getY() + "/"));
-		msg.append(Integer.parseInt(this.getScore() + "/"));
+		msg.append(this.getX() + "/");
+		msg.append(this.getY() + "/");
+		msg.append(this.getScore() + "/");
 
 		return msg.toString();
 	}
