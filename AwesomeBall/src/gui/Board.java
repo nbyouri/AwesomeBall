@@ -69,14 +69,17 @@ public class Board extends JPanel implements ActionListener {
 	 * 
 	 * @param Dimension : The screen size. 
 	 */
-	public Board(Dimension boardSize, boolean host) {
+	public Board(Dimension boardSize) {
 
 		// setup server
 		try {
-			serv = new initServer(host);
+			serv = new initServer();
 		} catch(Exception ex) {
 			System.out.println("Failed to initServer");
 		}
+		
+		Thread servth = new Thread(serv);
+		servth.start();
 
 
 		// proportional field , H = 60yds, W = 100yds, Center radius = 10yds
@@ -86,6 +89,7 @@ public class Board extends JPanel implements ActionListener {
 
 		// setup game title
 		title = new Text("SpaceShip Collider");
+
 		title.setRect(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 
 				TOP_TITLE_WIDTH, TOP_MENUS_HEIGHT);
 
@@ -96,6 +100,7 @@ public class Board extends JPanel implements ActionListener {
 
 		// setup player 1
 		player1 = new PlayerView(field, ball);
+		player1.player.setLocation(100,  100);
 		player2 = new PlayerView(field, ball);
 		player2.player.setLocation(200,  200);
 
@@ -145,21 +150,18 @@ public class Board extends JPanel implements ActionListener {
 				RenderingHints.VALUE_RENDER_QUALITY);
 
 		// update location on server/client
-		if (serv.getHost() && serv.getServ().getSocket() != null &&
+		if (serv.getServ().getSocket() != null &&
 				serv.getServ().getSocket().isConnected()) {
 			try {
 				serv.getServ().sendMsg(player1.toString());
 			} catch (Exception ex) {
-				System.out.println("Failed to send player1 coordinates to server");
+				System.out.println("Failed to send player coordinates to server");
 			}
-		} else if (!serv.getHost() && 
-				serv.getClient() != null &&
-				serv.getClient().isConnected()) {
-			try {
-				serv.getClient().sendMsg(player1.toString());
-			} catch (Exception ex) {
-				System.out.println("Failed to send player1 coordinates to client");
-			}
+		}
+
+		// receive player info
+		if (serv.getClient() != null) {
+			player2.player.msgToCoord(serv.getClient().getMessage());
 		}
 
 		// draw title
@@ -192,17 +194,9 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
+		// move player
 		player1.player.moveIn(field.field, player2.player);
 		player2.player.moveIn(field.field, player1.player);
-
-		// receive player info
-		/*if (serv.getHost() && serv.getServ() != null) {
-			player2.player.msgToCoord(serv.getServ().getMessage());
-
-		} else if (!serv.getHost() && serv.getClient().isConnected()){
-			player2.player.msgToCoord(serv.getClient().getMessage());
-		}*/
 
 		// move ball
 		ball.move(field.field, player1.player);
@@ -231,6 +225,7 @@ public class Board extends JPanel implements ActionListener {
 			}
 		}
 	}
+
 	/**
 	 * Exit button action implementation
 	 */

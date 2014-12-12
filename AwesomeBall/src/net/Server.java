@@ -9,18 +9,8 @@ public class Server extends ServerSocket implements Runnable {
 	private BufferedReader in;
 	private PrintWriter out;
 
-
-	public static final int port = 13337;
-	public static final String addr = "127.0.0.1";
-
-	public Server() throws IOException {
-		super(port);
-
-		try {
-			socket = this.accept();
-		} catch (Exception e) {
-			System.out.println("Failed to accept");
-		}
+	public Server(int outport) throws IOException {
+		super(outport);
 	}
 
 	public String getMessage() {
@@ -44,6 +34,11 @@ public class Server extends ServerSocket implements Runnable {
 	}
 
 	public void run() {
+		try {
+			socket = this.accept();
+		} catch (Exception e) {
+			System.out.println("Failed to accept");
+		}
 		while (!this.isClosed()){
 			if (socket != null && socket.isConnected()){
 				try {

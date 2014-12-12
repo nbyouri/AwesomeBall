@@ -5,7 +5,6 @@ import gui.Board;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 @SuppressWarnings("serial")
 public class SpaceBalls extends JFrame {
@@ -15,12 +14,9 @@ public class SpaceBalls extends JFrame {
 	public SpaceBalls() throws Exception {
 		// our main window is 850x600 for now.
 		this.setSize(850, 600);
-
-		int type = JOptionPane.showConfirmDialog(null, "Êtes vous un serveur ?");
-		boolean host = (type == 0);
 		
 		// initialize a board which takes the whole screen
-		mainBoard = new Board(this.getSize(), host);
+		mainBoard = new Board(this.getSize());
 
 		// add the jpanel in the jframe
 		add(mainBoard);

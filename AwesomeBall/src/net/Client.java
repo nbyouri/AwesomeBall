@@ -3,45 +3,48 @@ package net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
-public class Client extends Socket implements Runnable {
-	
+public class Client implements Runnable {
+	private Socket socket;
+	private int port;
 	private String message;
-	
-	public Client() throws UnknownHostException, IOException{
-		super(Server.addr, Server.port);
+
+	public Client(int inport) {
+		port = inport;
+		socket = null;
 	}
-	
+
 	public String getMessage(){
 		return this.message;
 	}
-	
-	/**
-	 * Methode qui envoie le score sur le socket.
-	 * @param score score envoye
-	 * @throws IOException
-	 */
-	public synchronized void sendMsg(String msg) throws IOException{
-		if (this.isConnected()){
-			PrintWriter sortie = new PrintWriter(this.getOutputStream());
-			sortie.println(msg);
-			sortie.flush();
-		}
-	}
-	
+
 	//Socket en ecoute 
 	public void run() {
-		while(!this.isClosed()){
-			if (this != null && this.isConnected()){
+		try { 
+			Thread.sleep(20); 
+		} catch (Exception e) {}
+		
+		while (socket == null) {
+			try {
+				socket = new Socket("127.0.0.1", port);
+				if (socket != null) {
+					break;
+				} else {
+					try { 
+						Thread.sleep(200); 
+					} catch (Exception e) {}
+				}
+			} catch (Exception e) {}
+		}
+		
+		while (!socket.isClosed()) {
+
+			if (socket != null && socket.isConnected()){
 				try {
-					BufferedReader entree = new BufferedReader(new InputStreamReader(this.getInputStream()));
+					BufferedReader entree = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
-					if (mes != null){
-						this.message = mes;
-					}
+					this.message = mes;
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

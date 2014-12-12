@@ -251,11 +251,12 @@ public class PlayerController extends PlayerModel {
 	 */
 	public void msgToCoord(String msg) {
 		if (msg != null) {
-			String data[] = msg.split("\\");
-			double x = Integer.parseInt(data[0]);
-			double y = Integer.parseInt(data[1]);
-			System.out.println(x + y);
-			this.setLocation(x, y);
+			String data[] = msg.split("/");
+			
+			double nx = java.lang.Double.parseDouble(data[0]); 
+			double ny = java.lang.Double.parseDouble(data[1]);
+
+			this.setLocation(nx, ny);
 
 			this.setScore(Integer.parseInt(data[2]));
 		}

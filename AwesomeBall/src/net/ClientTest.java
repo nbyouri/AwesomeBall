@@ -12,7 +12,7 @@ public class ClientTest extends Socket implements Runnable {
 	private String message;
 	
 	public ClientTest() throws UnknownHostException, IOException {
-		super(Server.addr, Server.port);
+		super("127.0.0.1", initServer.OUT_PORT);
 		Thread t = new Thread(this);
 		t.start();
 	}
@@ -54,12 +54,16 @@ public class ClientTest extends Socket implements Runnable {
 	
 	public static void main(String[] args) throws IOException {
 		ClientTest ct = new ClientTest();
-		while (ct.isConnected()) {
+		while (ct.isConnected() && ct.isBound()) {
 			System.out.println("Waiting for info");
 			try {
 				Thread.sleep(20);
 			} catch (Exception e) {}
+			if (ct.getMessage() == null) {
+				continue;
+			}
 			System.out.println("out <- " + ct.getMessage());
+			System.out.println(ct.getLocalPort() + " " + ct.getPort() + ct.getRemoteSocketAddress());
 		}
 	}
 }
