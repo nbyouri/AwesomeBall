@@ -1,49 +1,61 @@
 package net;
 
-import geo.PlayerModel;
-
 import java.net.*;
 import java.io.*;
 
-public class Server extends Thread {
-	private ServerSocket serverSocket;
-	private PlayerModel player;
+public class Server extends ServerSocket implements Runnable {
+	private Socket socket;
+	private String msg;
+	private BufferedReader in;
+	private PrintWriter out;
 
-	public static final int port = 1337;
 
-	public Server(PlayerModel p) throws IOException {
-		player = p;
-		serverSocket = new ServerSocket(port);
+	public static final int port = 13337;
+	public static final String addr = "127.0.0.1";
+
+	public Server() throws IOException {
+		super(port);
+
+		try {
+			socket = this.accept();
+		} catch (Exception e) {
+			System.out.println("Failed to accept");
+		}
+	}
+
+	public String getMessage() {
+		return msg;
+	}
+
+	public Socket getSocket() {
+		return socket;
+	}
+
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+
+	public synchronized void sendMsg(String msg) throws IOException {
+		if (socket != null && socket.isConnected()){
+			out = new PrintWriter(socket.getOutputStream());
+			out.println(msg);
+			out.flush();
+		}
 	}
 
 	public void run() {
-		
-		while (true) {
-			try {
-				
-				Socket socket = serverSocket.accept();
-
-				PrintStream ps = new PrintStream(socket.getOutputStream());
-
-
-				while (true) {
-					ps.println(player.toString());
-					
-					try {
-						sleep(100);
-					} catch(Exception e) {
-						e.printStackTrace();
+		while (!this.isClosed()){
+			if (socket != null && socket.isConnected()){
+				try {
+					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					String mes = in.readLine();
+					if (mes != null){
+						this.msg = mes;
 					}
-					
-					//ps.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
-
-				//socket.close();
-			} catch(IOException e) {
-				e.printStackTrace();
-				break;
 			}
 		}
-
-	} 
+	}
 }

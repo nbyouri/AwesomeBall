@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 @SuppressWarnings("serial")
 public class PlayerController extends PlayerModel {
+
 	public Images getImg() {
 		return img;
 	}
@@ -244,8 +245,36 @@ public class PlayerController extends PlayerModel {
 
 	}
 
+	/*
+	 * 
+	 * server packet to player position
+	 * 
+	 */
+	public void msgToCoord(String msg) {
+		if (msg != null) {
+			String data[] = msg.split("\\");
+			double x = Integer.parseInt(data[0]);
+			double y = Integer.parseInt(data[1]);
+			System.out.println(x + y);
+			this.setLocation(x, y);
+
+			this.setScore(Integer.parseInt(data[2]));
+		}
+	}
+
+	/*
+	 * 
+	 * player coordinates and score to string
+	 * 
+	 */
 	@Override
 	public String toString() {
-		return "Player [x=" + x + ", y=" + y + "]";
+		StringBuilder msg = new StringBuilder();
+
+		msg.append(Integer.parseInt(this.getX() + "/"));
+		msg.append(Integer.parseInt(this.getY() + "/"));
+		msg.append(Integer.parseInt(this.getScore() + "/"));
+
+		return msg.toString();
 	}
 }

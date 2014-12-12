@@ -98,4 +98,9 @@ public class PlayerView implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	
 	}
+	
+	@Override
+	public String toString() {
+		return player.toString();
+	}
 }

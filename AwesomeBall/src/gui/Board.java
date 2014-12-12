@@ -18,20 +18,24 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import net.initServer;
+
 
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
 	private Timer timer;
-	
+
 	private Text title;
 	private Text score;
-	
+
 	public  PlayerView player1;
 	public  PlayerView player2;
 
 	private Ball ball;
 	private FieldView field;
 	private Button exit;
+
+	private initServer serv;
 
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
@@ -65,7 +69,16 @@ public class Board extends JPanel implements ActionListener {
 	 * 
 	 * @param Dimension : The screen size. 
 	 */
-	public Board(Dimension boardSize) {
+	public Board(Dimension boardSize, boolean host) {
+
+		// setup server
+		try {
+			serv = new initServer(host);
+			System.out.println(serv.getServ().getSocket().getPort());
+		} catch(Exception ex) {
+			System.out.println("Failed to initServer");
+		}
+
 
 		// proportional field , H = 60yds, W = 100yds, Center radius = 10yds
 		double field_height = boardSize.getHeight() - (3 * BOARD_Y_POS);
@@ -86,7 +99,6 @@ public class Board extends JPanel implements ActionListener {
 		player1 = new PlayerView(field, ball);
 		player2 = new PlayerView(field, ball);
 		player2.player.setLocation(200,  200);
-
 
 		// setup ball
 		ball = new Ball(field.field.getCenterX(), 
@@ -133,6 +145,25 @@ public class Board extends JPanel implements ActionListener {
 		g2.setRenderingHint(RenderingHints.KEY_RENDERING, 
 				RenderingHints.VALUE_RENDER_QUALITY);
 
+		// update location on server/client
+		if (serv.getHost() && serv.getServ().getSocket() != null &&
+				serv.getServ().getSocket().isConnected()) {
+			try {
+				System.out.println(player1.toString());
+				serv.getClient().sendMsg(player1.toString());
+			} catch (Exception ex) {
+				System.out.println("Failed to send player1 coordinates to server");
+			}
+		} else if (!serv.getHost() && 
+				serv.getClient() != null &&
+				serv.getClient().isConnected()) {
+			try {
+				serv.getServ().sendMsg(player1.toString());
+			} catch (Exception ex) {
+				System.out.println("Failed to send player1 coordinates to client");
+			}
+		}
+
 		// draw title
 		title.draw(g2);
 
@@ -141,7 +172,7 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw player
 		player1.draw(g2);
-		
+
 		// draw player2
 		player2.draw(g2);
 
@@ -156,20 +187,30 @@ public class Board extends JPanel implements ActionListener {
 		score.setStr(Integer.toString(player1.player.getScore()) + " / " + 
 				Integer.toString(player2.player.getScore()));
 		score.draw(g2);
-		
+
 		// clean
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
 
 	public void actionPerformed(ActionEvent e) {
+
 		player1.player.moveIn(field.field, player2.player);
-		player2.player.moveIn(field.field, player2.player);
-		
+		player2.player.moveIn(field.field, player1.player);
+
+		// receive player info
+		if (serv.getHost() && serv.getServ() != null) {
+			player2.player.msgToCoord(serv.getServ().getMessage());
+
+		} else if (!serv.getHost() && serv.getClient().isConnected()){
+			player2.player.msgToCoord(serv.getClient().getMessage());
+		}
+
+		// move ball
 		ball.move(field.field, player1.player);
 		ball.move(field.field, player2.player);
-		
 		ball.brake();
+
 		repaint();
 	}
 
@@ -206,12 +247,13 @@ public class Board extends JPanel implements ActionListener {
 	 * Exit in a clean way
 	 */
 	public void exitProgram() {
+		serv.closeSocket();
 		Container frame = this.getParent();
 		do {
 			frame = frame.getParent();
 		} while (!(frame instanceof JFrame));
 		((JFrame) frame).dispose();
+
 		System.exit(EXIT_SUCCESS);
 	}
-
 }
