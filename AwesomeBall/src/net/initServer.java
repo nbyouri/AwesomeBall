@@ -53,10 +53,6 @@ public class initServer implements Runnable {
 				serv.close();
 			}
 			
-			/*if (client != null) {
-				client.close();
-			}*/
-			
 		} catch (Exception e) {
 			System.out.println("Failed to close socket");
 		}

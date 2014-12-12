@@ -1,5 +1,13 @@
 package main;
 
+/*
+ * 
+ * TODO : 
+ * 
+ * window for server info ? (waiting.../sending.../ ...)
+ * detect other player connection better
+ * 
+ */
 import gui.Board;
 
 import java.awt.EventQueue;
