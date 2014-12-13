@@ -1,5 +1,7 @@
 package net;
 
+import java.awt.BorderLayout;
+import java.awt.Button;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -8,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class DiscoverLocal {
+
 	public static String getSubnet(InetAddress address) {
 		String host = address.getHostAddress();
 		String[] ip = host.split("\\.");
@@ -39,24 +42,32 @@ public class DiscoverLocal {
 	public static String selectIP() throws Exception {
 		JDialog dialog = new JDialog();
 		JLabel label = new JLabel("Please wait...");
+		Button exit = new Button("Cancel & Exit");
+
+		dialog.setSize(200, 200);
+		dialog.setResizable(false);
 		dialog.setLocationRelativeTo(null);
-		dialog.setTitle("Please Wait...");
-		dialog.add(label);
+		dialog.setUndecorated(true);
+		dialog.add(exit);
+		dialog.add(label, BorderLayout.CENTER);
+		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
 		dialog.setVisible(true);
-		
+
 		ArrayList<InetAddress>addresses = DiscoverLocal.checkHosts();
+
 		dialog.setVisible(false);
-		
+
 		ArrayList<String>ips = new ArrayList<String>();
-		
+
 		for (int i = 0; i < addresses.size(); i++) {
 			ips.add(addresses.get(i).getHostAddress());
 		}
-		
+
 		Object[] ipsarray = ips.toArray();
 		String ip = (String)JOptionPane.showInputDialog(null, "Choose IP", 
 				"NET", JOptionPane.YES_OPTION, null, ipsarray, ipsarray[0]);
-		
+
 		return ip;
 	}
 }
