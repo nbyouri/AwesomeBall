@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 public class initServer implements Runnable {
 	private Server serv;
 	private Client client;
+	private String address;
 	private int inport;
 	private int outport;
 
@@ -30,14 +31,24 @@ public class initServer implements Runnable {
 			inport = outport;
 			outport = temp;
 		}
-		
-		String addr = "127.0.0.1";
 
-		serv = new Server(addr, outport);
+		try {
+			serv = new Server(outport);
+		} catch (Exception e) {
+			System.out.println("Failed to connect server socket to " + "/" + outport);
+			System.exit(1);
+		}
+		
 		Thread servth = new Thread(serv);
 		servth.start();
+
+		try {
+			address = DiscoverLocal.checkHosts(inport).getHostAddress();
+		} catch (Exception e) {
+			System.out.println("Failed to find server");
+		}
 		
-		client = new Client(addr, inport);
+		client = new Client(address, inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 	}

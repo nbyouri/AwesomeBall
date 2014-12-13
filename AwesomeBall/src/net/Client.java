@@ -12,9 +12,9 @@ public class Client implements Runnable {
 	private String message;
 
 	public Client(String addr, int inport) {
-		address = addr;
-		port = inport;
 		socket = null;
+		port = inport;
+		address = addr;
 	}
 
 	public String getMessage(){
