@@ -53,7 +53,7 @@ public class initServer implements Runnable {
 			System.out.println("Failed to find server");
 		}
 		System.out.println(address);
-		client = new Client("192.168.1.2", inport);
+		client = new Client(address, inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 	}
