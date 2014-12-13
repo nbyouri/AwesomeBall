@@ -177,8 +177,11 @@ public class Ball extends Ellipse2D.Double {
 
             //Pour l'axe des X ( gauche et droite du joueur)
             if (this.isTouchBorderOuterShapeX(p)) {
-                if(!(this.rect.touchRectInLeft(f) ||
-                        this.rect.touchRectInRight(f))){
+                if(!(this.rect.touchRectInLeft(f)||
+                        this.rect.touchRectInRight(f))||
+                        this.isTouchGoalLeft(f) || 
+                        this.isTouchGoalRight(f)){
+                
                     if(this.isBallLeftShape(p)){
                         this.setX(p.getEll().getX() - this.getWidth());
                     } else if (this.isBallRightShape(p))
@@ -189,7 +192,10 @@ public class Ball extends Ellipse2D.Double {
             //Pour l'axe des Y ( bas et haut du joueur )
             if (this.isTouchBorderOuterShapeY(p)) {
                 if(!(this.rect.touchRectInBottom(f) || 
-                        this.rect.touchRectInTop(f))){
+                        this.rect.touchRectInTop(f))||
+                        this.isTouchGoalLeft(f) ||  
+                        this.isTouchGoalRight(f)){
+                
                     if(this.isBallAboveShape(p)){
                         this.setY(p.getEll().getY() + this.getHeight());
                     }else if (this.isBallUnderShape(p)){
@@ -217,13 +223,13 @@ public class Ball extends Ellipse2D.Double {
         //Pour l'axe des Y
         if (this.rect.touchRectInLeft(f)
                 || this.rect.touchRectInRight(f)) {
-           // if ((!this.isTouchGoalLeft(f)) && (!this.isTouchGoalRight(f))) {
+           if ((!this.isTouchGoalLeft(f)) && (!this.isTouchGoalRight(f))) {
                 this.setVx(-vX);
             } else {
                 this.goal(f, p);
             }
     }
-
+}
     /**
      * Est-ce que la balle touche les bordures droites ou gauches d'un rectangle
      * dont la balle est a l'exterieur de ce rectangle ? XXXXX PAS REMPLACABLE
