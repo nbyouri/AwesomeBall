@@ -1,12 +1,8 @@
 package net;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
+import gui.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
-
-import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class DiscoverLocal {
@@ -40,17 +36,7 @@ public class DiscoverLocal {
 	}
 
 	public static String selectIP() throws Exception {
-		JDialog dialog = new JDialog();
-		JLabel label = new JLabel("Please wait...");
-		Button exit = new Button("Cancel & Exit");
-
-		dialog.setSize(200, 200);
-		dialog.setResizable(false);
-		dialog.setLocationRelativeTo(null);
-		dialog.setUndecorated(true);
-		dialog.add(exit);
-		dialog.add(label, BorderLayout.CENTER);
-		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		Dialog dialog = new Dialog("Please wait...");
 
 		dialog.setVisible(true);
 
