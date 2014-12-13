@@ -17,7 +17,7 @@ public class DiscoverLocal {
 		return ret.toString();
 	}  
 
-	public static ArrayList<InetAddress> checkHosts(int port) throws Exception {
+	public static ArrayList<InetAddress> checkHosts() throws Exception {
 		ArrayList<InetAddress> ips = new ArrayList<InetAddress>();
 		String subnet = DiscoverLocal.getSubnet(InetAddress.getLocalHost());
 		InetAddress ip = null;
@@ -44,7 +44,7 @@ public class DiscoverLocal {
 		dialog.add(label);
 		dialog.setVisible(true);
 		
-		ArrayList<InetAddress>addresses = DiscoverLocal.checkHosts(7331);
+		ArrayList<InetAddress>addresses = DiscoverLocal.checkHosts();
 		dialog.setVisible(false);
 		
 		ArrayList<String>ips = new ArrayList<String>();
