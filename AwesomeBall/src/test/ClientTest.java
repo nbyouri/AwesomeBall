@@ -7,22 +7,23 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import net.DiscoverLocal;
 import net.initServer;
 
 public class ClientTest extends Socket implements Runnable {
-	
+
 	private String message;
-	
-	public ClientTest() throws UnknownHostException, IOException {
-		super("127.0.0.1", initServer.OUT_PORT);
+
+	public ClientTest() throws Exception {
+		super("192.168.1.2", initServer.OUT_PORT);
 		Thread t = new Thread(this);
 		t.start();
 	}
-	
+
 	public String getMessage(){
 		return this.message;
 	}
-	
+
 	/**
 	 * Methode qui envoie le score sur le socket.
 	 * @param score score envoye
@@ -35,7 +36,7 @@ public class ClientTest extends Socket implements Runnable {
 			sortie.flush();
 		}
 	}
-	
+
 	//Socket en ecoute 
 	public void run() {
 		while(!this.isClosed()){
@@ -53,8 +54,8 @@ public class ClientTest extends Socket implements Runnable {
 			}
 		}
 	}
-	
-	public static void main(String[] args) throws IOException {
+
+	public static void main(String[] args) throws Exception {
 		ClientTest ct = new ClientTest();
 		while (ct.isConnected() && ct.isBound()) {
 			System.out.println("Waiting for info");

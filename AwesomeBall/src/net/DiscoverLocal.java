@@ -17,8 +17,8 @@ public class DiscoverLocal {
 		String subnet = DiscoverLocal.getSubnet(InetAddress.getLocalHost());
 		InetAddress ip = null;
 		Socket so = null;
-		int timeout=100;
-		while (ip == null) {
+		int timeout=20;
+		while (true) {
 			for (int i=1;i<254;i++){
 				String host=subnet + "." + i;
 				System.out.println("trying : " + host);
@@ -30,22 +30,23 @@ public class DiscoverLocal {
 				if (ip.isReachable(timeout)){
 					try {
 						so = new Socket(host, port);
-					} catch (Exception e) {
+					} catch (Exception cone) {
+						continue;
 					}
 					if (so != null) {
 						if (so.isConnected()) {
+							so.close();
 							return ip;
 						}
 					}
 				}
 			}
 		}
-		return ip;
 	}
 
-//	public static void main(String []args) throws Exception {
-//		InetAddress iparray = DiscoverLocal.checkHosts(DiscoverLocal.getSubnet(InetAddress.getLocalHost()), 7331);
-//		System.out.println(iparray.getHostAddress() + " = reachable");
-//		System.exit(0);
-//	}
+	public static void main(String []args) throws Exception {
+		InetAddress iparray = DiscoverLocal.checkHosts(7331);
+		System.out.println(iparray.getHostAddress() + " = reachable");
+		System.exit(0);
+	}
 }

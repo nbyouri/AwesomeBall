@@ -19,8 +19,11 @@ public class initServer implements Runnable {
 		outport = OUT_PORT;
 
 		int type = JOptionPane.showConfirmDialog(null, "Êtes vous un serveur ?");
+		if (type == JOptionPane.CANCEL_OPTION) {
+			System.exit(0);
+		}
 		boolean host = (type == 0);
-		
+
 		/*
 		 * 
 		 * If we're the second player, invert the ports.
@@ -38,17 +41,19 @@ public class initServer implements Runnable {
 			System.out.println("Failed to connect server socket to " + "/" + outport);
 			System.exit(1);
 		}
-		
+
 		Thread servth = new Thread(serv);
 		servth.start();
 
 		try {
-			address = DiscoverLocal.checkHosts(inport).getHostAddress();
+			while (address == null) {
+				address = DiscoverLocal.checkHosts(inport).getHostAddress();
+			}
 		} catch (Exception e) {
 			System.out.println("Failed to find server");
 		}
-		
-		client = new Client(address, inport);
+		System.out.println(address);
+		client = new Client("192.168.1.2", inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 	}
@@ -74,8 +79,8 @@ public class initServer implements Runnable {
 			System.out.println("Failed to close socket");
 		}
 	}
-	
+
 	public void run() {
-	
+
 	}
 }
