@@ -46,13 +46,10 @@ public class initServer implements Runnable {
 		servth.start();
 
 		try {
-			while (address == null) {
-				address = DiscoverLocal.checkHosts(inport).getHostAddress();
-			}
+			address = DiscoverLocal.selectIP();
 		} catch (Exception e) {
 			System.out.println("Failed to find server");
 		}
-		System.out.println(address);
 		client = new Client(address, inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
