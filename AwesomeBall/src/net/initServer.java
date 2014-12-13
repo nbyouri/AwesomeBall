@@ -20,17 +20,24 @@ public class initServer implements Runnable {
 		int type = JOptionPane.showConfirmDialog(null, "Êtes vous un serveur ?");
 		boolean host = (type == 0);
 		
+		/*
+		 * 
+		 * If we're the second player, invert the ports.
+		 * 
+		 */
 		if (!host) {
 			int temp = inport;
 			inport = outport;
 			outport = temp;
 		}
+		
+		String addr = "127.0.0.1";
 
-		serv = new Server(outport);
+		serv = new Server(addr, outport);
 		Thread servth = new Thread(serv);
 		servth.start();
 		
-		client = new Client(inport);
+		client = new Client(addr, inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 	}
@@ -52,7 +59,6 @@ public class initServer implements Runnable {
 			if (serv != null) {
 				serv.close();
 			}
-			
 		} catch (Exception e) {
 			System.out.println("Failed to close socket");
 		}

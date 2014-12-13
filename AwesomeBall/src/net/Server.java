@@ -9,8 +9,8 @@ public class Server extends ServerSocket implements Runnable {
 	private BufferedReader in;
 	private PrintWriter out;
 
-	public Server(int outport) throws IOException {
-		super(outport);
+	public Server(String addr, int outport) throws IOException {
+		super(outport, 50, InetAddress.getByName(addr));
 	}
 
 	public String getMessage() {

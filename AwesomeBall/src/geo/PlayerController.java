@@ -211,9 +211,9 @@ public class PlayerController extends PlayerModel {
 	public void moveIn(FieldController f, PlayerModel p) {
 		// update speed
 		this.setMovement();
-
+		
 		// actually move if in the field or in a goal
-		if (this.insideRect(f) || this.insideGoals(f)){
+		if (this.insideRect(f) || this.insideGoals(f)) {
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}

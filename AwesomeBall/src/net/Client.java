@@ -7,10 +7,12 @@ import java.net.Socket;
 
 public class Client implements Runnable {
 	private Socket socket;
+	private String address;
 	private int port;
 	private String message;
 
-	public Client(int inport) {
+	public Client(String addr, int inport) {
+		address = addr;
 		port = inport;
 		socket = null;
 	}
@@ -27,7 +29,7 @@ public class Client implements Runnable {
 		
 		while (socket == null) {
 			try {
-				socket = new Socket("127.0.0.1", port);
+				socket = new Socket(address, port);
 				if (socket != null) {
 					break;
 				} else {

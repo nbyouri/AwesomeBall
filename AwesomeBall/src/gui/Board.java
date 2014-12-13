@@ -74,12 +74,11 @@ public class Board extends JPanel implements ActionListener {
 		// setup server
 		try {
 			serv = new initServer();
+			Thread servth = new Thread(serv);
+			servth.start();
 		} catch(Exception ex) {
 			System.out.println("Failed to initServer");
 		}
-		
-		Thread servth = new Thread(serv);
-		servth.start();
 
 
 		// proportional field , H = 60yds, W = 100yds, Center radius = 10yds
@@ -149,7 +148,7 @@ public class Board extends JPanel implements ActionListener {
 		g2.setRenderingHint(RenderingHints.KEY_RENDERING, 
 				RenderingHints.VALUE_RENDER_QUALITY);
 
-		// update location on server/client
+		// update player 1 location on server/client
 		if (serv.getServ().getSocket() != null &&
 				serv.getServ().getSocket().isConnected()) {
 			try {
@@ -159,7 +158,7 @@ public class Board extends JPanel implements ActionListener {
 			}
 		}
 
-		// receive player info
+		// receive player 2 info
 		if (serv.getClient() != null) {
 			player2.player.msgToCoord(serv.getClient().getMessage());
 		}
