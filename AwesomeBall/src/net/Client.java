@@ -29,8 +29,7 @@ public class Client implements Runnable {
 		while (socket == null) {
 			try {
 				socket = new Socket(address, port);
-				if (socket != null) {
-					System.out.println("server detected");
+				if (socket != null || socket.isBound()) {
 					break;
 				} else {
 					System.out.println("no server detected");
@@ -44,7 +43,6 @@ public class Client implements Runnable {
 		while (!socket.isClosed()) {
 
 			if (socket != null && socket.isConnected()){
-				System.out.println("socket connected");
 				try {
 					BufferedReader entree = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
