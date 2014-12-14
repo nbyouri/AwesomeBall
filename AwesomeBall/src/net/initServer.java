@@ -45,13 +45,8 @@ public class initServer implements Runnable {
 		Thread servth = new Thread(serv);
 		servth.start();
 
-		try {
-			address = DiscoverLocal.selectIP();
-		} catch (Exception e) {
-			System.out.println("Failed to find server");
-		}
-		client = new Client(address, inport);
-		Thread clienth = new Thread(client);
+		address = DiscoverLocal.getIp();
+		Thread clienth = new Thread(new Client(address, inport));
 		clienth.start();
 	}
 

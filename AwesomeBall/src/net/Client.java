@@ -21,7 +21,6 @@ public class Client implements Runnable {
 		return this.message;
 	}
 
-	//Socket en ecoute 
 	public void run() {
 		try { 
 			Thread.sleep(20); 
@@ -46,6 +45,7 @@ public class Client implements Runnable {
 				try {
 					BufferedReader entree = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
+					System.out.println(mes);
 					this.message = mes;
 				} catch (IOException e) {
 					e.printStackTrace();

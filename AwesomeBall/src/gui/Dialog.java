@@ -30,6 +30,7 @@ public class Dialog extends JDialog {
 		JPanel messagePane = new JPanel(new GridBagLayout());
 		messagePane.add(createLabel(message, Color.cyan));
 		getContentPane().add(messagePane);
+		this.setModal(true);
 		this.setSize(200, 200);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
