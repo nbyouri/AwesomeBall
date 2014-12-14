@@ -21,7 +21,7 @@ public class DiscoverLocal {
 		String subnet = DiscoverLocal.getSubnet(InetAddress.getLocalHost());
 		InetAddress ip = null;
 		int timeout=50;
-		for (int i = 1; i <254; i++){
+		for (int i = 2; i <254; i++){
 			String host=subnet + "." + i;
 			try {
 				ip = InetAddress.getByName(host);
@@ -47,7 +47,9 @@ public class DiscoverLocal {
 		ArrayList<String>ips = new ArrayList<String>();
 
 		for (int i = 0; i < addresses.size(); i++) {
-			ips.add(addresses.get(i).getHostAddress());
+			if (!addresses.get(i).equals(InetAddress.getLocalHost())) {
+				ips.add(addresses.get(i).getHostAddress());
+			}
 		}
 
 		Object[] ipsarray = ips.toArray();
