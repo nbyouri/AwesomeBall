@@ -14,6 +14,14 @@ public class initServer implements Runnable {
 	public static final int IN_PORT = 1337;
 	public static final int OUT_PORT = 7331;
 
+	/**
+	 * initServer initializes the server part of the game.
+	 * Each player has a ServerSocket and a Client socket, 
+	 * so each sends data on a socket and receives data on 
+	 * the other. The server, Client sockets are both in 
+	 * their own thread.
+	 * @throws IOException
+	 */
 	public initServer() throws IOException {
 		inport = IN_PORT;
 		outport = OUT_PORT;
