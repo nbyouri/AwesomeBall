@@ -29,7 +29,7 @@ public class Client implements Runnable {
 		while (socket == null) {
 			try {
 				socket = new Socket(address, port);
-				if (socket != null || socket.isBound()) {
+				if (socket != null && socket.isBound()) {
 					break;
 				} else {
 					System.out.println("no server detected");

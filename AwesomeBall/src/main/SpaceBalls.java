@@ -7,7 +7,7 @@ package main;
  * window for server info ? (waiting.../sending.../ ...)
  * detect other player connection better
  * send ball location as well
- * 
+ * create customized optionpane
  * 
  */
 import gui.Board;

@@ -10,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
@@ -22,7 +23,7 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 	private JProgressBar progressBar;
 	private static String ip;
 
-	public static final int MAX_IP = 10;
+	public static final int MAX_IP = 254;
 	public static final int MIN_IP = 2;
 	public static final int PING_TIMEOUT = 100;
 
@@ -73,16 +74,29 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 	public static String selectIP() throws Exception {		
 		ArrayList<String>ips = new ArrayList<String>();
 
+		// add found ips to a string arraylist
 		for (int i = 0; i < addresses.size(); i++) {
 			if (!addresses.get(i).equals(InetAddress.getLocalHost())) {
 				ips.add(addresses.get(i).getHostAddress());
 			}
 		}
-
+		
+		if (ips.size() == 0) {
+			System.out.println("No Local IPs Found");
+		}
+		
+		// remove duplicates in string arraylist
+		LinkedHashSet<String> hs = new LinkedHashSet<String>();
+		hs.addAll(ips);
+		ips.clear();
+		ips.addAll(hs);
+		
+		// show options
 		Object[] ipsarray = ips.toArray();
 		String ip = (String)JOptionPane.showInputDialog(null, "Choose IP", 
 				"NET", JOptionPane.YES_OPTION, null, ipsarray, ipsarray[0]);
 
+		// return selected options
 		return ip;
 	}
 
@@ -122,6 +136,10 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 	public static String getIp() {
 		createAndShowGUI();
 
+		if (addresses.size() == 0) {
+			System.out.println("Error Discovering local net");
+		}
+		
 		try {
 			ip = selectIP();
 		} catch (Exception e) {}
