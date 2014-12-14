@@ -12,7 +12,7 @@ public class ClientTest extends Socket implements Runnable {
 	private String message;
 
 	public ClientTest() throws Exception {
-		super(InetAddress.getLocalHost(), 1337);
+		super("192.168.1.2", 1337);
 		Thread t = new Thread(this);
 		t.start();
 	}
@@ -55,7 +55,7 @@ public class ClientTest extends Socket implements Runnable {
 	public static void main(String[] args) throws Exception {
 		ClientTest ct = new ClientTest();
 		while (ct.isConnected() && ct.isBound()) {
-			//System.out.println("Waiting for info");
+			System.out.println("Waiting for info");
 			try {
 				Thread.sleep(20);
 			} catch (Exception e) {}

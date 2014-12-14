@@ -32,7 +32,7 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 		super("Scanning Local Network.");
 
 		startButton = new Button("Start", this);
-		startButton.setActionCommand("xstart");
+		startButton.setActionCommand("start");
 		startButton.addActionListener(this);
 
 		progressBar = new JProgressBar(0, MAX_IP);
