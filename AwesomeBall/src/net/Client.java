@@ -30,8 +30,10 @@ public class Client implements Runnable {
 			try {
 				socket = new Socket(address, port);
 				if (socket != null) {
+					System.out.println("server detected");
 					break;
 				} else {
+					System.out.println("no server detected");
 					try { 
 						Thread.sleep(200); 
 					} catch (Exception e) {}
@@ -42,10 +44,10 @@ public class Client implements Runnable {
 		while (!socket.isClosed()) {
 
 			if (socket != null && socket.isConnected()){
+				System.out.println("socket connected");
 				try {
 					BufferedReader entree = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
-					System.out.println(mes);
 					this.message = mes;
 				} catch (IOException e) {
 					e.printStackTrace();

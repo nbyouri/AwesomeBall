@@ -12,7 +12,7 @@ public class ClientTest extends Socket implements Runnable {
 	private String message;
 
 	public ClientTest() throws Exception {
-		super("192.168.1.2", initServer.OUT_PORT);
+		super("192.168.1.8", initServer.OUT_PORT);
 		Thread t = new Thread(this);
 		t.start();
 	}

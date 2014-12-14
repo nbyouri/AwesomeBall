@@ -160,7 +160,6 @@ public class Board extends JPanel implements ActionListener {
 
 		// receive player 2 info if the client is connected, otherwise, retry
 		if (serv.getClient() != null) {
-			System.out.println("Data from client : " + serv.getClient().getMessage());
 			player2.player.msgToCoord(serv.getClient().getMessage());
 		}
 
