@@ -20,17 +20,16 @@ import javax.swing.JFrame;
 public class SpaceBalls extends JFrame {
 
 	Board mainBoard;
-	
+
 	public SpaceBalls() throws Exception {
 		// our main window is 850x600 for now.
 		this.setSize(850, 600);
-		
+
 		// initialize a board which takes the whole screen
 		mainBoard = new Board(this.getSize());
 
 		// add the jpanel in the jframe
 		add(mainBoard);
-
 
 		// jframe settings
 		this.setTitle("SpaceBalls");

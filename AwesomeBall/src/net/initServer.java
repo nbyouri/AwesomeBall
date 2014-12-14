@@ -15,19 +15,21 @@ public class initServer implements Runnable {
 	public static final int OUT_PORT = 7331;
 
 	/**
-	 * initServer initializes the server part of the game.
-	 * Each player has a ServerSocket and a Client socket, 
-	 * so each sends data on a socket and receives data on 
-	 * the other. The server, Client sockets are both in 
-	 * their own thread.
+	 * initServer initializes the server part of the game. Each player has a
+	 * ServerSocket and a Client socket, so each sends data on a socket and
+	 * receives data on the other. The server, Client sockets are both in their
+	 * own thread.
+	 * 
 	 * @throws IOException
 	 */
 	public initServer() throws IOException {
 		inport = IN_PORT;
 		outport = OUT_PORT;
 
-		int type = JOptionPane.showConfirmDialog(null, "Êtes vous un serveur ?");
-		if (type == JOptionPane.CANCEL_OPTION) {
+		int type = JOptionPane
+				.showConfirmDialog(null, "Êtes vous un serveur ?");
+		if (type == JOptionPane.CANCEL_OPTION ||
+				type == JOptionPane.CLOSED_OPTION) {
 			System.exit(0);
 		}
 		boolean host = (type == 0);
@@ -35,7 +37,6 @@ public class initServer implements Runnable {
 		/*
 		 * 
 		 * If we're the second player, invert the ports.
-		 * 
 		 */
 		if (!host) {
 			int temp = inport;
@@ -46,16 +47,17 @@ public class initServer implements Runnable {
 		try {
 			serv = new Server(outport);
 		} catch (Exception e) {
-			System.out.println("Failed to connect server socket to " + "/" + outport);
+			System.out.println("Failed to connect server socket to " + "/"
+					+ outport);
 			System.exit(1);
 		}
 
 		Thread servth = new Thread(serv);
 		servth.start();
 
-		//address = DiscoverLocal.getIp();
-		
-		client = new Client("192.168.1.2", inport);
+		address = DiscoverLocal.getIp();
+
+		client = new Client(address, inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 
@@ -69,7 +71,7 @@ public class initServer implements Runnable {
 		return client;
 	}
 
-	public void closeSocket(){
+	public void closeSocket() {
 		try {
 			if (serv.getSocket() != null) {
 				serv.getSocket().close();

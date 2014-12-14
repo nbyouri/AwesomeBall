@@ -18,34 +18,32 @@ public class PlayerView implements ActionListener {
 	public Ball ball;
 	public Keys keys;
 	public KeyEvents kev;
-	
+
 	public PlayerView(FieldView f, Ball b) {
 		field = f;
 		ball = b;
-		
+
 		// setup key events
 		kev = new KeyEvents();
-		
+
 		// setup player
 		player = new PlayerController();
-		
+
 		// setup key indicator
-		keys = new Keys(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS, 
+		keys = new Keys(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS,
 				Board.KEYS_WIDTH, Board.TOP_MENUS_HEIGHT);
 	}
 
 	// draw rectangle and ball
 	public void draw(Graphics2D g2) {
 		player.setRotation();
-		g2.drawImage(player.getImg().getPlayer(), 
-				(int)player.getX(), 
-				(int)player.getY(), 
-				(int)player.getWidth(), 
-				(int)player.getHeight(), null);
+		g2.drawImage(player.getImg().getPlayer(), (int) player.getX(),
+				(int) player.getY(), (int) player.getWidth(),
+				(int) player.getHeight(), null);
 		g2.setColor(Color.WHITE);
-		//g2.draw(player.getEll());
+		// g2.draw(player.getEll());
 	}
-	
+
 	/**
 	 * Listen to key events and update player location
 	 */
@@ -69,7 +67,7 @@ public class PlayerView implements ActionListener {
 				player.setDy(PlayerModel.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
 				player.down = true;
-			} 
+			}
 		}
 
 		public void keyReleased(KeyEvent e) {
@@ -94,11 +92,11 @@ public class PlayerView implements ActionListener {
 			}
 		}
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
-	
+
 	}
-	
+
 	public String toString(Ball b) {
 		return player.toString(b);
 	}

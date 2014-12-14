@@ -16,16 +16,16 @@ public class Dialog extends JDialog {
 	private Color FgColor;
 	private Color FbColor;
 	private Border border;
-	
+
 	public static final int FONT_SIZE_NORMAL = 12;
 	public static final int BORDER_NORMAL = 1;
-	
+
 	public Dialog(String message) {
 		font = new Font("Helvetica", Font.BOLD, FONT_SIZE_NORMAL);
 		border = new LineBorder(Color.cyan, BORDER_NORMAL);
 		FgColor = Color.white;
 		FbColor = Color.black;
-		
+
 		// Create a message
 		JPanel messagePane = new JPanel(new GridBagLayout());
 		messagePane.add(createLabel(message, Color.cyan));
@@ -40,16 +40,16 @@ public class Dialog extends JDialog {
 		this.setForeground(this.FgColor);
 		this.setBackground(this.FbColor);
 	}
-	
+
 	public static JLabel createLabel(String text, Color color) {
 
-        JLabel label = new JLabel(text);
-        label.setForeground(color);
+		JLabel label = new JLabel(text);
+		label.setForeground(color);
 
-        return label;
+		return label;
 
-    }
-	
+	}
+
 	public static void main(String[] args) {
 		Dialog d = new Dialog("hello");
 		d.setVisible(true);

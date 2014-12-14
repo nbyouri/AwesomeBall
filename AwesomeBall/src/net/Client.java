@@ -19,14 +19,15 @@ public class Client implements Runnable {
 		address = addr;
 	}
 
-	public String getMessage(){
+	public String getMessage() {
 		return this.message;
 	}
 
 	public void run() {
-		try { 
-			Thread.sleep(20); 
-		} catch (Exception e) {}
+		try {
+			Thread.sleep(20);
+		} catch (Exception e) {
+		}
 
 		while (true) {
 			try {
@@ -36,34 +37,34 @@ public class Client implements Runnable {
 					break;
 				} else {
 					System.out.println("no server detected");
-					try { 
-						Thread.sleep(200); 
-					} catch (Exception e) {}
+					try {
+						Thread.sleep(200);
+					} catch (Exception e) {
+					}
 				}
 			}
-			
+
 			catch (ConnectException ce) {
 				System.out.println("Trying again");
 				continue;
 			}
-			
-			catch (SocketTimeoutException ex) {  
-				System.out.println("Trying to connect to " + address + "...");  
-			}  
-			
-			catch (IOException ex)   
-			{  
-				ex.printStackTrace();  
+
+			catch (SocketTimeoutException ex) {
+				System.out.println("Trying to connect to " + address + "...");
+			}
+
+			catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		}
 
 		while (!socket.isClosed()) {
 
-			if (socket != null && socket.isConnected()){
+			if (socket != null && socket.isConnected()) {
 				try {
-					BufferedReader entree = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					BufferedReader entree = new BufferedReader(
+							new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
-					System.out.println(mes);
 					this.message = mes;
 				} catch (IOException e) {
 					e.printStackTrace();
