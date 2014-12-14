@@ -17,32 +17,34 @@ public class ClientTest extends Socket implements Runnable {
 		t.start();
 	}
 
-	public String getMessage(){
+	public String getMessage() {
 		return this.message;
 	}
 
 	/**
 	 * Methode qui envoie le score sur le socket.
-	 * @param score score envoye
+	 * 
+	 * @param score
+	 *            score envoye
 	 * @throws IOException
 	 */
-	public synchronized void sendMsg(String msg) throws IOException{
-		if (this.isConnected()){
+	public synchronized void sendMsg(String msg) throws IOException {
+		if (this.isConnected()) {
 			PrintWriter sortie = new PrintWriter(this.getOutputStream());
 			sortie.println(msg);
 			sortie.flush();
 		}
 	}
 
-	//Socket en ecoute 
+	// Socket en ecoute
 	public void run() {
-		while(!this.isClosed()){
-			if (this != null && this.isConnected()){
+		while (!this.isClosed()) {
+			if (this != null && this.isConnected()) {
 				try {
 					BufferedReader entree = new BufferedReader(
 							new InputStreamReader(this.getInputStream()));
 					String mes = entree.readLine();
-					if (mes != null){
+					if (mes != null) {
 						this.message = mes;
 					}
 				} catch (IOException e) {
@@ -58,12 +60,14 @@ public class ClientTest extends Socket implements Runnable {
 			System.out.println("Waiting for info");
 			try {
 				Thread.sleep(20);
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 			if (ct.getMessage() == null) {
 				continue;
 			}
 			System.out.println("out <- " + ct.getMessage());
-			System.out.println(ct.getLocalPort() + " " + ct.getPort() + ct.getRemoteSocketAddress());
+			System.out.println(ct.getLocalPort() + " " + ct.getPort()
+					+ ct.getRemoteSocketAddress());
 		}
 	}
 }

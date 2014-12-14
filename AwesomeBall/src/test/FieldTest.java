@@ -8,13 +8,14 @@ import org.junit.Test;
 public class FieldTest {
 
 	FieldController test_field = new FieldController(0, 0, 0, 0);
+
 	@Test
 	public void test() {
 		// test rectangle
-		assert(test_field.getBounds() == new Rectangle(0, 0, 0, 0));
-		
+		assert (test_field.getBounds() == new Rectangle(0, 0, 0, 0));
+
 		// test côtés
-		assert(test_field.getSide(5) == new Line2D.Double(0, 0, 0, 0));
+		assert (test_field.getSide(5) == new Line2D.Double(0, 0, 0, 0));
 	}
 
 }

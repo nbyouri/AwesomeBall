@@ -18,20 +18,20 @@ public class Button extends JButton {
 	private Color buttonPressedFgColor;
 	private Border buttonBorder;
 	private Border buttonPressedBorder;
-	
+
 	public static final int FONT_SIZE_NORMAL = 12;
 	public static final int BORDER_NORMAL = 1;
-	
+
 	public Button(String title, ActionListener al) {
 		super(title);
-		
+
 		buttonFont = new Font("Helvetica", Font.BOLD, FONT_SIZE_NORMAL);
 		buttonBorder = new LineBorder(Color.cyan, BORDER_NORMAL);
 		buttonPressedBorder = new LineBorder(Color.yellow, BORDER_NORMAL);
 		buttonFgColor = Color.cyan;
 		buttonPressedFgColor = Color.yellow;
 		buttonFbColor = Color.black;
-		
+
 		this.setFont(this.buttonFont);
 		this.setBorder(this.buttonBorder);
 		this.setForeground(this.buttonFgColor);
@@ -42,8 +42,7 @@ public class Button extends JButton {
 		this.setRolloverEnabled(true);
 
 		/**
-		 * change color when clicked
-		 * or hovered. 
+		 * change color when clicked or hovered.
 		 */
 		this.addChangeListener(new ChangeListener() {
 			@Override

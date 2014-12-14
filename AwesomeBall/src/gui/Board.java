@@ -20,7 +20,6 @@ import javax.swing.Timer;
 
 import net.initServer;
 
-
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
 	private Timer timer;
@@ -28,8 +27,8 @@ public class Board extends JPanel implements ActionListener {
 	private Text title;
 	private Text score;
 
-	public  PlayerView player1;
-	public  PlayerView player2;
+	public PlayerView player1;
+	public PlayerView player2;
 
 	private Ball ball;
 	private FieldView field;
@@ -54,18 +53,20 @@ public class Board extends JPanel implements ActionListener {
 	public static final int EXIT_SUCCESS = 0;
 
 	/**
-         * Initialise le serveur
-         * 
+	 * Initialise le serveur
+	 * 
 	 * Proportionnalise le terrain
-         * 
-         * Initialise le titre du jeu, le terrain,
-         * les deux joueurs, la balle, la case indicateur des touches
-         * directionnelles ainsi que l'indicateur de rotation.
-         * 
-         * Configure le "key listener" et l'écran
-         * 
-         * Active un boutton "Quitter" et un timer.
-	 * @param boardSize, la taille de l'écran. 
+	 * 
+	 * Initialise le titre du jeu, le terrain, les deux joueurs, la balle, la
+	 * case indicateur des touches directionnelles ainsi que l'indicateur de
+	 * rotation.
+	 * 
+	 * Configure le "key listener" et l'écran
+	 * 
+	 * Active un boutton "Quitter" et un timer.
+	 * 
+	 * @param boardSize
+	 *            , la taille de l'écran.
 	 */
 	public Board(Dimension boardSize) {
 
@@ -74,42 +75,40 @@ public class Board extends JPanel implements ActionListener {
 			serv = new initServer();
 			Thread servth = new Thread(serv);
 			servth.start();
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("Failed to initServer");
 		}
 
-
-		// Applique les proportions du terrains , H = 60yds, W = 100yds, Center radius = 10yds
+		// Applique les proportions du terrains , H = 60yds, W = 100yds, Center
+		// radius = 10yds
 		double field_height = boardSize.getHeight() - (3 * BOARD_Y_POS);
-		double field_width = (field_height / 6)*10;
-
+		double field_width = (field_height / 6) * 10;
 
 		// setup game title
 		title = new Text("SpaceShip Collider");
 
-		title.setRect(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, 
-				TOP_TITLE_WIDTH, TOP_MENUS_HEIGHT);
+		title.setRect(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, TOP_TITLE_WIDTH,
+				TOP_MENUS_HEIGHT);
 
-		// setup field 
-		field = new FieldView(BOARD_X_POS, BOARD_Y_POS, 
-				field_width, field_height);
+		// setup field
+		field = new FieldView(BOARD_X_POS, BOARD_Y_POS, field_width,
+				field_height);
 		field.field.setCenterCircle();
 
 		// setup player 1
 		player1 = new PlayerView(field, ball);
-		player1.player.setLocation(100,  100);
+		player1.player.setLocation(100, 100);
 		player2 = new PlayerView(field, ball);
-		player2.player.setLocation(200,  200);
+		player2.player.setLocation(200, 200);
 
 		// setup ball
-		ball = new Ball(field.field.getCenterX(), 
-				field.field.getY() + (field_height / 2) - 10,
-				player1.player.getWidth(), player1.player.getHeight());
+		ball = new Ball(field.field.getCenterX(), field.field.getY()
+				+ (field_height / 2) - 10, player1.player.getWidth(),
+				player1.player.getHeight());
 
 		// setup score indicator
 		score = new Text(null);
-		score.setRect(SCORES_X, TOP_MENUS_Y_POS, 
-				SCORES_WIDTH, TOP_MENUS_HEIGHT);
+		score.setRect(SCORES_X, TOP_MENUS_Y_POS, SCORES_WIDTH, TOP_MENUS_HEIGHT);
 
 		// key listener and window settings
 		addKeyListener(player1.kev);
@@ -119,15 +118,17 @@ public class Board extends JPanel implements ActionListener {
 		setDoubleBuffered(true);
 		setLayout(null);
 
-		// quit button, add here and not in paint() 
+		// quit button, add here and not in paint()
 		// or it won't work
 		exit = new Button("EXIT", new CloseListener());
 		// place below the field
-		exit.setBounds(BOARD_X_POS,
-				BOARD_X_POS + (int)field.field.getHeight() + 
-				(int)((boardSize.getHeight() - 
-						(BOARD_Y_POS + field.field.getHeight())) / 4),
-						(int)field.field.getWidth(), TOP_MENUS_HEIGHT);
+		exit.setBounds(
+				BOARD_X_POS,
+				BOARD_X_POS
+						+ (int) field.field.getHeight()
+						+ (int) ((boardSize.getHeight() - (BOARD_Y_POS + field.field
+								.getHeight())) / 4),
+				(int) field.field.getWidth(), TOP_MENUS_HEIGHT);
 		add(exit);
 
 		// timer
@@ -138,21 +139,22 @@ public class Board extends JPanel implements ActionListener {
 	public void paint(Graphics g) {
 		super.paint(g);
 
-		Graphics2D g2 = (Graphics2D)g;
+		Graphics2D g2 = (Graphics2D) g;
 
 		// smooth rendering, otherwise fonts look bad
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHint(RenderingHints.KEY_RENDERING, 
+		g2.setRenderingHint(RenderingHints.KEY_RENDERING,
 				RenderingHints.VALUE_RENDER_QUALITY);
 
 		// update player 1 location on server/client
-		if (serv.getServ().getSocket() != null &&
-				serv.getServ().getSocket().isConnected()) {
+		if (serv.getServ().getSocket() != null
+				&& serv.getServ().getSocket().isConnected()) {
 			try {
 				serv.getServ().sendMsg(player1.toString(ball));
 			} catch (Exception ex) {
-				System.out.println("Failed to send player coordinates to server");
+				System.out
+						.println("Failed to send player coordinates to server");
 			}
 		}
 
@@ -181,8 +183,8 @@ public class Board extends JPanel implements ActionListener {
 		player1.keys.drawSides(g2, player1.keys.getPressedKeys());
 
 		// draw score box
-		score.setStr(Integer.toString(player1.player.getScore()) + " / " + 
-				Integer.toString(player2.player.getScore()));
+		score.setStr(Integer.toString(player1.player.getScore()) + " / "
+				+ Integer.toString(player2.player.getScore()));
 		score.draw(g2);
 
 		// clean
@@ -208,7 +210,7 @@ public class Board extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 
 			if (key == KeyEvent.VK_SPACE) {
-				ball.shootBall(field.field,player1.player);
+				ball.shootBall(field.field, player1.player);
 			}
 		}
 

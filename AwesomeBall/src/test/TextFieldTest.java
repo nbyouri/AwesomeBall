@@ -8,10 +8,10 @@ public class TextFieldTest {
 
 	Text test = new Text();
 	Text test_str = new Text("text");
-	
+
 	@Test
 	public void test() {
-		assert(test.getStr() == null);
+		assert (test.getStr() == null);
 		assertEquals(test_str.getStr(), "text");
 	}
 

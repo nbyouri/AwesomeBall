@@ -19,24 +19,30 @@ public class FieldModel extends Shape {
 	public static final int GOAL_RIGHT = 9;
 	public static final int GOAL_RIGHT_UP = 10;
 	public static final int GOAL_RIGHT_DOWN = 11;
-        /**
-         * Création du terrain ????? .
-         * @param x position X
-         * @param y position Y
-         * @param width largeur
-         * @param height hauteur
-         */
+
+	/**
+	 * Création du terrain ????? .
+	 * 
+	 * @param x
+	 *            position X
+	 * @param y
+	 *            position Y
+	 * @param width
+	 *            largeur
+	 * @param height
+	 *            hauteur
+	 */
 	public FieldModel(double x, double y, double width, double height) {
 		super(x, y, width, height);
 
 		this.setSides();
 
 		// Cercle central
-		center = new Ellipse2D.Double(0, 0, 
-				CENTER_CIRCLE_DIAMETER, CENTER_CIRCLE_DIAMETER);
+		center = new Ellipse2D.Double(0, 0, CENTER_CIRCLE_DIAMETER,
+				CENTER_CIRCLE_DIAMETER);
 		goalleft = new Rectangle2D.Double(0, 0, 0, 0);
 		goalright = new Rectangle2D.Double(0, 0, 0, 0);
 
-		this.setSize(x,  y,  width,  height);
+		this.setSize(x, y, width, height);
 	}
 }

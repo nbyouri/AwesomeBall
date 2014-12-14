@@ -16,9 +16,9 @@ public class Images {
 		player = load("images/craft.png");
 	}
 
-
 	/**
 	 * load image
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -29,31 +29,25 @@ public class Images {
 		return ii.getImage();
 	}
 
-
 	public Image getPlayer() {
 		return player;
 	}
-
 
 	public void setPlayer(Image player) {
 		this.player = player;
 	}
 
-
 	public int getWidth() {
 		return width;
 	}
-
 
 	public void setWidth(int width) {
 		this.width = width;
 	}
 
-
 	public int getHeight() {
 		return height;
 	}
-
 
 	public void setHeight(int height) {
 		this.height = height;
@@ -61,11 +55,14 @@ public class Images {
 
 	/**
 	 * return normalised angle
+	 * 
 	 * @return int : rotation
 	 */
 	public int getRotation() {
-		while (rotation <= -180) rotation += 360;
-		while (rotation > 180) rotation -= 360;
+		while (rotation <= -180)
+			rotation += 360;
+		while (rotation > 180)
+			rotation -= 360;
 		return rotation;
 	}
 
@@ -73,8 +70,9 @@ public class Images {
 		this.rotation = rotation;
 	}
 
-	/** 
+	/**
 	 * rotate the image.
+	 * 
 	 * @param img
 	 * @param rotation
 	 */
@@ -84,12 +82,12 @@ public class Images {
 			ImageIcon ii = new ImageIcon(img);
 			BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
 					ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
+			Graphics2D g2 = (Graphics2D) blankCanvas.getGraphics();
 
 			// rotate around the center
-			g2.rotate(Math.toRadians(rotation), 
-					ii.getIconWidth() / 2, ii.getIconHeight() / 2);
-			
+			g2.rotate(Math.toRadians(rotation), ii.getIconWidth() / 2,
+					ii.getIconHeight() / 2);
+
 			g2.drawImage(img, 0, 0, null);
 			this.setPlayer(blankCanvas);
 		}
@@ -97,6 +95,7 @@ public class Images {
 
 	/**
 	 * flip image around vertical axis
+	 * 
 	 * @param img
 	 * @param rotation
 	 */
@@ -105,10 +104,11 @@ public class Images {
 			ImageIcon ii = new ImageIcon(img);
 			BufferedImage blankCanvas = new BufferedImage(ii.getIconWidth(),
 					ii.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2 = (Graphics2D)blankCanvas.getGraphics();
+			Graphics2D g2 = (Graphics2D) blankCanvas.getGraphics();
 			// flip vertically
-			g2.drawImage(img, (int)this.getWidth(), 0, 0, (int)this.getHeight(),
-					0, 0, (int)this.getWidth(), (int)this.getHeight(), null);
+			g2.drawImage(img, (int) this.getWidth(), 0, 0,
+					(int) this.getHeight(), 0, 0, (int) this.getWidth(),
+					(int) this.getHeight(), null);
 			this.setPlayer(blankCanvas);
 		}
 	}

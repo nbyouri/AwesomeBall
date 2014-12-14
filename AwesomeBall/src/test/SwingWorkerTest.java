@@ -1,4 +1,5 @@
 package test;
+
 import gui.*;
 
 import java.awt.BorderLayout;
@@ -16,8 +17,9 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 @SuppressWarnings("serial")
-public class SwingWorkerTest extends Dialog implements ActionListener, PropertyChangeListener {
-	private static ArrayList<InetAddress>addresses;
+public class SwingWorkerTest extends Dialog implements ActionListener,
+		PropertyChangeListener {
+	private static ArrayList<InetAddress> addresses;
 	private Button startButton;
 	private JProgressBar progressBar;
 	private static String ip;
@@ -48,19 +50,19 @@ public class SwingWorkerTest extends Dialog implements ActionListener, PropertyC
 
 		ret.append(ip[0] + "." + ip[1] + "." + ip[2]);
 		return ret.toString();
-	}  
+	}
 
 	public void checkHosts() throws Exception {
 		addresses = new ArrayList<InetAddress>();
 		String subnet = SwingWorkerTest.getSubnet(InetAddress.getLocalHost());
 		InetAddress ip = null;
-		int timeout= PING_TIMEOUT;
+		int timeout = PING_TIMEOUT;
 		progressBar.setValue(0);
-		for (int i = MIN_IP; i < MAX_IP; i++){
-			String host=subnet + "." + i;
+		for (int i = MIN_IP; i < MAX_IP; i++) {
+			String host = subnet + "." + i;
 			try {
 				ip = InetAddress.getByName(host);
-				if (ip.isReachable(timeout)){
+				if (ip.isReachable(timeout)) {
 					addresses.add(ip);
 				}
 			} catch (Exception e) {
@@ -70,8 +72,8 @@ public class SwingWorkerTest extends Dialog implements ActionListener, PropertyC
 		}
 	}
 
-	public String selectIP() throws Exception {		
-		ArrayList<String>ips = new ArrayList<String>();
+	public String selectIP() throws Exception {
+		ArrayList<String> ips = new ArrayList<String>();
 
 		// add found ips to a string arraylist
 		for (int i = 0; i < addresses.size(); i++) {
@@ -79,20 +81,20 @@ public class SwingWorkerTest extends Dialog implements ActionListener, PropertyC
 				ips.add(addresses.get(i).getHostAddress());
 			}
 		}
-		
+
 		if (ips.size() == 0) {
 			System.out.println("No Local IPs Found");
 		}
-		
+
 		// remove duplicates in string arraylist
 		LinkedHashSet<String> hs = new LinkedHashSet<String>();
 		hs.addAll(ips);
 		ips.clear();
 		ips.addAll(hs);
-		
+
 		// show options
 		Object[] ipsarray = ips.toArray();
-		String ip = (String)JOptionPane.showInputDialog(null, "Choose IP", 
+		String ip = (String) JOptionPane.showInputDialog(null, "Choose IP",
 				"NET", JOptionPane.YES_OPTION, null, ipsarray, ipsarray[0]);
 
 		// return selected options
@@ -131,14 +133,15 @@ public class SwingWorkerTest extends Dialog implements ActionListener, PropertyC
 		SwingWorkerTest swt = new SwingWorkerTest();
 		swt.startButton.doClick();
 		swt.setVisible(true);
-		
+
 		if (addresses.size() == 0) {
 			System.out.println("Error Discovering local net");
 		}
-		
+
 		try {
 			ip = swt.selectIP();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 
 		return ip;
 	}
