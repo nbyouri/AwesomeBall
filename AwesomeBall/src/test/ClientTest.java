@@ -4,15 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
-import net.initServer;
 
 public class ClientTest extends Socket implements Runnable {
 
 	private String message;
 
 	public ClientTest() throws Exception {
-		super("192.168.1.8", initServer.OUT_PORT);
+		super("192.168.1.2", 1337);
 		Thread t = new Thread(this);
 		t.start();
 	}

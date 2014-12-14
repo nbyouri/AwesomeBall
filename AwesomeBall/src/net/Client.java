@@ -3,7 +3,9 @@ package net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class Client implements Runnable {
 	private Socket socket;
@@ -25,11 +27,12 @@ public class Client implements Runnable {
 		try { 
 			Thread.sleep(20); 
 		} catch (Exception e) {}
-		
-		while (socket == null) {
+
+		while (true) {
 			try {
 				socket = new Socket(address, port);
 				if (socket != null && socket.isBound()) {
+					System.out.println("connected");
 					break;
 				} else {
 					System.out.println("no server detected");
@@ -37,15 +40,30 @@ public class Client implements Runnable {
 						Thread.sleep(200); 
 					} catch (Exception e) {}
 				}
-			} catch (Exception e) {}
+			}
+			
+			catch (ConnectException ce) {
+				System.out.println("Trying again");
+				continue;
+			}
+			
+			catch (SocketTimeoutException ex) {  
+				System.out.println("Trying to connect to " + address + "...");  
+			}  
+			
+			catch (IOException ex)   
+			{  
+				ex.printStackTrace();  
+			}
 		}
-		
+
 		while (!socket.isClosed()) {
 
 			if (socket != null && socket.isConnected()){
 				try {
 					BufferedReader entree = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
+					System.out.println(mes);
 					this.message = mes;
 				} catch (IOException e) {
 					e.printStackTrace();

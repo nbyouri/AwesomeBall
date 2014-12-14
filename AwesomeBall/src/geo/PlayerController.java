@@ -299,7 +299,9 @@ public class PlayerController extends PlayerModel {
          * @param ball Ballon
          */
 	public void msgToCoord(String msg, Ball ball) {
+
 		if (msg != null) {
+			System.out.println(msg);
 			String data[] = msg.split("/");
 
 			double nx = java.lang.Double.parseDouble(data[0]); 
@@ -311,8 +313,10 @@ public class PlayerController extends PlayerModel {
 			
 			double bx = java.lang.Double.parseDouble(data[3]);
 			double by = java.lang.Double.parseDouble(data[4]);
+			double vx = java.lang.Double.parseDouble(data[5]);
+			double vy = java.lang.Double.parseDouble(data[6]);
 			
-			ball.setLocation(bx,  by);
+			ball.setLocation(bx,  by, vx, vy);
 		}
 	}
 
@@ -335,7 +339,9 @@ public class PlayerController extends PlayerModel {
 		msg.append(this.getY() + "/");
 		msg.append(this.getScore() + "/");
 		msg.append(ball.getX() + "/");
-		msg.append(this.getY() + "/");
+		msg.append(ball.getY() + "/");
+		msg.append(ball.getVx() + "/");
+		msg.append(ball.getVy() + "/");
 
 		return msg.toString();
 	}

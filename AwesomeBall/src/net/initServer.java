@@ -53,9 +53,9 @@ public class initServer implements Runnable {
 		Thread servth = new Thread(serv);
 		servth.start();
 
-		address = DiscoverLocal.getIp();
+		//address = DiscoverLocal.getIp();
 		
-		client = new Client(address, inport);
+		client = new Client("192.168.1.2", inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 

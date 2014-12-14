@@ -75,9 +75,11 @@ public class Ball extends Ellipse2D.Double {
      * @param x double : position en x
      * @param y double : la position en y
      */
-    public void setLocation(double x, double y) {
+    public void setLocation(double x, double y, double vx, double vy) {
     	this.setFrame(x,  y,  this.getWidth(), this.getHeight());
     	this.rect.setLocation(x,  y);
+    	this.setVx(vx);
+    	this.setVy(vy);
     }
     
     /**

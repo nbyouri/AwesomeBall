@@ -34,21 +34,33 @@ public class Server extends ServerSocket implements Runnable {
 	}
 
 	public void run() {
-		try {
-			socket = this.accept();
-		} catch (Exception e) {
-			System.out.println("Failed to accept");
-		}
-		while (!this.isClosed()){
-			if (socket != null && socket.isConnected()){
-				try {
-					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					String mes = in.readLine();
-					if (mes != null){
-						this.msg = mes;
+		while (true) {
+			try {
+				socket = this.accept();
+			} catch (SocketException se) {
+				System.out.println("trying");
+				continue;
+			}
+			
+			catch (SocketTimeoutException ex) {  
+				System.out.println("Trying to accept");  
+			}  
+			
+			catch (IOException ex)   
+			{  
+				ex.printStackTrace();  
+			}
+			while (!this.isClosed()){
+				if (socket != null && socket.isConnected()){
+					try {
+						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						String mes = in.readLine();
+						if (mes != null){
+							this.msg = mes;
+						}
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
-				} catch (IOException e1) {
-					e1.printStackTrace();
 				}
 			}
 		}

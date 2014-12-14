@@ -4,11 +4,11 @@ package main;
  * 
  * TODO : 
  * 
- * window for server info ? (waiting.../sending.../ ...)
  * detect other player connection better
- * send ball location as well
+ * send ball location as well (totest)
  * create customized optionpane
- * 
+ * don't try if network is disabled
+ * correct goals
  */
 import gui.Board;
 

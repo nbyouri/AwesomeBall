@@ -20,12 +20,13 @@ import javax.swing.SwingWorker;
 public class DiscoverLocal extends Dialog implements ActionListener, PropertyChangeListener {
 	private static ArrayList<InetAddress>addresses;
 	private Button startButton;
+	private Button exitButton;
 	private JProgressBar progressBar;
 	private static String ip;
-
-	public static final int MAX_IP = 254;
+	
+	public static final int MAX_IP = 10;
 	public static final int MIN_IP = 2;
-	public static final int PING_TIMEOUT = 100;
+	public static final int PING_TIMEOUT = 200;
 
 	public DiscoverLocal() {
 		super("Scanning Local Network.");
@@ -37,9 +38,11 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 		progressBar = new JProgressBar(0, MAX_IP);
 		progressBar.setValue(0);
 		progressBar.setStringPainted(true);
-
+		
+		exitButton = new Button("Scanning Local Network. Click to cancel and exit", new CloseListener());
 		add(progressBar, BorderLayout.SOUTH);
 		//add(startButton, BorderLayout.NORTH);
+		add(exitButton);
 	}
 
 	public static String getSubnet(InetAddress address) {
@@ -59,9 +62,11 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 		progressBar.setValue(0);
 		for (int i = MIN_IP; i < MAX_IP; i++){
 			String host=subnet + "." + i;
+			System.out.println("trying : " + host);
 			try {
 				ip = InetAddress.getByName(host);
 				if (ip.isReachable(timeout)){
+					System.out.println(host + " <= success");
 					addresses.add(ip);
 				}
 			} catch (Exception e) {
@@ -127,7 +132,17 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 		t.addPropertyChangeListener(this);
 		t.execute();
 	}
-
+	
+	/**
+	 * Exit button action implementation
+	 */
+	private class CloseListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+		}
+	}
+	
 	public static String getIp() {
 		DiscoverLocal swt = new DiscoverLocal();
 		// XXX: ugly hack
