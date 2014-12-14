@@ -252,6 +252,7 @@ public class PlayerController extends PlayerModel {
 	 */
 	public void msgToCoord(String msg, Ball ball) {
 		if (msg != null) {
+			System.out.println(msg);
 			String data[] = msg.split("/");
 
 			double nx = java.lang.Double.parseDouble(data[0]); 
@@ -280,7 +281,7 @@ public class PlayerController extends PlayerModel {
 		msg.append(this.getY() + "/");
 		msg.append(this.getScore() + "/");
 		msg.append(ball.getX() + "/");
-		msg.append(this.getY() + "/");
+		msg.append(ball.getY() + "/");
 
 		return msg.toString();
 	}

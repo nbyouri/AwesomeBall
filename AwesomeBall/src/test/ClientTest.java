@@ -7,8 +7,6 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import net.initServer;
-
 public class ClientTest extends Socket implements Runnable {
 
 	private String message;
