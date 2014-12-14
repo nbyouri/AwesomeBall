@@ -1,5 +1,4 @@
-package net;
-
+package test;
 import gui.*;
 
 import java.awt.BorderLayout;
@@ -17,17 +16,17 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 @SuppressWarnings("serial")
-public class DiscoverLocal extends Dialog implements ActionListener, PropertyChangeListener {
+public class SwingWorkerTest extends Dialog implements ActionListener, PropertyChangeListener {
 	private static ArrayList<InetAddress>addresses;
 	private Button startButton;
 	private JProgressBar progressBar;
 	private static String ip;
 
-	public static final int MAX_IP = 254;
+	public static final int MAX_IP = 5;
 	public static final int MIN_IP = 2;
 	public static final int PING_TIMEOUT = 100;
 
-	public DiscoverLocal() {
+	public SwingWorkerTest() {
 		super("Scanning Local Network.");
 
 		startButton = new Button("Start", this);
@@ -38,8 +37,8 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 		progressBar.setValue(0);
 		progressBar.setStringPainted(true);
 
-		add(progressBar, BorderLayout.SOUTH);
-		//add(startButton, BorderLayout.NORTH);
+		add(progressBar, BorderLayout.PAGE_END);
+		add(startButton, BorderLayout.NORTH);
 	}
 
 	public static String getSubnet(InetAddress address) {
@@ -53,7 +52,7 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 
 	public void checkHosts() throws Exception {
 		addresses = new ArrayList<InetAddress>();
-		String subnet = DiscoverLocal.getSubnet(InetAddress.getLocalHost());
+		String subnet = SwingWorkerTest.getSubnet(InetAddress.getLocalHost());
 		InetAddress ip = null;
 		int timeout= PING_TIMEOUT;
 		progressBar.setValue(0);
@@ -129,8 +128,7 @@ public class DiscoverLocal extends Dialog implements ActionListener, PropertyCha
 	}
 
 	public static String getIp() {
-		DiscoverLocal swt = new DiscoverLocal();
-		// XXX: ugly hack
+		SwingWorkerTest swt = new SwingWorkerTest();
 		swt.startButton.doClick();
 		swt.setVisible(true);
 		
