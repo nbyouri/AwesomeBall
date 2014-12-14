@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
+
 import net.initServer;
 
 public class ClientTest extends Socket implements Runnable {
@@ -12,7 +14,7 @@ public class ClientTest extends Socket implements Runnable {
 	private String message;
 
 	public ClientTest() throws Exception {
-		super("192.168.1.8", initServer.OUT_PORT);
+		super(InetAddress.getLocalHost(), 1337);
 		Thread t = new Thread(this);
 		t.start();
 	}
@@ -55,7 +57,7 @@ public class ClientTest extends Socket implements Runnable {
 	public static void main(String[] args) throws Exception {
 		ClientTest ct = new ClientTest();
 		while (ct.isConnected() && ct.isBound()) {
-			System.out.println("Waiting for info");
+			//System.out.println("Waiting for info");
 			try {
 				Thread.sleep(20);
 			} catch (Exception e) {}
