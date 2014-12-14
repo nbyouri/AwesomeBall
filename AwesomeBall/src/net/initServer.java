@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 public class initServer implements Runnable {
 	private Server serv;
 	private Client client;
-	//private String address;
+	private String address;
 	private int inport;
 	private int outport;
 
@@ -28,7 +28,8 @@ public class initServer implements Runnable {
 
 		int type = JOptionPane
 				.showConfirmDialog(null, "Êtes vous un serveur ?");
-		if (type == JOptionPane.CANCEL_OPTION) {
+		if (type == JOptionPane.CANCEL_OPTION ||
+				type == JOptionPane.CLOSED_OPTION) {
 			System.exit(0);
 		}
 		boolean host = (type == 0);
@@ -54,9 +55,9 @@ public class initServer implements Runnable {
 		Thread servth = new Thread(serv);
 		servth.start();
 
-		// address = DiscoverLocal.getIp();
+		address = DiscoverLocal.getIp();
 
-		client = new Client("192.168.1.2", inport);
+		client = new Client(address, inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 

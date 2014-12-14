@@ -61,6 +61,7 @@ public class Ball extends Ellipse2D.Double {
 		this.checkCollisionField(f, p);
 		this.checkCollisionPlayer(f, p);
 
+		this.brake();
 	}
 
 	/**

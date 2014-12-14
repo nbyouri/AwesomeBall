@@ -346,10 +346,10 @@ public class PlayerController extends PlayerModel {
 
 			this.setScore(Integer.parseInt(data[2]));
 
-			double bx = java.lang.Double.parseDouble(data[3]);
-			double by = java.lang.Double.parseDouble(data[4]);
-			double vx = java.lang.Double.parseDouble(data[5]);
-			double vy = java.lang.Double.parseDouble(data[6]);
+			Integer bx = java.lang.Integer.parseInt(data[3]);
+			Integer by = java.lang.Integer.parseInt(data[4]);
+			Integer vx = java.lang.Integer.parseInt(data[5]);
+			Integer vy = java.lang.Integer.parseInt(data[6]);
 
 			ball.setLocation(bx, by, vx, vy);
 		}

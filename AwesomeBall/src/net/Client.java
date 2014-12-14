@@ -65,7 +65,6 @@ public class Client implements Runnable {
 					BufferedReader entree = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
-					System.out.println(mes);
 					this.message = mes;
 				} catch (IOException e) {
 					e.printStackTrace();
