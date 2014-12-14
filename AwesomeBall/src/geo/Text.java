@@ -17,8 +17,8 @@ public class Text extends Rectangle2D.Double {
 	}
 	
 	/**
-	 * Set the text to Helvetica.
-	 * @param str
+         * Modifie la police du texte en "Helvetica"
+	 * @param str le texte en question
 	 */
 	public Text(String str) {
 		super(0, 0, 0, 0);
@@ -26,15 +26,24 @@ public class Text extends Rectangle2D.Double {
 
 		textFont = new Font("Helvetica", Font.BOLD, 12);
 	}
-
+        /**
+         * Modifie la phrase du texte
+         * @param str la phrase modifiée
+         */
 	public void setStr(String str) {
 		this.str = str;
 	}
-
+        /**
+         * Récupère la phrase du texte
+         * @return la phrase en question
+         */
 	public String getStr() {
 		return this.str;
 	}
-
+        /**
+         * Ecrit le texte sur l'écran
+         * @param g2 Graphics2D
+         */
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.cyan);
 		g2.setFont(this.textFont);
