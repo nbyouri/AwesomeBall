@@ -99,8 +99,7 @@ public class PlayerView implements ActionListener {
 	
 	}
 	
-	@Override
-	public String toString() {
-		return player.toString();
+	public String toString(Ball b) {
+		return player.toString(b);
 	}
 }

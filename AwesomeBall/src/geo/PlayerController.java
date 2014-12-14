@@ -247,33 +247,40 @@ public class PlayerController extends PlayerModel {
 	/*
 	 * 
 	 * server packet to player position
+	 * also send the ball info 
 	 * 
 	 */
-	public void msgToCoord(String msg) {
+	public void msgToCoord(String msg, Ball ball) {
 		if (msg != null) {
 			String data[] = msg.split("/");
-			
+
 			double nx = java.lang.Double.parseDouble(data[0]); 
 			double ny = java.lang.Double.parseDouble(data[1]);
 
 			this.setLocation(nx, ny);
 
 			this.setScore(Integer.parseInt(data[2]));
+			
+			double bx = java.lang.Double.parseDouble(data[3]);
+			double by = java.lang.Double.parseDouble(data[4]);
+			
+			ball.setLocation(bx,  by);
 		}
 	}
 
 	/*
 	 * 
-	 * player coordinates and score to string
+	 * player and ball coordinates and score to string
 	 * 
 	 */
-	@Override
-	public String toString() {
+	public String toString(Ball ball) {
 		StringBuilder msg = new StringBuilder();
 
 		msg.append(this.getX() + "/");
 		msg.append(this.getY() + "/");
 		msg.append(this.getScore() + "/");
+		msg.append(ball.getX() + "/");
+		msg.append(this.getY() + "/");
 
 		return msg.toString();
 	}

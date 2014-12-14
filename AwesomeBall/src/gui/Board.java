@@ -152,7 +152,7 @@ public class Board extends JPanel implements ActionListener {
 		if (serv.getServ().getSocket() != null &&
 				serv.getServ().getSocket().isConnected()) {
 			try {
-				serv.getServ().sendMsg(player1.toString());
+				serv.getServ().sendMsg(player1.toString(ball));
 			} catch (Exception ex) {
 				System.out.println("Failed to send player coordinates to server");
 			}
@@ -160,7 +160,7 @@ public class Board extends JPanel implements ActionListener {
 
 		// receive player 2 info if the client is connected, otherwise, retry
 		if (serv.getClient() != null) {
-			player2.player.msgToCoord(serv.getClient().getMessage());
+			player2.player.msgToCoord(serv.getClient().getMessage(), ball);
 		}
 
 		// draw title

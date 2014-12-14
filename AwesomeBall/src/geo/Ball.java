@@ -69,7 +69,17 @@ public class Ball extends Ellipse2D.Double {
                 this.getWidth(), this.getHeight());
         this.rect.setFrame(this.getFrame());
     }
-
+    
+    /**
+     * Repositionne la balle 
+     * @param x double : position en x
+     * @param y double : la position en y
+     */
+    public void setLocation(double x, double y) {
+    	this.setFrame(x,  y,  this.getWidth(), this.getHeight());
+    	this.rect.setLocation(x,  y);
+    }
+    
     /**
      * Applique un freinage a la balle, limite la vitesse a 5
      */
