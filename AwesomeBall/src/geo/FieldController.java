@@ -9,25 +9,41 @@ public class FieldController extends FieldModel {
 	public FieldController(double x, double y, double width, double height) {
 		super(x, y, width, height);
 	}
-	
+	/**
+         * Récupère le goal gauche
+         * @return goalleft
+         */
 	public Rectangle2D getGoalleft() {
 		return goalleft;
 	}
-
+        /**
+         * Modifie le goal gauche
+         * @param goalleft 
+         */
 	public void setGoalleft(Rectangle2D goalleft) {
 		this.goalleft = goalleft;
 	}
-
+        /**
+         * Récupère le goal droit
+         * @return goalright
+         */
 	public Rectangle2D getGoalright() {
 		return goalright;
 	}
-
+        /**
+         * Modifie le goal droit
+         * @param goalright 
+         */
 	public void setGoalright(Rectangle2D goalright) {
 		this.goalright = goalright;
 	}
 
 	/**
-	 * Set size of the field and incidentally goals.
+         * Modifie la taille du terrain et donc les goals
+         * @param x Position x
+         * @param y Position y
+         * @param width Largeur
+         * @param height Hauteur
 	 */
 	public void setSize(double x, double y, double width, double height) {
 		super.setRect(x, y, width, height);
@@ -38,36 +54,38 @@ public class FieldController extends FieldModel {
 		double goalMaxY = this.getY() + (2 * goalH);
 		double goalLX = x - goalW;
 		double goalRX = x + width;
-
-		// setup goal rectangles
+                
+                //Initialisation les rectangles des goals.
 		goalleft.setRect(goalLX, goalY, goalW, goalH);
 		goalright.setRect(goalRX, goalY, goalW, goalH);
 
-		// left goal lines
-		// goal line 
+		// Lignes du goal gauche :
+		// 1) ligne verticale
 		this.getSides().add(new Line2D.Double(x, goalY, x, goalMaxY));
-		// line above left goal
+		// 2) ligne du haut
 		this.getSides().add(new Line2D.Double(x, this.getY(), x, goalY));
-		// line under left goal
+		// 3) ligne du bas
 		this.getSides().add(new Line2D.Double(x, goalMaxY, x, this.getMaxY()));
 
 
-		// right goal line
+		// Lignes du goal droit :
+                // 1) ligne verticale
 		this.getSides().add(new Line2D.Double(this.getMaxX(), goalY, 
 				this.getMaxX(), goalMaxY));
 
-		// line above right goal 
+		// 2) ligne du haut 
 		this.getSides().add(new Line2D.Double(this.getMaxX(), this.getY(), 
 				this.getMaxX(), goalY));
 
-		// line under right goal
+		// 3) ligne du bas
 		this.getSides().add(new Line2D.Double(getMaxX(), goalMaxY, 
 				this.getMaxX(), this.getMaxY()));
 	}
 
 	/**
-	 * Set the center field circle proportionally to the field.
-	 * The circle diameter is a  sixth of the height of the field.
+         * Modifie la taille du cercle centrale du terrain proportionnellement
+         * à la taille du terrain. PS : son diamètre est égale à 1/6 de la 
+         * hauteur du terrain
 	 */
 	public void setCenterCircle() {
 		double centerX = this.getCenterX();

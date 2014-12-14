@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Keys extends Shape {
 	private ArrayList<Integer> pressedkeys;
 
-	// constants
+	// Constances
 	public static final int KEY_OFF   = 0;
 	public static final int KEY_ON    = 1;
 	public static final int KEY_LEFT  = 0;
@@ -26,23 +26,43 @@ public class Keys extends Shape {
 		pressedkeys.add(KEY_OFF); // KEY_RIGHT
 		pressedkeys.add(KEY_OFF); // KEY_DOWN
 	}
-
+        
+        /**
+         * Récupère toutes les touches directionnelles appuyées
+         * @return pressedkeys 
+         */
 	public ArrayList<Integer> getPressedKeys() {
 		return pressedkeys;
 	}
-
+        /**
+         * Modifie toutes les touches directionnelles appuyées
+         * @param pressedkeys 
+         */
 	public void setPressedKeys(ArrayList<Integer> pressedkeys) {
 		this.pressedkeys = pressedkeys;
 	}
-
+        /**
+         * Récupère la touche directionnelle appuyée
+         * @param i de 0 à 3 , déterminée par les constances de la classe Keys
+         * UP,DOWN,LEFT,RIGHT
+         * @return 
+         */
 	public int getPressedKey(int i) {
 		return this.pressedkeys.get(i);
 	}
-
+        /**
+         * Change la touche directionnelle appuyée
+         * @param i de 1 à 3 , déterminée par les constances de la classe Keys
+         * UP, DOWN, LEFT,RIGHT
+         * @param k de 0 à 1 , 0 = OFF, 1 = ON
+         */
 	public void setPressedKey(int i, int k) {
 		this.pressedkeys.set(i, k);
 	}
-
+        /**
+         * Dessine la case des touches directionnelles
+         * @param g2 
+         */
 	public void draw(Graphics2D g2) {
 		this.setSides();
 		g2.setColor(Color.cyan);
@@ -50,9 +70,9 @@ public class Keys extends Shape {
 	}
 
 	/**
-	 * Draw sides of the key box.
-	 * @param g2
-	 * @param ar
+	 * Dessine les côtés de la case des touches directionnnelles.
+	 * @param g2 Graphic2D
+	 * @param ar L'array list des touches directionnelles appuyées.
 	 */
 	public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
 		g2.setColor(Color.yellow);

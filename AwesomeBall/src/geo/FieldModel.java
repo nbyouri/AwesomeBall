@@ -9,7 +9,7 @@ public class FieldModel extends Shape {
 	public Rectangle2D goalleft;
 	public Rectangle2D goalright;
 
-	// constants
+	// Constances
 	public static final int CENTER_CIRCLE_DIAMETER = 120;
 	public static final int GOALS_WIDTH = 30;
 	public static final int GOALS_HEIGHT = 80;
@@ -19,13 +19,19 @@ public class FieldModel extends Shape {
 	public static final int GOAL_RIGHT = 9;
 	public static final int GOAL_RIGHT_UP = 10;
 	public static final int GOAL_RIGHT_DOWN = 11;
-
+        /**
+         * Création du terrain ????? .
+         * @param x position X
+         * @param y position Y
+         * @param width largeur
+         * @param height hauteur
+         */
 	public FieldModel(double x, double y, double width, double height) {
 		super(x, y, width, height);
 
 		this.setSides();
 
-		// center circle
+		// Cercle central
 		center = new Ellipse2D.Double(0, 0, 
 				CENTER_CIRCLE_DIAMETER, CENTER_CIRCLE_DIAMETER);
 		goalleft = new Rectangle2D.Double(0, 0, 0, 0);

@@ -14,10 +14,10 @@ public class PlayerModel extends FieldController {
 	public  Boolean up;
 	public  Boolean down;
 
-	// constants
+	// Constances
 	public static final int SPEED_ONE = 1;
-	// since Dx and Dy can be the same, 
-	// pythagore the two as a constant.
+	// Vu que Dx et Dy peut-être les mêmes, 
+	// on fait pythagore des deux pour obtenir la vitesse diagonale.
 	public static final double SPEED_ONE_DIAG = Math.sqrt(2 * SPEED_ONE);
 	public static final int SPEED_TWO = 2;
 	public static final int STOP = 0;
@@ -25,13 +25,11 @@ public class PlayerModel extends FieldController {
 	public static final int INIT_Y = 200;
 	public static final int INIT_ROT = 0;
 
-	/*
-	 * 
-	 * Structure containing the player's
-	 * direction defined by the rotation
-	 * and the english name of the rotation.
-	 * 
-	 */
+        /**
+         * Structure contenant les directions 
+         * du joueur définies par la rotation
+         * et leurs noms en anglais de cette rotation.
+         */
 	public enum Direction { 
 		LEFT (180, "left"), 
 		UP   (-90, "up"), 
@@ -40,25 +38,36 @@ public class PlayerModel extends FieldController {
 
 		private final int id;
 		private final String name;
-
+                /**
+                 * Une direction a son angle (id) et son nom en anglais (name)
+                 * @param s
+                 * @param n 
+                 */
 		private Direction(int s, String n) {
 			this.id = s;
 			this.name = n;
 		}
-
+                /**
+                 * Recupère l'angle de la direction
+                 * @return l'angle de la direction
+                 */
 		public int getId() {
 			return this.id;
 		}
-
+                /**
+                 * Récupère le nom en anglais de la direction
+                 * @return le nom en anglais de la direction
+                 */
 		public String getName() {
 			return this.name;
 		}
-
-		/*
-		 * 
-		 * Get the name from rotation
-		 * 
-		 */
+                /**
+                 * Récupère le nom en anglais de ces rotations en fonction de
+                 * l'id.
+                 * @param rotation
+                 * @return Le nom de la rotation en anglais 
+                 * par rapport à son id
+                 */
 		public static String getName(int rotation) {
 			for (Direction d : Direction.values()) {
 				if (d.getId() == rotation) {
@@ -68,31 +77,33 @@ public class PlayerModel extends FieldController {
 			return null;
 		}
 	};
-
+        /**
+         * ????
+         */
 	public PlayerModel() {  
 		super(0, 0, 0, 0);
-		// load image
+		// Charge l'image
 		try { 
 			img = new Images();
 		} catch (Exception ioex) {
 			System.out.println("couldn't load image");
 			System.exit(0);
 		}
-
-		// calculate rectangle width and height from image
+                
+                //Calcul de la largeur et de la hauteur de l'image du joueur
 		this.width = img.getWidth();
 		this.height = img.getHeight();
 
-		// set ellipse for ball collision
+                //Modifie l'ellipse utilisée pour les collisions avec la ball.
 		this.ell = new Ellipse2D.Double(
 				this.getX(), this.getY(), this.getWidth(), this.getHeight());
 
 		img.setRotation(INIT_ROT);
 
-		// initial position
+		// Initialise la position du joueur
 		this.x = INIT_X;
 		this.y = INIT_Y;
-
+        
 		this.up = false;
 		this.down = false;
 		this.left = false;

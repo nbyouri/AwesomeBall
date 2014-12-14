@@ -54,24 +54,22 @@ public class Board extends JPanel implements ActionListener {
 	public static final int EXIT_SUCCESS = 0;
 
 	/**
-	 * Propportionalising the field
-	 * 
-	 * Setup the game title, the field
-	 * the player (two in the future), 
-	 * the ball, key indicator,
-	 * rotation indicator.
-	 * 
-	 * Configure the key listener
-	 * and the window
-	 * 
-	 * Set a quit button and 
-	 * a timer
-	 * 
-	 * @param Dimension : The screen size. 
+         * Initialise le serveur
+         * 
+	 * Proportionnalise le terrain
+         * 
+         * Initialise le titre du jeu, le terrain,
+         * les deux joueurs, la balle, la case indicateur des touches
+         * directionnelles ainsi que l'indicateur de rotation.
+         * 
+         * Configure le "key listener" et l'écran
+         * 
+         * Active un boutton "Quitter" et un timer.
+	 * @param boardSize, la taille de l'écran. 
 	 */
 	public Board(Dimension boardSize) {
 
-		// setup server
+		// Initialisation du serveur
 		try {
 			serv = new initServer();
 			Thread servth = new Thread(serv);
@@ -81,7 +79,7 @@ public class Board extends JPanel implements ActionListener {
 		}
 
 
-		// proportional field , H = 60yds, W = 100yds, Center radius = 10yds
+		// Applique les proportions du terrains , H = 60yds, W = 100yds, Center radius = 10yds
 		double field_height = boardSize.getHeight() - (3 * BOARD_Y_POS);
 		double field_width = (field_height / 6)*10;
 

@@ -179,7 +179,8 @@ public class Ball extends Ellipse2D.Double {
     }
 
     /**
-     * Verifie la collision joueur-balle
+     * Verifie la collision joueur-balle (c'est ici qu'on utilise l'ellipse
+     * du joueur)
      *
      * @param f FieldController
      * @param p PlayerController
@@ -365,27 +366,45 @@ public class Ball extends Ellipse2D.Double {
                 || this.intersects(f.getGoalright())
                 || this.intersects(f.getGoalleft());
     }
-    
+    /**
+     * Modifie la vitesse horizontale de la balle
+     * @param d la nouvelle vitesse horizontale de la balle
+     */
     public void setVx(double d) {
         this.vX = d;
     }
-
+    /**
+     * Modifie la vitesse verticale de la balle
+     * @param d la nouvelle vitesse verticale de la balle
+     */
     public void setVy(double d) {
         this.vY = d;
     }
-
+    /**
+     * Récupère la vitesse horizontale de la balle
+     * @return la vitesse horizontale actuelle de la balle
+     */
     public double getVx() {
         return this.vX;
     }
-
+    /**
+     * Récupère la vitesse verticale de la balle
+     * @return la vitesse verticale actuelle de la balle
+     */
     public double getVy() {
         return this.vY;
     }
-
+    /**
+     * Modifie la position verticale Y de la balle
+     * @param d la nouvelle position verticale Y de la balle
+     */
     public void setY(double d) {
         this.y = d;
     }
-
+    /**
+     * Modifie la position horizontale X de la balle
+     * @param d la nouvelle position horizontale X de la balle
+     */
     public void setX(double d) {
         this.x = d;
     }
