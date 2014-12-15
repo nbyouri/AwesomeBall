@@ -1,10 +1,18 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 
 import javax.swing.ImageIcon;
+
 
 public class Images {
 	private Image player;
@@ -113,4 +121,32 @@ public class Images {
 		}
 	}
 
+	/**
+	 * Invert Red and Blue colors
+	 * @author youri
+	 */
+	class RedBlueSwapFilter extends RGBImageFilter {
+		public RedBlueSwapFilter() {
+			// The filter's operation does not depend on the
+			// pixel's location, so IndexColorModels can be
+			// filtered directly.
+			canFilterIndexColorModel = true;
+		}
+
+		public int filterRGB(int x, int y, int rgb) {
+			return ((rgb & 0xff00ff00)
+					| ((rgb & 0xff0000) >> 16)
+					| ((rgb & 0xff) << 16));
+		}	
+	}
+	
+	/**
+	 * Apply the colors
+	 */
+	public void applyFilter() {
+		ImageFilter colorfilter = new RedBlueSwapFilter(); 
+		ImageProducer producer = player.getSource();
+		FilteredImageSource filteredImageSource = new FilteredImageSource(producer, colorfilter ); 
+		player = Toolkit.getDefaultToolkit().createImage(filteredImageSource);   
+	}
 }

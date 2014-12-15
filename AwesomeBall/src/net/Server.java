@@ -38,7 +38,6 @@ public class Server extends ServerSocket implements Runnable {
 			try {
 				socket = this.accept();
 			} catch (SocketException se) {
-				System.out.println("trying");
 				continue;
 			}
 
@@ -63,6 +62,9 @@ public class Server extends ServerSocket implements Runnable {
 					}
 				}
 			}
+			/*try {
+				Thread.sleep(50);
+			} catch (Exception e) {}*/
 		}
 	}
 }
