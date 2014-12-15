@@ -81,7 +81,7 @@ public class PlayerModel extends FieldController {
 	};
 
 	/**
-	 * ????
+	 * Constructeur de PlayerModel()
 	 */
 	public PlayerModel() {
 		super(0, 0, 0, 0);
