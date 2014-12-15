@@ -293,7 +293,7 @@ public class Ball extends Ellipse2D.Double {
 		this.setDx(STOP);
 		this.setDy(STOP);
 	}
-	
+
 	/**
 	 * Methode pour le tir de la balle
 	 *
@@ -302,11 +302,25 @@ public class Ball extends Ellipse2D.Double {
 	 * @param f
 	 *            FieldController
 	 */
-//	public void shootBall(FieldController f, PlayerController p) {
-//		if (p.near(this.rect)) {
-//			this.modifySpeed(SPEED_SHOOT, p);
-//		}
-//	}
+	public void shoot(FieldController f, PlayerController p) {
+		int dist = 4;
+		if (p.nearInPixels(this.rect, Side.LEFT.getId(), dist)) {
+			this.setDx(this.getDx()
+					+ Math.abs(this.getX() - p.getX()) * SPEED_SHOOT);
+		} else if (p.nearInPixels(this.rect, Side.RIGHT.getId(), dist)) {
+			this.setDx(this.getDx()
+					- Math.abs(this.getX() - p.getX()) * SPEED_SHOOT);
+		}
+		if (p.nearInPixels(this.rect, Side.DOWN.getId(), dist)) {
+			this.setDy(this.getDy()
+					+ (Math.abs(this.getY() - p.getY()) * SPEED_SHOOT));
+		} else if (p.nearInPixels(this.rect, Side.UP.getId(), dist)) {
+			this.setDy(this.getDy()
+					- (Math.abs(this.getY() - p.getY()) * SPEED_SHOOT));
+		}
+		this.setLocation(this.getX(), this.getY());
+		this.brake();
+	}
 
 	/**
 	 * Augmenter le score du joueur de 1 et recentre la balle

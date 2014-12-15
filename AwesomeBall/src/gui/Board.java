@@ -207,6 +207,8 @@ public class Board extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 			if (key == KeyEvent.VK_ENTER) {
 				ball.centerBall(field.field);
+			} else if (key == KeyEvent.VK_SPACE) {
+				ball.shoot(field.field, player1.player);
 			}
 		}
 

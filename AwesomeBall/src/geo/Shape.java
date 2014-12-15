@@ -211,6 +211,53 @@ public class Shape extends Rectangle2D.Double {
 			return false;
 		}
 	}
+	
+	/**
+	 * Est-ce que la forme est proche de son côté choisie d'un rectangle s?
+	 * Déplace de deux pixels si il y a collision
+	 * 
+	 * @param s
+	 *            le rectangle en question
+	 * @param line
+	 *            le côté choisie
+	 * @param 
+	 * @return boolean
+	 */
+	public boolean nearInPixels(Rectangle2D s, int line, int dist) {
+
+		// transtype les positions en int pour éviter
+		// les confusions après une diagonale
+		int x = (int) this.getX();
+		int mx = (int) this.getMaxX();
+		int y = (int) this.getY();
+		int my = (int) this.getMaxY();
+		int sx = (int) s.getX();
+		int smx = (int) s.getMaxX();
+		int sy = (int) s.getY();
+		int smy = (int) s.getMaxY();
+
+		/*
+		 * Déplace de deux pixels si il y a collision
+		 */
+		if (line == Side.UP.getId()) {
+			return ((my + dist >= sy) && (my - dist <= sy) &&
+					this.getX() - dist <= s.getMaxX() && this.getMaxX() + dist >= s.getX());
+		}
+		if (line == Side.DOWN.getId()) {
+			return ((y - dist <= smy) && (y + dist >= smy) &&
+					this.getX() - dist <= s.getMaxX() && this.getMaxX() + dist >= s.getX());
+		}
+		if (line == Side.LEFT.getId()) {
+			return ((mx - dist <= sx) && (mx + dist >= sx) &&
+					this.getY() - dist <= s.getMaxY() && this.getMaxY() + dist >= s.getY());
+		}
+		if (line == Side.RIGHT.getId()) {
+			return ((x - dist <= smx) && (x + dist >= smx) &&
+					this.getY() - dist <= s.getMaxY() && this.getMaxY() + dist >= s.getY());
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Est-ce que la forme est bien à l'intérieur d'un rectangle et donc ne

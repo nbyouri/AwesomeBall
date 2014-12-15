@@ -32,7 +32,7 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 	private JProgressBar progressBar;
 	private static String ip;
 
-	public static final int MAX_IP = 10;
+	public static final int MAX_IP = 254;
 	public static final int MIN_IP = 2;
 	public static final int PING_TIMEOUT = 200;
 
