@@ -15,13 +15,13 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 /**
- * Client is a Runnable that will try to bind a socket to a given port until
- * it is actually bound every 200 microsecond.
+ * Client is a Runnable that will try to bind a socket to a given port until it
+ * is actually bound every 200 microsecond.
  * 
  * When it binds, it continuously reads data from the socket.
  * 
- * If the socket gets disconnected, a dialog with an exit button will show
- * and exit the program.
+ * If the socket gets disconnected, a dialog with an exit button will show and
+ * exit the program.
  * 
  * @author youri
  *
@@ -64,7 +64,7 @@ public class Client implements Runnable {
 			}
 
 			catch (ConnectException ce) {
-				//System.out.println("Trying again");
+				// System.out.println("Trying again");
 				continue;
 			}
 
@@ -97,7 +97,7 @@ public class Client implements Runnable {
 					ex.setPreferredSize(new Dimension(d.getWidth(), 50));
 					d.add(ex, BorderLayout.SOUTH);
 					d.setVisible(true);
-					
+
 				} catch (IOException ioex) {
 					continue;
 				}

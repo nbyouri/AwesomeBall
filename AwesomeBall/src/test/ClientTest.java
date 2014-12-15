@@ -22,8 +22,7 @@ public class ClientTest extends Socket implements Runnable {
 
 	public synchronized void sendMsg(String msg) throws IOException {
 		if (this.isConnected()) {
-			PrintWriter sortie = 
-					new PrintWriter(this.getOutputStream());
+			PrintWriter sortie = new PrintWriter(this.getOutputStream());
 			sortie.println(msg);
 			sortie.flush();
 		}

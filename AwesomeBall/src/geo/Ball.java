@@ -50,7 +50,7 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p1
 	 *            PlayerController
 	 * @param p2
-	 * 			  PlayerController
+	 *            PlayerController
 	 */
 	public void move(FieldController f, PlayerController p1, PlayerController p2) {
 
@@ -84,9 +84,9 @@ public class Ball extends Ellipse2D.Double {
 	 * @param y
 	 *            double : la position en y
 	 * @param vx
-	 * 			  double : la vitesse en x
+	 *            double : la vitesse en x
 	 * @param vy
-	 * 			  double : la vitesse en y
+	 *            double : la vitesse en y
 	 */
 	public void setLocation(double x, double y, double vx, double vy) {
 		this.setFrame(x, y, this.getWidth(), this.getHeight());
@@ -187,7 +187,7 @@ public class Ball extends Ellipse2D.Double {
 	 *            FieldController
 	 * @param p1
 	 *            PlayerController
-	 *            @param p2
+	 * @param p2
 	 *            PlayerController
 	 */
 	public void goal(FieldController f, PlayerController p1, PlayerController p2) {
@@ -211,7 +211,8 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p2
 	 *            PlayerController
 	 */
-	public void checkCollisionPlayer(FieldController f, PlayerController p1, PlayerController p2) {
+	public void checkCollisionPlayer(FieldController f, PlayerController p1,
+			PlayerController p2) {
 		if (this.intersects(p1)) {
 
 			// Pour l'axe des X ( gauche et droite du joueur)
@@ -254,9 +255,10 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p1
 	 *            PlayerController
 	 * @param p2
-	 * 		      PlayerController
+	 *            PlayerController
 	 */
-	public void checkCollisionField(FieldController f, PlayerController p1, PlayerController p2) {
+	public void checkCollisionField(FieldController f, PlayerController p1,
+			PlayerController p2) {
 
 		// Pour l'axe des X
 		if (this.rect.touchRectInTop(f) || this.rect.touchRectInBottom(f)) {
@@ -274,8 +276,8 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * la balle touche les bordures droites ou gauches d'un rectangle
-	 * dont la balle est a l'exterieur de ce rectangle 
+	 * la balle touche les bordures droites ou gauches d'un rectangle dont la
+	 * balle est a l'exterieur de ce rectangle
 	 *
 	 * @param r
 	 *            Shape
@@ -288,8 +290,8 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * la balle touche les bordures hauts ou basses d'un rectangle
-	 * dont la balle est a l'exterieur de ce rectangle ? 
+	 * la balle touche les bordures hauts ou basses d'un rectangle dont la balle
+	 * est a l'exterieur de ce rectangle ?
 	 *
 	 * @param r
 	 *            Shape
@@ -301,7 +303,7 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * la balle est au dessus du rectangle 
+	 * la balle est au dessus du rectangle
 	 *
 	 * @param r
 	 *            Shape
@@ -360,7 +362,7 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * la balle est dans le goal droit 
+	 * la balle est dans le goal droit
 	 *
 	 * @param f
 	 *            FieldController
@@ -373,7 +375,7 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * il y a un goal Ã gauche 
+	 * il y a un goal Ã gauche
 	 *
 	 * @param f
 	 *            FieldController

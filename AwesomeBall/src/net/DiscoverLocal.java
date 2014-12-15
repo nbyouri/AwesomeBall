@@ -17,15 +17,15 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 /**
- * DiscoverLocal permet de trouver les machines actives 
- * sur le reseau local sur base de leur IPv4. 
+ * DiscoverLocal permet de trouver les machines actives sur le reseau local sur
+ * base de leur IPv4.
  * 
  * @author youri
  *
  */
 @SuppressWarnings("serial")
 public class DiscoverLocal extends Dialog implements ActionListener,
-PropertyChangeListener {
+		PropertyChangeListener {
 	private static ArrayList<InetAddress> addresses;
 	private Button startButton;
 	private Button exitButton;
@@ -37,8 +37,8 @@ PropertyChangeListener {
 	public static final int PING_TIMEOUT = 200;
 
 	/**
-	 * Constructeur initialisant un dialog, un bouton start, 
-	 * une bare de progres.
+	 * Constructeur initialisant un dialog, un bouton start, une bare de
+	 * progres.
 	 */
 	public DiscoverLocal() {
 		super("Scanning Local Network.");
@@ -52,8 +52,7 @@ PropertyChangeListener {
 		progressBar.setStringPainted(true);
 
 		exitButton = new Button("<html>Scanning Local Network. "
-				+ "<br>Click to cancel and exit</html>",
-				new CloseListener());
+				+ "<br>Click to cancel and exit</html>", new CloseListener());
 
 		add(progressBar, BorderLayout.SOUTH);
 		// add(startButton, BorderLayout.NORTH);
@@ -62,7 +61,9 @@ PropertyChangeListener {
 
 	/**
 	 * Retourne le sous-reseau sur base d'une IPv4.
-	 * @param address String
+	 * 
+	 * @param address
+	 *            String
 	 * @return String
 	 */
 	public static String getSubnet(InetAddress address) {
@@ -75,9 +76,11 @@ PropertyChangeListener {
 	}
 
 	/**
-	 * Ping toutes les IP du sous-réseau et ajoute les IP qui repondent
-	 * dans un arraylist et incrémente la barre de progres
-	 * @throws Exception Exception
+	 * Ping toutes les IP du sous-réseau et ajoute les IP qui repondent dans un
+	 * arraylist et incrémente la barre de progres
+	 * 
+	 * @throws Exception
+	 *             Exception
 	 */
 	public void checkHosts() throws Exception {
 		addresses = new ArrayList<InetAddress>();
@@ -100,11 +103,13 @@ PropertyChangeListener {
 	}
 
 	/**
-	 * Dialogue permettant de selectionner des ip detectees par checkHosts().
-	 * On utilise un LinkedHashList pour retirer les addresses en double et 
+	 * Dialogue permettant de selectionner des ip detectees par checkHosts(). On
+	 * utilise un LinkedHashList pour retirer les addresses en double et
 	 * l'addresse du routeur et locale sont omis.
+	 * 
 	 * @return String
-	 * @throws Exception Exception
+	 * @throws Exception
+	 *             Exception
 	 */
 	public String selectIP() throws Exception {
 		ArrayList<String> ips = new ArrayList<String>();
@@ -132,10 +137,10 @@ PropertyChangeListener {
 	}
 
 	/**
-	 * Un SwingWorker permet de lancer un processus une fois
-	 * dans le fond et d'executer ce qu'on veut quand le processus
-	 * a finit. Dans notre cas, il permet de travailler en mettant 
-	 * a jour notre barre de progres swing.
+	 * Un SwingWorker permet de lancer un processus une fois dans le fond et
+	 * d'executer ce qu'on veut quand le processus a finit. Dans notre cas, il
+	 * permet de travailler en mettant a jour notre barre de progres swing.
+	 * 
 	 * @author youri
 	 *
 	 */
@@ -164,7 +169,7 @@ PropertyChangeListener {
 	}
 
 	/**
-	 * Démarre le SwingWorker 
+	 * Démarre le SwingWorker
 	 */
 	public void actionPerformed(ActionEvent evt) {
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -182,10 +187,10 @@ PropertyChangeListener {
 			System.exit(0);
 		}
 	}
-	
+
 	/**
-	 * Initialise un DiscoverLocal et récupère une 
-	 * ip depuis un dialogue.
+	 * Initialise un DiscoverLocal et récupère une ip depuis un dialogue.
+	 * 
 	 * @return ip : String
 	 */
 	public static String getIp() {
@@ -196,11 +201,8 @@ PropertyChangeListener {
 
 		if (addresses.size() == 0) {
 			Dialog d = new Dialog("");
-			swt.exitButton.setText("<html><center>"
-					+ "Failed to find IPs"
-					+ "<br>"
-					+ "Click to Exit"
-					+ "<center><html>");
+			swt.exitButton.setText("<html><center>" + "Failed to find IPs"
+					+ "<br>" + "Click to Exit" + "<center><html>");
 			d.add(swt.exitButton);
 			d.setVisible(true);
 		}

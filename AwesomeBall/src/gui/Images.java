@@ -11,7 +11,6 @@ import java.awt.image.RGBImageFilter;
 
 import javax.swing.ImageIcon;
 
-
 public class Images {
 	private Image player;
 	private int width;
@@ -25,7 +24,8 @@ public class Images {
 	/**
 	 * load image
 	 * 
-	 * @param path String
+	 * @param path
+	 *            String
 	 * @return Image
 	 */
 	public Image load(String path) {
@@ -79,8 +79,10 @@ public class Images {
 	/**
 	 * rotate the image.
 	 * 
-	 * @param img Image
-	 * @param rotation int
+	 * @param img
+	 *            Image
+	 * @param rotation
+	 *            int
 	 */
 	public void rotate(Image img, int rotation) {
 		// only rotate if change of key
@@ -102,8 +104,10 @@ public class Images {
 	/**
 	 * flip image around vertical axis
 	 * 
-	 * @param img Image
-	 * @param rotation int
+	 * @param img
+	 *            Image
+	 * @param rotation
+	 *            int
 	 */
 	public void flip(Image img, int rotation) {
 		if (this.getRotation() != rotation) {
@@ -131,19 +135,18 @@ public class Images {
 		}
 
 		public int filterRGB(int x, int y, int rgb) {
-			return ((rgb & 0xff00ff00)
-					| ((rgb & 0xff0000) >> 16)
-					| ((rgb & 0xff) << 16));
-		}	
+			return ((rgb & 0xff00ff00) | ((rgb & 0xff0000) >> 16) | ((rgb & 0xff) << 16));
+		}
 	}
-	
+
 	/**
 	 * Apply the colors
 	 */
 	public void applyFilter() {
-		ImageFilter colorfilter = new RedBlueSwapFilter(); 
+		ImageFilter colorfilter = new RedBlueSwapFilter();
 		ImageProducer producer = player.getSource();
-		FilteredImageSource filteredImageSource = new FilteredImageSource(producer, colorfilter ); 
-		player = Toolkit.getDefaultToolkit().createImage(filteredImageSource);   
+		FilteredImageSource filteredImageSource = new FilteredImageSource(
+				producer, colorfilter);
+		player = Toolkit.getDefaultToolkit().createImage(filteredImageSource);
 	}
 }

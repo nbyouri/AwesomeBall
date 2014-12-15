@@ -15,20 +15,17 @@ public class initServer implements Runnable {
 	public static final int OUT_PORT = 7331;
 
 	/**
-	 * initServer initialise un socket server et un 
-	 * client par joueur. On envoie les infos sur un
-	 * port et on reçoit les infos sur un autre port
-	 * le tout dans des thread sépares. Ceci permet
-	 * que le programme ne bloque pas lors de la 
-	 * liaison des sockets ou du transfert de donnees.
+	 * initServer initialise un socket server et un client par joueur. On envoie
+	 * les infos sur un port et on reçoit les infos sur un autre port le tout
+	 * dans des thread sépares. Ceci permet que le programme ne bloque pas lors
+	 * de la liaison des sockets ou du transfert de donnees.
 	 * 
-	 * Le joueur 1 envoie sur OUT_PORT et le joueur 2 
-	 * ecoute sur OUT_PORT.
+	 * Le joueur 1 envoie sur OUT_PORT et le joueur 2 ecoute sur OUT_PORT.
 	 * 
-	 * Le joueur 2 envoie sur IN_PORT et le joueur 2 
-	 * ecoute sur IN_PORT.
+	 * Le joueur 2 envoie sur IN_PORT et le joueur 2 ecoute sur IN_PORT.
 	 * 
-	 * @throws IOException IOException
+	 * @throws IOException
+	 *             IOException
 	 */
 	public initServer() throws IOException {
 		inport = IN_PORT;
@@ -36,8 +33,8 @@ public class initServer implements Runnable {
 
 		int type = JOptionPane
 				.showConfirmDialog(null, "Êtes vous un serveur ?");
-		if (type == JOptionPane.CANCEL_OPTION ||
-				type == JOptionPane.CLOSED_OPTION) {
+		if (type == JOptionPane.CANCEL_OPTION
+				|| type == JOptionPane.CLOSED_OPTION) {
 			System.exit(0);
 		}
 		boolean host = (type == 0);

@@ -173,7 +173,7 @@ public class PlayerController extends PlayerModel {
 	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
 				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
-						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
+				.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class PlayerController extends PlayerModel {
 		return (f.getMaxX() - this.getMaxX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
-						.getGoalright().getMaxX());
+				.getGoalright().getMaxX());
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class PlayerController extends PlayerModel {
 		return (this.getX() - f.getX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getX() <= f
-						.getGoalleft().getX());
+				.getGoalleft().getX());
 	}
 
 	/**
@@ -283,8 +283,10 @@ public class PlayerController extends PlayerModel {
 	 * Méthode utilisé par l'actionPerformed : bouge le joueur au fil du temps
 	 * et, oblige le joueur à rester dans le terrain ( goals compris)
 	 * 
-	 * @param f FieldController
-	 * @param p PlayerModel
+	 * @param f
+	 *            FieldController
+	 * @param p
+	 *            PlayerModel
 	 */
 	public void moveIn(FieldController f, PlayerModel p) {
 		// Modifie la vitesse du joueur
@@ -344,18 +346,12 @@ public class PlayerController extends PlayerModel {
 
 				this.setScore(Integer.parseInt(data[2]));
 
-				java.lang.Double bx =
-						java.lang.Double.parseDouble(data[3]);
-				java.lang.Double by =
-						java.lang.Double.parseDouble(data[4]);
-				java.lang.Double vx =
-						java.lang.Double.parseDouble(data[5]);
-				java.lang.Double vy =
-						java.lang.Double.parseDouble(data[6]);
+				java.lang.Double bx = java.lang.Double.parseDouble(data[3]);
+				java.lang.Double by = java.lang.Double.parseDouble(data[4]);
+				java.lang.Double vx = java.lang.Double.parseDouble(data[5]);
+				java.lang.Double vy = java.lang.Double.parseDouble(data[6]);
 
-				ball.setLocation(bx.intValue(),
-						by.intValue(),
-						vx.intValue(),
+				ball.setLocation(bx.intValue(), by.intValue(), vx.intValue(),
 						vy.intValue());
 
 				this.left = Boolean.parseBoolean(data[7]);

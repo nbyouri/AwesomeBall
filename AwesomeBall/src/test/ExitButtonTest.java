@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ExitButtonTest {
-	public static void main(String [] args) {
+	public static void main(String[] args) {
 		Dialog d = new Dialog("Player 2 Left");
 		ActionListener exit = new ActionListener() {
 			@Override
