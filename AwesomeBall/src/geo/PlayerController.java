@@ -173,7 +173,7 @@ public class PlayerController extends PlayerModel {
 	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
 				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
-				.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
+						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class PlayerController extends PlayerModel {
 		return (f.getMaxX() - this.getMaxX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
-				.getGoalright().getMaxX());
+						.getGoalright().getMaxX());
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class PlayerController extends PlayerModel {
 		return (this.getX() - f.getX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getX() <= f
-				.getGoalleft().getX());
+						.getGoalleft().getX());
 	}
 
 	/**
@@ -320,10 +320,6 @@ public class PlayerController extends PlayerModel {
 		}
 	}
 
-	/*
-	 * 
-	 * server packet to player position also send the ball info
-	 */
 	/**
 	 * Réception du paquet serveur pour la position du joueur reçois aussi la
 	 * position du ballon.
@@ -336,7 +332,7 @@ public class PlayerController extends PlayerModel {
 	public void msgToCoord(String msg, Ball ball) {
 
 		if (msg != null) {
-			System.out.println(msg);
+
 			String data[] = msg.split("/");
 
 			double nx = java.lang.Double.parseDouble(data[0]);
@@ -346,19 +342,22 @@ public class PlayerController extends PlayerModel {
 
 			this.setScore(Integer.parseInt(data[2]));
 
-			Integer bx = java.lang.Integer.parseInt(data[3]);
-			Integer by = java.lang.Integer.parseInt(data[4]);
-			Integer vx = java.lang.Integer.parseInt(data[5]);
-			Integer vy = java.lang.Integer.parseInt(data[6]);
+			java.lang.Double bx =
+					java.lang.Double.parseDouble(data[3]);
+			java.lang.Double by =
+					java.lang.Double.parseDouble(data[4]);
+			java.lang.Double vx =
+					java.lang.Double.parseDouble(data[5]);
+			java.lang.Double vy =
+					java.lang.Double.parseDouble(data[6]);
 
-			ball.setLocation(bx, by, vx, vy);
+			ball.setLocation(bx.intValue(),
+					by.intValue(),
+					vx.intValue(),
+					vy.intValue());
 		}
 	}
 
-	/*
-	 * 
-	 * player and ball coordinates and score to string
-	 */
 	/**
 	 * Création d'une chaine de caractère déterminant la position du joueur et
 	 * de la balle
