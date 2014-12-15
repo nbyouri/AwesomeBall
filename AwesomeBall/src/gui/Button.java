@@ -42,7 +42,7 @@ public class Button extends JButton {
 		this.setRolloverEnabled(true);
 
 		/**
-		 * change color when clicked or hovered.
+		 * Change la couleur lorsque le bouton est clique ou survole
 		 */
 		this.addChangeListener(new ChangeListener() {
 			@Override

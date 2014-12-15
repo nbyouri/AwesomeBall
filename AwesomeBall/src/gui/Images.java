@@ -22,7 +22,7 @@ public class Images {
 	}
 
 	/**
-	 * load image
+	 * Charger une image depuis un chemin
 	 * 
 	 * @param path
 	 *            String
@@ -60,7 +60,7 @@ public class Images {
 	}
 
 	/**
-	 * return normalised angle
+	 * Retourne un angle entre 0 et 359
 	 * 
 	 * @return int : rotation
 	 */
@@ -77,7 +77,7 @@ public class Images {
 	}
 
 	/**
-	 * rotate the image.
+	 * Appliquer une rotation a une image
 	 * 
 	 * @param img
 	 *            Image
@@ -102,7 +102,7 @@ public class Images {
 	}
 
 	/**
-	 * flip image around vertical axis
+	 * bascule l'image sur l'axe x
 	 * 
 	 * @param img
 	 *            Image
@@ -124,7 +124,7 @@ public class Images {
 	}
 
 	/**
-	 * Invert Red and Blue colors
+	 * Change les bleus en verts et inversement
 	 */
 	class RedBlueSwapFilter extends RGBImageFilter {
 		public RedBlueSwapFilter() {
@@ -140,7 +140,7 @@ public class Images {
 	}
 
 	/**
-	 * Apply the colors
+	 * applique le filtre
 	 */
 	public void applyFilter() {
 		ImageFilter colorfilter = new RedBlueSwapFilter();
