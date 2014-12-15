@@ -21,7 +21,7 @@ public class FieldModel extends Shape {
 	public static final int GOAL_RIGHT_DOWN = 11;
 
 	/**
-	 * Création du terrain ????? .
+	 * Création du terrain
 	 * 
 	 * @param x
 	 *            position X
