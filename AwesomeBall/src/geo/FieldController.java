@@ -23,6 +23,7 @@ public class FieldController extends FieldModel {
 	 * Modifie le goal gauche
 	 * 
 	 * @param goalleft
+	 *            : Rectangle2D
 	 */
 	public void setGoalleft(Rectangle2D goalleft) {
 		this.goalleft = goalleft;
@@ -31,7 +32,7 @@ public class FieldController extends FieldModel {
 	/**
 	 * Récupère le goal droit
 	 * 
-	 * @return goalright
+	 * @return goalright : Rectangle2D
 	 */
 	public Rectangle2D getGoalright() {
 		return goalright;
@@ -41,6 +42,7 @@ public class FieldController extends FieldModel {
 	 * Modifie le goal droit
 	 * 
 	 * @param goalright
+	 *            : Rectangle2D
 	 */
 	public void setGoalright(Rectangle2D goalright) {
 		this.goalright = goalright;

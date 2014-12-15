@@ -26,7 +26,6 @@ public class Dialog extends JDialog {
 		FgColor = Color.white;
 		FbColor = Color.black;
 
-		// Create a message
 		JPanel messagePane = new JPanel(new GridBagLayout());
 		messagePane.add(createLabel(message, Color.cyan));
 		getContentPane().add(messagePane);
@@ -41,6 +40,12 @@ public class Dialog extends JDialog {
 		this.setBackground(this.FbColor);
 	}
 
+	/**
+	 * Cree un label 
+	 * @param text String
+	 * @param color Color
+	 * @return JLabel
+	 */
 	public static JLabel createLabel(String text, Color color) {
 
 		JLabel label = new JLabel(text);
@@ -48,10 +53,5 @@ public class Dialog extends JDialog {
 
 		return label;
 
-	}
-
-	public static void main(String[] args) {
-		Dialog d = new Dialog("hello");
-		d.setVisible(true);
 	}
 }

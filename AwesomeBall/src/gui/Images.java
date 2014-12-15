@@ -2,7 +2,12 @@ package gui;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 
 import javax.swing.ImageIcon;
 
@@ -17,10 +22,11 @@ public class Images {
 	}
 
 	/**
-	 * load image
+	 * Charger une image depuis un chemin
 	 * 
 	 * @param path
-	 * @return
+	 *            String
+	 * @return Image
 	 */
 	public Image load(String path) {
 		ImageIcon ii = new ImageIcon(getClass().getResource(path));
@@ -54,7 +60,7 @@ public class Images {
 	}
 
 	/**
-	 * return normalised angle
+	 * Retourne un angle entre 0 et 359
 	 * 
 	 * @return int : rotation
 	 */
@@ -71,10 +77,12 @@ public class Images {
 	}
 
 	/**
-	 * rotate the image.
+	 * Appliquer une rotation a une image
 	 * 
 	 * @param img
+	 *            Image
 	 * @param rotation
+	 *            int
 	 */
 	public void rotate(Image img, int rotation) {
 		// only rotate if change of key
@@ -94,10 +102,12 @@ public class Images {
 	}
 
 	/**
-	 * flip image around vertical axis
+	 * bascule l'image sur l'axe x
 	 * 
 	 * @param img
+	 *            Image
 	 * @param rotation
+	 *            int
 	 */
 	public void flip(Image img, int rotation) {
 		if (this.getRotation() != rotation) {
@@ -113,4 +123,30 @@ public class Images {
 		}
 	}
 
+	/**
+	 * Change les bleus en verts et inversement
+	 */
+	class RedBlueSwapFilter extends RGBImageFilter {
+		public RedBlueSwapFilter() {
+			// The filter's operation does not depend on the
+			// pixel's location, so IndexColorModels can be
+			// filtered directly.
+			canFilterIndexColorModel = true;
+		}
+
+		public int filterRGB(int x, int y, int rgb) {
+			return ((rgb & 0xff00ff00) | ((rgb & 0xff0000) >> 16) | ((rgb & 0xff) << 16));
+		}
+	}
+
+	/**
+	 * applique le filtre
+	 */
+	public void applyFilter() {
+		ImageFilter colorfilter = new RedBlueSwapFilter();
+		ImageProducer producer = player.getSource();
+		FilteredImageSource filteredImageSource = new FilteredImageSource(
+				producer, colorfilter);
+		player = Toolkit.getDefaultToolkit().createImage(filteredImageSource);
+	}
 }

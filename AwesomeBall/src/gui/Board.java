@@ -100,6 +100,7 @@ public class Board extends JPanel implements ActionListener {
 		player1.player.setLocation(100, 100);
 		player2 = new PlayerView(field, ball);
 		player2.player.setLocation(200, 200);
+		player2.player.getImg().applyFilter();
 
 		// setup ball
 		ball = new Ball(field.field.getCenterX(), field.field.getY()
@@ -198,8 +199,7 @@ public class Board extends JPanel implements ActionListener {
 		player2.player.moveIn(field.field, player1.player);
 
 		// move ball
-		ball.move(field.field, player1.player);
-		ball.move(field.field, player2.player);
+		ball.move(field.field, player1.player, player2.player);
 
 		repaint();
 	}

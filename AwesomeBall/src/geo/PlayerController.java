@@ -284,19 +284,21 @@ public class PlayerController extends PlayerModel {
 	 * et, oblige le joueur à rester dans le terrain ( goals compris)
 	 * 
 	 * @param f
+	 *            FieldController
 	 * @param p
+	 *            PlayerModel
 	 */
 	public void moveIn(FieldController f, PlayerModel p) {
 		// Modifie la vitesse du joueur
 		this.setMovement();
 
 		// Positionne le joueur si il est dans le terrain ou dans un goal
-		if (this.insideRect(f) || this.insideGoals(f)) {
+		if (this.insideRect(f) || this.insideGoals(f) || !this.inPlayer(p)) {
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}
 
-		// Si pas : petit back-up
+		// Si pas : on recule
 		if (this.touchRectInLeft(f)
 				|| this.near((Rectangle2D) p, Side.RIGHT.getId())) {
 			this.setLocation(this.getX() - this.getDx(), this.getY());
@@ -321,6 +323,21 @@ public class PlayerController extends PlayerModel {
 	}
 
 	/**
+	 * detecte les collisions avec un autre joueur
+	 * @param p PlayerModel
+	 * @return boolean
+	 */
+	public boolean inPlayer(PlayerModel p) {
+		int tx = (int)this.getX();
+		int ty = (int)this.getY();
+		int px = (int)p.getX();
+		int py = (int)p.getY();
+
+		return (new Shape(tx, ty, this.getWidth(), 
+				this.getHeight()).near(new Shape(px, py, p.width, p.height)));
+	}
+
+	/**
 	 * Réception du paquet serveur pour la position du joueur reçois aussi la
 	 * position du ballon.
 	 * 
@@ -335,26 +352,28 @@ public class PlayerController extends PlayerModel {
 
 			String data[] = msg.split("/");
 
-			double nx = java.lang.Double.parseDouble(data[0]);
-			double ny = java.lang.Double.parseDouble(data[1]);
+			if (data.length == 11) {
 
-			this.setLocation(nx, ny);
+				double nx = java.lang.Double.parseDouble(data[0]);
+				double ny = java.lang.Double.parseDouble(data[1]);
 
-			this.setScore(Integer.parseInt(data[2]));
+				this.setLocation(nx, ny);
 
-			java.lang.Double bx =
-					java.lang.Double.parseDouble(data[3]);
-			java.lang.Double by =
-					java.lang.Double.parseDouble(data[4]);
-			java.lang.Double vx =
-					java.lang.Double.parseDouble(data[5]);
-			java.lang.Double vy =
-					java.lang.Double.parseDouble(data[6]);
+				this.setScore(Integer.parseInt(data[2]));
 
-			ball.setLocation(bx.intValue(),
-					by.intValue(),
-					vx.intValue(),
-					vy.intValue());
+				java.lang.Double bx = java.lang.Double.parseDouble(data[3]);
+				java.lang.Double by = java.lang.Double.parseDouble(data[4]);
+				java.lang.Double vx = java.lang.Double.parseDouble(data[5]);
+				java.lang.Double vy = java.lang.Double.parseDouble(data[6]);
+
+				ball.setLocation(bx.intValue(), by.intValue(), vx.intValue(),
+						vy.intValue());
+
+				this.left = Boolean.parseBoolean(data[7]);
+				this.right = Boolean.parseBoolean(data[8]);
+				this.up = Boolean.parseBoolean(data[9]);
+				this.down = Boolean.parseBoolean(data[10]);
+			}
 		}
 	}
 
@@ -372,11 +391,18 @@ public class PlayerController extends PlayerModel {
 
 		msg.append(this.getX() + "/");
 		msg.append(this.getY() + "/");
+
 		msg.append(this.getScore() + "/");
+
 		msg.append(ball.getX() + "/");
 		msg.append(ball.getY() + "/");
 		msg.append(ball.getVx() + "/");
 		msg.append(ball.getVy() + "/");
+
+		msg.append(this.left + "/");
+		msg.append(this.right + "/");
+		msg.append(this.up + "/");
+		msg.append(this.down + "/");
 
 		return msg.toString();
 	}

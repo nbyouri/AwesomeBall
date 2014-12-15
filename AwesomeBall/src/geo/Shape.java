@@ -144,7 +144,7 @@ public class Shape extends Rectangle2D.Double {
 	 * @return Oui/Non à la question.
 	 */
 	public boolean nearX(Rectangle2D s) {
-		return (this.getX() <= s.getMaxX() && this.getMaxX() >= s.getX());
+		return (this.getX() - 1 <= s.getMaxX() && this.getMaxX() + 1 >= s.getX());
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class Shape extends Rectangle2D.Double {
 	 * @return Oui/Non à la question.
 	 */
 	public boolean nearY(Rectangle2D s) {
-		return (this.getY() <= s.getMaxY() && this.getMaxY() >= s.getY());
+		return (this.getY() - 1 <= s.getMaxY() && this.getMaxY() + 1 >= s.getY());
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class Shape extends Rectangle2D.Double {
 	 *            le rectangle en question
 	 * @param line
 	 *            le côté choisie
-	 * @return
+	 * @return boolean
 	 */
 	public boolean near(Rectangle2D s, int line) {
 
@@ -188,37 +188,27 @@ public class Shape extends Rectangle2D.Double {
 		int mx = (int) this.getMaxX();
 		int y = (int) this.getY();
 		int my = (int) this.getMaxY();
+		int sx = (int) s.getX();
+		int smx = (int) s.getMaxX();
+		int sy = (int) s.getY();
+		int smy = (int) s.getMaxY();
 
-		/**
+		/*
 		 * Déplace de deux pixels si il y a collision
 		 */
 		if (line == Side.UP.getId()) {
-
-			return ((my + 1 >= s.getY()) && (my - 1 <= s.getY()) && this
-					.nearX(s));
-
+			return ((my + 1 >= sy) && (my - 1 <= sy) && this.nearX(s));
 		}
 		if (line == Side.DOWN.getId()) {
-
-			return ((y - 1 <= s.getMaxY()) && (y + 1 >= s.getMaxY()) && this
-					.nearX(s));
-
+			return ((y - 1 <= smy) && (y + 1 >= smy) && this.nearX(s));
 		}
 		if (line == Side.LEFT.getId()) {
-
-			return ((mx - 1 <= s.getX()) && (mx + 1 >= s.getX()) && this
-					.nearY(s));
-
+			return ((mx - 1 <= sx) && (mx + 1 >= sx) && this.nearY(s));
 		}
 		if (line == Side.RIGHT.getId()) {
-
-			return ((x - 1 <= s.getMaxX()) && (x + 1 >= s.getMaxX()) && this
-					.nearY(s));
-
+			return ((x - 1 <= smx) && (x + 1 >= smx) && this.nearY(s));
 		} else {
-
 			return false;
-
 		}
 	}
 
