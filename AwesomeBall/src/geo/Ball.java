@@ -8,8 +8,9 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Classe Balle, gère les collisions avec les joueurs
- * et les bords du terrain. Les joueurs peuvent marquer.
+ * Classe Balle, gère les collisions avec les joueurs et les bords du terrain.
+ * Les joueurs peuvent marquer.
+ * 
  * @author Mouton Youri and Sias Nicolas
  */
 @SuppressWarnings("serial")
@@ -29,8 +30,8 @@ public class Ball extends Ellipse2D.Double {
 	public static final double VELOCITY_LIMIT = 2;
 
 	public Ball(FieldController field) {
-		super.setFrame(field.getCenterX() - BALL_RADIUS, 
-				field.getCenterY() - BALL_RADIUS, BALL_SIZE, BALL_SIZE);
+		super.setFrame(field.getCenterX() - BALL_RADIUS, field.getCenterY()
+				- BALL_RADIUS, BALL_SIZE, BALL_SIZE);
 		Dx = STOP;
 		Dy = STOP;
 		this.rect = new Shape(this.getX(), this.getY(), this.getWidth(),
@@ -76,8 +77,11 @@ public class Ball extends Ellipse2D.Double {
 
 	/**
 	 * Met a jour la position de la balle.
-	 * @param x double
-	 * @param y double
+	 * 
+	 * @param x
+	 *            double
+	 * @param y
+	 *            double
 	 */
 	public void setLocation(double x, double y) {
 		this.setFrame(x, y, this.getWidth(), this.getHeight());
@@ -139,7 +143,7 @@ public class Ball extends Ellipse2D.Double {
 			this.setDx(SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p2, Side.UP.getId())) {
-			p2.setDy(p1.movingWithBall(this) ? -SPEED_ONE: STOP);
+			p2.setDy(p1.movingWithBall(this) ? -SPEED_ONE : STOP);
 			this.setDy(-SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p2, Side.LEFT.getId())) {
@@ -177,7 +181,7 @@ public class Ball extends Ellipse2D.Double {
 	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
 				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
-						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
+				.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/**
@@ -216,7 +220,7 @@ public class Ball extends Ellipse2D.Double {
 		return (f.getMaxX() - this.getMaxX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
-						.getGoalright().getMaxX());
+				.getGoalright().getMaxX());
 	}
 
 	/**
@@ -231,7 +235,7 @@ public class Ball extends Ellipse2D.Double {
 		return (this.getX() - f.getX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getX() <= f
-						.getGoalleft().getX());
+				.getGoalleft().getX());
 	}
 
 	/**
@@ -257,7 +261,6 @@ public class Ball extends Ellipse2D.Double {
 		return (this.getX() <= f.getGoalleft().getMaxX() && this.getY() - 1 <= f
 				.getGoalleft().getY());
 	}
-
 
 	/**
 	 * Applique un freinage a la balle
@@ -305,11 +308,11 @@ public class Ball extends Ellipse2D.Double {
 	public void shoot(FieldController f, PlayerController p) {
 		int dist = 4;
 		if (p.nearInPixels(this.rect, Side.LEFT.getId(), dist)) {
-			this.setDx(this.getDx()
-					+ Math.abs(this.getX() - p.getX()) * SPEED_SHOOT);
+			this.setDx(this.getDx() + Math.abs(this.getX() - p.getX())
+					* SPEED_SHOOT);
 		} else if (p.nearInPixels(this.rect, Side.RIGHT.getId(), dist)) {
-			this.setDx(this.getDx()
-					- Math.abs(this.getX() - p.getX()) * SPEED_SHOOT);
+			this.setDx(this.getDx() - Math.abs(this.getX() - p.getX())
+					* SPEED_SHOOT);
 		}
 		if (p.nearInPixels(this.rect, Side.DOWN.getId(), dist)) {
 			this.setDy(this.getDy()

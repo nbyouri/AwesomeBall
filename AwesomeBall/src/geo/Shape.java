@@ -144,7 +144,8 @@ public class Shape extends Rectangle2D.Double {
 	 * @return Oui/Non à la question.
 	 */
 	public boolean nearX(Rectangle2D s) {
-		return (this.getX() - 1 <= s.getMaxX() && this.getMaxX() + 1 >= s.getX());
+		return (this.getX() - 1 <= s.getMaxX() && this.getMaxX() + 1 >= s
+				.getX());
 	}
 
 	/**
@@ -155,7 +156,8 @@ public class Shape extends Rectangle2D.Double {
 	 * @return Oui/Non à la question.
 	 */
 	public boolean nearY(Rectangle2D s) {
-		return (this.getY() - 1 <= s.getMaxY() && this.getMaxY() + 1 >= s.getY());
+		return (this.getY() - 1 <= s.getMaxY() && this.getMaxY() + 1 >= s
+				.getY());
 	}
 
 	/**
@@ -211,7 +213,7 @@ public class Shape extends Rectangle2D.Double {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Est-ce que la forme est proche de son côté choisie d'un rectangle s?
 	 * Déplace de deux pixels si il y a collision
@@ -220,7 +222,8 @@ public class Shape extends Rectangle2D.Double {
 	 *            le rectangle en question
 	 * @param line
 	 *            le côté choisie
-	 * @param 
+	 * @param dist
+	 *            la distance
 	 * @return boolean
 	 */
 	public boolean nearInPixels(Rectangle2D s, int line, int dist) {
@@ -240,20 +243,24 @@ public class Shape extends Rectangle2D.Double {
 		 * Déplace de deux pixels si il y a collision
 		 */
 		if (line == Side.UP.getId()) {
-			return ((my + dist >= sy) && (my - dist <= sy) &&
-					this.getX() - dist <= s.getMaxX() && this.getMaxX() + dist >= s.getX());
+			return ((my + dist >= sy) && (my - dist <= sy)
+					&& this.getX() - dist <= s.getMaxX() && this.getMaxX()
+					+ dist >= s.getX());
 		}
 		if (line == Side.DOWN.getId()) {
-			return ((y - dist <= smy) && (y + dist >= smy) &&
-					this.getX() - dist <= s.getMaxX() && this.getMaxX() + dist >= s.getX());
+			return ((y - dist <= smy) && (y + dist >= smy)
+					&& this.getX() - dist <= s.getMaxX() && this.getMaxX()
+					+ dist >= s.getX());
 		}
 		if (line == Side.LEFT.getId()) {
-			return ((mx - dist <= sx) && (mx + dist >= sx) &&
-					this.getY() - dist <= s.getMaxY() && this.getMaxY() + dist >= s.getY());
+			return ((mx - dist <= sx) && (mx + dist >= sx)
+					&& this.getY() - dist <= s.getMaxY() && this.getMaxY()
+					+ dist >= s.getY());
 		}
 		if (line == Side.RIGHT.getId()) {
-			return ((x - dist <= smx) && (x + dist >= smx) &&
-					this.getY() - dist <= s.getMaxY() && this.getMaxY() + dist >= s.getY());
+			return ((x - dist <= smx) && (x + dist >= smx)
+					&& this.getY() - dist <= s.getMaxY() && this.getMaxY()
+					+ dist >= s.getY());
 		} else {
 			return false;
 		}

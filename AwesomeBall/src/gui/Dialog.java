@@ -41,9 +41,12 @@ public class Dialog extends JDialog {
 	}
 
 	/**
-	 * Cree un label 
-	 * @param text String
-	 * @param color Color
+	 * Cree un label
+	 * 
+	 * @param text
+	 *            String
+	 * @param color
+	 *            Color
 	 * @return JLabel
 	 */
 	public static JLabel createLabel(String text, Color color) {

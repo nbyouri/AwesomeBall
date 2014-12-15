@@ -198,7 +198,7 @@ public class Board extends JPanel implements ActionListener {
 
 		// move ball
 		ball.move(field.field, player1.player, player2.player);
-		
+
 		repaint();
 	}
 

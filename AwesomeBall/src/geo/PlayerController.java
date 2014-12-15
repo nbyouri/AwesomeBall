@@ -173,7 +173,7 @@ public class PlayerController extends PlayerModel {
 	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
 				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
-						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
+				.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class PlayerController extends PlayerModel {
 		return (f.getMaxX() - this.getMaxX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
-						.getGoalright().getMaxX());
+				.getGoalright().getMaxX());
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class PlayerController extends PlayerModel {
 		return (this.getX() - f.getX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getX() <= f
-						.getGoalleft().getX());
+				.getGoalleft().getX());
 	}
 
 	/**
@@ -293,8 +293,8 @@ public class PlayerController extends PlayerModel {
 		this.setMovement();
 
 		// Positionne le joueur si il est dans le terrain ou dans un goal
-		if (this.insideRect(f) || this.insideGoals(f) ||
-				!this.near(p) || !this.inPlayer(p)) {
+		if (this.insideRect(f) || this.insideGoals(f) || !this.near(p)
+				|| !this.inPlayer(p)) {
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}
@@ -325,27 +325,31 @@ public class PlayerController extends PlayerModel {
 
 	/**
 	 * detecte les collisions avec un autre joueur
-	 * @param p PlayerModel
+	 * 
+	 * @param p
+	 *            PlayerModel
 	 * @return boolean
 	 */
 	public boolean inPlayer(PlayerModel p) {
-		int tx = (int)this.getX();
-		int ty = (int)this.getY();
-		int px = (int)p.getX();
-		int py = (int)p.getY();
+		int tx = (int) this.getX();
+		int ty = (int) this.getY();
+		int px = (int) p.getX();
+		int py = (int) p.getY();
 
-		return (new Shape(tx, ty, this.getWidth(), 
-				this.getHeight()).near(new Shape(px, py, p.width, p.height)));
+		return (new Shape(tx, ty, this.getWidth(), this.getHeight())
+				.near(new Shape(px, py, p.width, p.height)));
 	}
 
 	/**
-	 * Détecte si un autre joueur se déplace déjà avec
-	 * une balle 
-	 * @param 
-	 * @return
+	 * Détecte si un autre joueur se déplace déjà avec une balle
+	 * 
+	 * @param b
+	 *            Ball
+	 * @return boolean
 	 */
 	public boolean movingWithBall(Ball b) {
-		return ((this.getDx() != STOP || this.getDy() != STOP) && this.near(b.rect));
+		return ((this.getDx() != STOP || this.getDy() != STOP) && this
+				.near(b.rect));
 	}
 
 	/**
