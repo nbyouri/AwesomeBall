@@ -53,59 +53,67 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p2
 	 *            PlayerController
 	 */
-		public void move(FieldController f, PlayerController p1, PlayerController p2) {
+	public void move(FieldController f, PlayerController p1, PlayerController p2) {
+		if (p1.shoot) {
+			this.shootBall(f,  p1);
+		}
+		
+		if (p2.shoot) {
+			this.shootBall(f, p2);
+		}
+		
 		// Applique le mouvement de la balle si celle-ci est dans le terrain
 		if (this.isInsideField(f)) {
 			this.setMovement();
 		}
-                double newY = this.getY();
-                double newX = this.getX();
-                if(this.isTouchHorizontalBorder(f)){
-                    this.setVy(-vY);
-                }else if(this.intersects(p1) && 
-                        this.isTouchBorderOuterShapeY(p1)){
-                    if(this.isBallAboveShape(p1)){
-                        newY = p1.getEll().getY() + p1.getHeight();
-                    }else if(this.isBallUnderShape(p1)){
-                            newY = p1.getEll().getY() - p1.getHeight();    
-                            }
-                }
-                if(this.isTouchVerticalBorder(f) &&
-                        !(this.isTouchVerticalBorder(f.getGoalright()) ||
-                        this.isTouchVerticalBorder(f.getGoalleft()))){
-                    this.setVx(-vX);
-                }else if(this.intersects(p1)&& 
-                        this.isTouchBorderOuterShapeX(p1)){
-                    if(this.isBallRightShape(p1)){
-                        newX = p1.getEll().getX() + p1.getWidth();
-                    }else if(this.isBallLeftShape(p1)){
-                        newX = p1.getEll().getX() - p1.getWidth();
-                    }
-                }
-        }
+		double newY = this.getY();
+		double newX = this.getX();
+		if(this.isTouchHorizontalBorder(f)){
+			this.setVy(-vY);
+		}else if(this.intersects(p1) && 
+				this.isTouchBorderOuterShapeY(p1)){
+			if(this.isBallAboveShape(p1)){
+				newY = p1.getEll().getY() + p1.getHeight();
+			}else if(this.isBallUnderShape(p1)){
+				newY = p1.getEll().getY() - p1.getHeight();    
+			}
+		}
+		if(this.isTouchVerticalBorder(f) &&
+				!(this.isTouchVerticalBorder(f.getGoalright()) ||
+						this.isTouchVerticalBorder(f.getGoalleft()))){
+			this.setVx(-vX);
+		}else if(this.intersects(p1)&& 
+				this.isTouchBorderOuterShapeX(p1)){
+			if(this.isBallRightShape(p1)){
+				newX = p1.getEll().getX() + p1.getWidth();
+			}else if(this.isBallLeftShape(p1)){
+				newX = p1.getEll().getX() - p1.getWidth();
+			}
+		}
+	}
 
-        /**
-         * La balle touche le rectangle horizontallement ?
-         * 
-         * @param r
-         *              Rectangle2D : le rectangle en question à analyser
-         * @return 
-         *              Oui/Non à la question
-         */             
-        public boolean isTouchHorizontalBorder(Rectangle2D r){
-            return (this.getY() < r.getY() || this.getMaxY() > r.getMaxY() );
-        }
-        /**
-         * La balle touche le rectangle verticalement ?
-         * 
-         * @param r
-         *              Rectangle2D : le rectangle en question à analyser
-         * @return 
-         *              Oui/Non à la question
-         */
-        public boolean isTouchVerticalBorder(Rectangle2D r){
-            return (this.getX() < r.getX() || this.getMaxX() > r.getMaxX());
-        }
+	/**
+	 * La balle touche le rectangle horizontallement ?
+	 * 
+	 * @param r
+	 *              Rectangle2D : le rectangle en question à analyser
+	 * @return 
+	 *              Oui/Non à la question
+	 */             
+	public boolean isTouchHorizontalBorder(Rectangle2D r){
+		return (this.getY() < r.getY() || this.getMaxY() > r.getMaxY() );
+	}
+	/**
+	 * La balle touche le rectangle verticalement ?
+	 * 
+	 * @param r
+	 *              Rectangle2D : le rectangle en question à analyser
+	 * @return 
+	 *              Oui/Non à la question
+	 */
+	public boolean isTouchVerticalBorder(Rectangle2D r){
+		return (this.getX() < r.getX() || this.getMaxX() > r.getMaxX());
+	}
 
 	/**
 	 * Repositionne la balle
