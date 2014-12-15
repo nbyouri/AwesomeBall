@@ -42,7 +42,7 @@ public class Server extends ServerSocket implements Runnable {
 			}
 
 			catch (SocketTimeoutException ex) {
-				// System.out.println("Trying to accept");
+				System.out.println("Trying to accept");
 			}
 
 			catch (IOException ex) {

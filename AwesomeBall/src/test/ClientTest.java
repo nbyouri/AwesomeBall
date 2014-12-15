@@ -11,7 +11,7 @@ public class ClientTest extends Socket implements Runnable {
 	private String message;
 
 	public ClientTest() throws Exception {
-		super("192.168.1.2", 1337);
+		super("192.168.1.6", 7331);
 		Thread t = new Thread(this);
 		t.start();
 	}

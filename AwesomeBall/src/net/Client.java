@@ -64,7 +64,10 @@ public class Client implements Runnable {
 			}
 
 			catch (ConnectException ce) {
-				// System.out.println("Trying again");
+				//System.out.println("Trying again");
+				try {
+					Thread.sleep(20);
+				} catch (Exception e) {}
 				continue;
 			}
 

@@ -353,7 +353,7 @@ public class PlayerController extends PlayerModel {
 
 			String data[] = msg.split("/");
 
-			if (data.length == 11) {
+			if (data.length == 8) {
 
 				double nx = java.lang.Double.parseDouble(data[0]);
 				double ny = java.lang.Double.parseDouble(data[1]);
@@ -366,6 +366,8 @@ public class PlayerController extends PlayerModel {
 				this.right = Boolean.parseBoolean(data[4]);
 				this.up = Boolean.parseBoolean(data[5]);
 				this.down = Boolean.parseBoolean(data[6]);
+				
+				this.shoot = Boolean.parseBoolean(data[7]);
 			}
 		}
 	}
@@ -391,6 +393,7 @@ public class PlayerController extends PlayerModel {
 		msg.append(this.right + "/");
 		msg.append(this.up + "/");
 		msg.append(this.down + "/");
+		msg.append(this.shoot + "/");
 
 		return msg.toString();
 	}
