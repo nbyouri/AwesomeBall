@@ -41,7 +41,7 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 		progressBar.setStringPainted(true);
 
 		exitButton = new Button(
-				"Scanning Local Network. Click to cancel and exit",
+				"Scanning Local Network. \nClick to cancel and exit",
 				new CloseListener());
 		add(progressBar, BorderLayout.SOUTH);
 		// add(startButton, BorderLayout.NORTH);

@@ -52,7 +52,7 @@ public class Client implements Runnable {
 			}
 
 			catch (ConnectException ce) {
-				System.out.println("Trying again");
+				//System.out.println("Trying again");
 				continue;
 			}
 
