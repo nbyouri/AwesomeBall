@@ -50,7 +50,7 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p
 	 *            PlayerController
 	 */
-	public void move(FieldController f, PlayerController p) {
+	public void move(FieldController f, PlayerController p1, PlayerController p2) {
 
 		// Applique le mouvement de la balle si celle-ci est dans le terrain
 		if (this.isInsideField(f)) {
@@ -58,8 +58,8 @@ public class Ball extends Ellipse2D.Double {
 		}
 
 		// Sinon, on vérifie les collisions:
-		this.checkCollisionField(f, p);
-		this.checkCollisionPlayer(f, p);
+		this.checkCollisionField(f, p1, p2);
+		this.checkCollisionPlayer(f, p1, p2);
 
 		this.brake();
 	}
@@ -183,10 +183,13 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p
 	 *            PlayerController
 	 */
-	public void goal(FieldController f, PlayerController p) {
-		if (this.isGoalLeft(f) || this.isGoalRight(f)) {
+	public void goal(FieldController f, PlayerController p1, PlayerController p2) {
+		if (this.isGoalLeft(f)) {
 			this.centerBall(f);
-			p.setScore(p.getScore() + 1);
+			p1.setScore(p1.getScore() + 1);
+		} else if (this.isGoalRight(f)) {
+			this.centerBall(f);
+			p2.setScore(p2.getScore() + 1);
 		}
 	}
 
@@ -199,34 +202,34 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p
 	 *            PlayerController
 	 */
-	public void checkCollisionPlayer(FieldController f, PlayerController p) {
-		if (this.intersects(p)) {
+	public void checkCollisionPlayer(FieldController f, PlayerController p1, PlayerController p2) {
+		if (this.intersects(p1)) {
 
 			// Pour l'axe des X ( gauche et droite du joueur)
-			if (this.isTouchBorderOuterShapeX(p)) {
+			if (this.isTouchBorderOuterShapeX(p1)) {
 				if (!(this.rect.touchRectInLeft(f) || this.rect
 						.touchRectInRight(f))
 						|| this.isTouchGoalLeft(f)
 						|| this.isTouchGoalRight(f)) {
 
-					if (this.isBallLeftShape(p)) {
-						this.setX(p.getEll().getX() - this.getWidth());
-					} else if (this.isBallRightShape(p))
-						this.setX(p.getEll().getX() + this.getWidth());
+					if (this.isBallLeftShape(p1)) {
+						this.setX(p1.getEll().getX() - this.getWidth());
+					} else if (this.isBallRightShape(p1))
+						this.setX(p1.getEll().getX() + this.getWidth());
 				}
 			}
 
 			// Pour l'axe des Y ( bas et haut du joueur )
-			if (this.isTouchBorderOuterShapeY(p)) {
+			if (this.isTouchBorderOuterShapeY(p1)) {
 				if (!(this.rect.touchRectInBottom(f) || this.rect
 						.touchRectInTop(f))
 						|| this.isTouchGoalLeft(f)
 						|| this.isTouchGoalRight(f)) {
 
-					if (this.isBallAboveShape(p)) {
-						this.setY(p.getEll().getY() + this.getHeight());
-					} else if (this.isBallUnderShape(p)) {
-						this.setY(p.getEll().getY() - this.getHeight());
+					if (this.isBallAboveShape(p1)) {
+						this.setY(p1.getEll().getY() + this.getHeight());
+					} else if (this.isBallUnderShape(p1)) {
+						this.setY(p1.getEll().getY() - this.getHeight());
 					}
 				}
 			}
@@ -242,7 +245,7 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p
 	 *            Player
 	 */
-	public void checkCollisionField(FieldController f, PlayerController p) {
+	public void checkCollisionField(FieldController f, PlayerController p1, PlayerController p2) {
 
 		// Pour l'axe des X
 		if (this.rect.touchRectInTop(f) || this.rect.touchRectInBottom(f)) {
@@ -254,7 +257,7 @@ public class Ball extends Ellipse2D.Double {
 			if ((!this.isTouchGoalLeft(f)) && (!this.isTouchGoalRight(f))) {
 				this.setVx(-vX);
 			} else {
-				this.goal(f, p);
+				this.goal(f, p1, p2);
 			}
 		}
 	}

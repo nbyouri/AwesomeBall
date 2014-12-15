@@ -47,7 +47,9 @@ public class FieldView {
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.cyan);
 		g2.draw(field);
+		g2.setColor(Color.blue);
 		g2.draw(field.goalleft);
+		g2.setColor(Color.red);
 		g2.draw(field.goalright);
 
 		g2.setColor(Color.black);
