@@ -27,7 +27,7 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 
 	public static final int MAX_IP = 254;
 	public static final int MIN_IP = 2;
-	public static final int PING_TIMEOUT = 100;
+	public static final int PING_TIMEOUT = 200;
 
 	public DiscoverLocal() {
 		super("Scanning Local Network.");
