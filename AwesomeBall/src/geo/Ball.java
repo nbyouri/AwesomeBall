@@ -1,33 +1,66 @@
 package geo;
 
+import geo.Shape.Side;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- *
+ * Classe Balle, gère les collisions avec les joueurs
+ * et les bords du terrain. Les joueurs peuvent marquer.
  * @author Mouton Youri and Sias Nicolas
  */
 @SuppressWarnings("serial")
 public class Ball extends Ellipse2D.Double {
 
 	public Shape rect;
-	private double vX;
-	private double vY;
-	public final int STOP = 0;
-	public final double SPEED_SHOOT = 0.05;
-	public final double BRAKE = -0.005;
-	public final double VELOCITY_LIMIT = 1;
+	private double Dx;
+	private double Dy;
+	
+	public static final int BALL_SIZE = 15;
+	public static final double BALL_RADIUS = BALL_SIZE / 2;
+	public static final int STOP = 0;
+	public static final double SPEED_ONE = 0.5;
+	public static final double SPEED_ONE_DIAG = PlayerModel.SPEED_ONE_DIAG;
+	public static final double SPEED_SHOOT = 0.05;
+	public static final double BRAKE = -0.005;
+	public static final double VELOCITY_LIMIT = 2;
 
-	public Ball(double x, double y, double width, double height) {
-		super.setFrame(x - (width / 2), y, width, height);
-		this.setVx(STOP);
-		this.setVy(STOP);
+	public Ball(FieldController field) {
+		super.setFrame(field.getCenterX() - BALL_RADIUS, 
+				field.getCenterY() - BALL_RADIUS, BALL_SIZE, BALL_SIZE);
+		Dx = STOP;
+		Dy = STOP;
 		this.rect = new Shape(this.getX(), this.getY(), this.getWidth(),
 				this.getHeight());
 	}
 
+	public void setDx(double d) {
+		this.Dx = d;
+	}
+
+	public void setDy(double d) {
+		this.Dy = d;
+	}
+
+	public double getDx() {
+		return this.Dx;
+	}
+
+	public double getDy() {
+		return this.Dy;
+	}
+
+	public void setY(double d) {
+		this.y = d;
+	}
+
+	public void setX(double d) {
+		this.x = d;
+	}
+	
 	/**
 	 * Creation graphique de la balle
 	 *
@@ -38,9 +71,19 @@ public class Ball extends Ellipse2D.Double {
 		g2.setColor(Color.yellow);
 		g2.draw(this);
 		g2.fill(this);
-		// g2.draw(this.rect);
+		g2.draw(this.rect);
 	}
 
+	/**
+	 * Met a jour la position de la balle.
+	 * @param x double
+	 * @param y double
+	 */
+	public void setLocation(double x, double y) {
+		this.setFrame(x, y, this.getWidth(), this.getHeight());
+		this.rect.setFrame(this.getFrame());
+	}
+	
 	/**
 	 * Methode principale de la balle utilisé par actionPerformed : applique et
 	 * modifie, si neccessaire, le mouvement apres un check de toutes les
@@ -54,132 +97,192 @@ public class Ball extends Ellipse2D.Double {
 	 *            PlayerController
 	 */
 	public void move(FieldController f, PlayerController p1, PlayerController p2) {
-		if (p1.shoot) {
-			this.shootBall(f,  p1);
+		/*
+		 * Collisions Terrain
+		 */
+		if (this.touchRectInLeft(f)) {
+			this.setDx(SPEED_ONE);
+		}
+		if (this.rect.touchRectInTop(f) || this.touchGoalRightTop(f)
+				|| this.touchGoalLeftTop(f)) {
+			this.setDy(SPEED_ONE);
+		}
+		if (this.touchRectInRight(f)) {
+			this.setDx(SPEED_ONE);
+		}
+		if (this.rect.touchRectInBottom(f) || this.touchGoalRightBottom(f)
+				|| this.touchGoalLeftBottom(f)) {
+			this.setDy(-SPEED_ONE);
+		}
+
+		/*
+		 * Collisions Joueurs
+		 */
+		if (this.rect.near((Rectangle2D) p1, Side.RIGHT.getId())) {
+			p1.setDx(SPEED_ONE);
+			this.setDx(SPEED_ONE);
+		}
+		if (this.rect.near((Rectangle2D) p1, Side.UP.getId())) {
+			p1.setDy(-SPEED_ONE);
+			this.setDy(-SPEED_ONE);
+		}
+		if (this.rect.near((Rectangle2D) p1, Side.LEFT.getId())) {
+			p1.setDx(-SPEED_ONE);
+			this.setDx(-SPEED_ONE);
+		}
+		if (this.rect.near((Rectangle2D) p1, Side.DOWN.getId())) {
+			p1.setDy(SPEED_ONE);
+			this.setDy(SPEED_ONE);
+		}
+		if (this.rect.near((Rectangle2D) p2, Side.RIGHT.getId())) {
+			p2.setDx(SPEED_ONE);
+			this.setDx(SPEED_ONE);
+		}
+		if (this.rect.near((Rectangle2D) p2, Side.UP.getId())) {
+			p2.setDy(-SPEED_ONE);
+			this.setDy(-SPEED_ONE);
+		}
+		if (this.rect.near((Rectangle2D) p2, Side.LEFT.getId())) {
+			p2.setDx(-SPEED_ONE);
+			this.setDx(-SPEED_ONE);
+		}
+		if (this.rect.near((Rectangle2D) p2, Side.DOWN.getId())) {
+			p2.setDy(SPEED_ONE);
+			this.setDy(SPEED_ONE);
+		}
+
+		/*
+		 * test goal
+		 */
+		this.goal(f, p1, p2);
+		
+		/*
+		 * bouger la balle
+		 */
+		if (this.rect.insideRect(f) || this.insideGoals(f)) {
+			this.setLocation(this.getX() + this.getDx(),
+					this.getY() + this.getDy());
 		}
 		
-		if (p2.shoot) {
-			this.shootBall(f, p2);
-		}
-		
-		// Applique le mouvement de la balle si celle-ci est dans le terrain
-		if (this.isInsideField(f)) {
-			this.setMovement();
-		}
-		double newY = this.getY();
-		double newX = this.getX();
-		if(this.isTouchHorizontalBorder(f)){
-			this.setVy(-vY);
-		}else if(this.intersects(p1) && 
-				this.isTouchBorderOuterShapeY(p1)){
-			if(this.isBallAboveShape(p1)){
-				newY = p1.getEll().getY() + p1.getHeight();
-			}else if(this.isBallUnderShape(p1)){
-				newY = p1.getEll().getY() - p1.getHeight();    
-			}
-		}
-		if(this.isTouchVerticalBorder(f) &&
-				!(this.isTouchVerticalBorder(f.getGoalright()) ||
-						this.isTouchVerticalBorder(f.getGoalleft()))){
-			this.setVx(-vX);
-		}else if(this.intersects(p1)&& 
-				this.isTouchBorderOuterShapeX(p1)){
-			if(this.isBallRightShape(p1)){
-				newX = p1.getEll().getX() + p1.getWidth();
-			}else if(this.isBallLeftShape(p1)){
-				newX = p1.getEll().getX() - p1.getWidth();
-			}
-		}
+		this.brake();
 	}
 
 	/**
-	 * La balle touche le rectangle horizontallement ?
+	 * Est-ce que le joueur est dans un des goals ?
 	 * 
-	 * @param r
-	 *              Rectangle2D : le rectangle en question à analyser
-	 * @return 
-	 *              Oui/Non à la question
-	 */             
-	public boolean isTouchHorizontalBorder(Rectangle2D r){
-		return (this.getY() < r.getY() || this.getMaxY() > r.getMaxY() );
+	 * @param f
+	 *            FieldController
+	 * @return Oui ou non à la réponse
+	 */
+	public boolean insideGoals(FieldController f) {
+		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
+				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
+						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
+
 	/**
-	 * La balle touche le rectangle verticalement ?
+	 * Est-ce que le joueur touche le haut du goal droit ?
 	 * 
-	 * @param r
-	 *              Rectangle2D : le rectangle en question à analyser
-	 * @return 
-	 *              Oui/Non à la question
+	 * @param f
+	 *            FieldController
+	 * @return Oui/Non à la question
 	 */
-	public boolean isTouchVerticalBorder(Rectangle2D r){
-		return (this.getX() < r.getX() || this.getMaxX() > r.getMaxX());
+	public boolean touchGoalRightTop(FieldController f) {
+		return (this.getMaxX() >= f.getGoalright().getX() && this.getY() - 1 <= f
+				.getGoalright().getY());
 	}
 
 	/**
-	 * Repositionne la balle
-	 *
-	 */
-	public void setMovement() {
-		this.setFrame(this.getX() + this.getVx(), this.getY() + this.getVy(),
-				this.getWidth(), this.getHeight());
-		this.rect.setFrame(this.getFrame());
-	}
-
-	/**
-	 * Repositionne la balle
+	 * Est-ce que le joueur touche le bas du goal droit ?
 	 * 
-	 * @param x
-	 *            double : position en x
-	 * @param y
-	 *            double : la position en y
-	 * @param vx
-	 *            double : la vitesse en x
-	 * @param vy
-	 *            double : la vitesse en y
+	 * @param f
+	 *            FieldController
+	 * @return Oui/Non à la question
 	 */
-	public void setLocation(double x, double y, double vx, double vy) {
-		this.setFrame(x, y, this.getWidth(), this.getHeight());
-		this.rect.setLocation(x, y);
-		this.setVx(vx);
-		this.setVy(vy);
+	public boolean touchGoalRightBottom(FieldController f) {
+		return (this.getMaxX() >= f.getGoalright().getX() && this.getMaxY() + 1 >= f
+				.getGoalright().getMaxY());
 	}
 
 	/**
-	 * Applique un freinage a la balle, limite la vitesse a 5
+	 * Est-ce que le joueur touche le bord droit du terrain ( ou la ligne
+	 * verticale du goal droit ) ?
+	 * 
+	 * @param f
+	 *            FieldController
+	 * @return Oui/Non à la question
+	 */
+	public boolean touchRectInRight(FieldController f) {
+		return (f.getMaxX() - this.getMaxX() <= 1.5
+				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
+						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
+						.getGoalright().getMaxX());
+	}
+
+	/**
+	 * Est-ce que le joueur touche le bord gauche du terrain (ou la ligne
+	 * verticale du goal gauche) ?
+	 * 
+	 * @param f
+	 *            FieldController
+	 * @return Oui/Non à la question
+	 */
+	public boolean touchRectInLeft(FieldController f) {
+		return (this.getX() - f.getX() <= 1.5
+				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
+						.getGoalright().getMaxY()) || this.getX() <= f
+						.getGoalleft().getX());
+	}
+
+	/**
+	 * Est-ce que le joueur touche le bas du goal gauche ?
+	 * 
+	 * @param f
+	 *            FieldController
+	 * @return Oui/Non à la question
+	 */
+	public boolean touchGoalLeftBottom(FieldController f) {
+		return (this.getX() <= f.getGoalleft().getMaxX() && this.getMaxY() >= f
+				.getGoalleft().getMaxY());
+	}
+
+	/**
+	 * Est-ce que le joueur touche le haut du goal gauche ?
+	 * 
+	 * @param f
+	 *            FieldController
+	 * @return Oui/Non à la question
+	 */
+	public boolean touchGoalLeftTop(FieldController f) {
+		return (this.getX() <= f.getGoalleft().getMaxX() && this.getY() - 1 <= f
+				.getGoalleft().getY());
+	}
+
+
+	/**
+	 * Applique un freinage a la balle
 	 */
 	public void brake() {
-
-		// Freinage
-		if (this.getVx() != 0) {
-			if (this.getVx() > 0) {
-				this.setVx(vX + BRAKE);
+		if (this.getDx() != 0 && this.getDx() < VELOCITY_LIMIT) {
+			if (this.getDx() > 0) {
+				this.setDx(Dx + BRAKE);
 			}
-			if (this.getVx() < 0) {
-				this.setVx(vX - BRAKE);
+			if (this.getDx() < 0) {
+				this.setDx(Dx - BRAKE);
 			}
 		}
-		if (this.getVy() != 0) {
-			if (this.getVy() > 0) {
-				this.setVy(vY + BRAKE);
+		if (this.getDy() != 0 && this.getDy() < VELOCITY_LIMIT) {
+			if (this.getDy() > 0) {
+				this.setDy(Dy + BRAKE);
 			}
-			if (this.getVy() < 0) {
-				this.setVy(vY - BRAKE);
+			if (this.getDy() < 0) {
+				this.setDy(Dy - BRAKE);
 			}
 		}
-
-		// Limite de la vitesse
-		if (this.getVy() > VELOCITY_LIMIT) {
-			this.setVy(VELOCITY_LIMIT);
-		}
-
-		if (this.getVx() > VELOCITY_LIMIT) {
-			this.setVx(VELOCITY_LIMIT);
-		}
-
 	}
 
 	/**
-	 * Repositionne la balle au centre du field et rÃ©initialise vX et vY a 0
+	 * Repositionne la balle au centre du field et rÃ©initialise Dx et Dy a 0
 	 *
 	 * @param f
 	 *            FieldController
@@ -187,48 +290,23 @@ public class Ball extends Ellipse2D.Double {
 	public void centerBall(FieldController f) {
 		this.setFrame(f.getCenterX() - this.getWidth() / 2,
 				f.getY() + (f.getHeight() / 2) - 10, width, height);
-		this.setVx(STOP);
-		this.setVy(STOP);
+		this.setDx(STOP);
+		this.setDy(STOP);
 	}
-
-	/**
-	 * Modifie la vitesse de la balle en rapport a la position du joueur p
-	 *
-	 * @param speed
-	 *            Vitesse en plus qu'aura notre balle ( verticalement et/ou
-	 *            horizontalement)
-	 * @param p
-	 *            PlayerController
-	 */
-	public void modifySpeed(double speed, PlayerController p) {
-		if (this.isBallRightShape(p)) {
-			this.setVx(this.getVx() + Math.abs(this.getX() - p.getX()) * speed);
-		} else if (this.isBallLeftShape(p)) {
-			this.setVx(this.getVx() - Math.abs(this.getX() - p.getX()) * speed);
-		}
-		if (this.isBallAboveShape(p)) {
-			this.setVy(this.getVy()
-					+ (Math.abs(this.getY() - p.getY()) * speed));
-		} else if (this.isBallUnderShape(p)) {
-			this.setVy(this.getVy()
-					- (Math.abs(this.getY() - p.getY()) * speed));
-		}
-	}
-
-	/**
-	 * Methode pour le tir de la balle
-	 *
-	 * @param p
-	 *            PlayerController
-	 * @param f
-	 *            FieldController
-	 */
-	public void shootBall(FieldController f, PlayerController p) {
-		if (p.near(this.rect)) {
-			this.modifySpeed(SPEED_SHOOT, p);
-		}
-	}
-
+	//	/**
+	//	 * Methode pour le tir de la balle
+	//	 *
+	//	 * @param p
+	//	 *            PlayerController
+	//	 * @param f
+	//	 *            FieldController
+	////	 */
+	//	public void shootBall(FieldController f, PlayerController p) {
+	//		if (p.near(this.rect)) {
+	//			this.modifySpeed(SPEED_SHOOT, p);
+	//		}
+	//	}
+	//
 	/**
 	 * Augmenter le score du joueur de 1 et recentre la balle
 	 *
@@ -249,106 +327,6 @@ public class Ball extends Ellipse2D.Double {
 		}
 	}
 
-
-	/**
-	 * la balle touche les bordures droites ou gauches d'un rectangle dont la
-	 * balle est a l'exterieur de ce rectangle
-	 *
-	 * @param r
-	 *            Shape
-	 * @return Oui/Non à la question
-	 */
-	public boolean isTouchBorderOuterShapeX(Shape r) {
-		return (Math.abs(this.getMaxX() - r.getX()) <= r.getWidth() / 2)
-				|| (Math.abs(this.getX() - r.getMaxX()) <= r.getWidth() / 2);
-		// (this.getX() + 1 >= r.getMaxX()));
-	}
-
-	/**
-	 * la balle touche les bordures hauts ou basses d'un rectangle dont la balle
-	 * est a l'exterieur de ce rectangle ?
-	 *
-	 * @param r
-	 *            Shape
-	 * @return Oui/Non à la question
-	 */
-	public boolean isTouchBorderOuterShapeY(Shape r) {
-		return (Math.abs(this.getMaxY() - r.getY()) <= r.getHeight() / 2)
-				|| (Math.abs(this.getY() - r.getMaxY()) <= r.getHeight() / 2);
-	}
-
-	/**
-	 * la balle est au dessus du rectangle
-	 *
-	 * @param r
-	 *            Shape
-	 * @return Oui/Non à la question
-	 */
-	public boolean isBallAboveShape(Shape r) {
-		return (this.getY() > r.getY());
-	}
-
-	/**
-	 * la balle est en dessous du rectangle
-	 *
-	 * @param r
-	 *            Shape
-	 * @return Oui/Non à la question
-	 */
-	public boolean isBallUnderShape(Shape r) {
-		return (this.getY() < r.getY());
-	}
-
-	/**
-	 * la balle est Ã droite du rectangle
-	 *
-	 * @param r
-	 *            Shape
-	 * @return Oui/Non à la question
-	 */
-	public boolean isBallRightShape(Shape r) {
-		return (this.getX() > r.getX());
-	}
-
-	/**
-	 * Est-ce que la balle est Ã gauche du rectangle ?
-	 *
-	 * @param r
-	 *            Shape
-	 * @return Oui/Non à la question
-	 */
-	public boolean isBallLeftShape(Shape r) {
-		return (this.getX() < r.getX());
-	}
-
-	/**
-	 * Est-ce que la balle est dans le goal gauche pour les collisions de l'axe
-	 * des X?
-	 *
-	 * @param f
-	 *            FieldController
-	 * @return Oui/Non à la question
-	 */
-	public boolean isTouchGoalLeft(FieldController f) {
-		// Pour le goal gauche
-		return (f.getGoalleft().getX() - this.getX() <= this.getWidth()
-				&& f.getGoalleft().getY() <= this.getY() && f.getGoalleft()
-				.getMaxY() >= this.getMaxY());
-	}
-
-	/**
-	 * la balle est dans le goal droit
-	 *
-	 * @param f
-	 *            FieldController
-	 * @return boolean
-	 */
-	public boolean isTouchGoalRight(FieldController f) {
-		return (f.getGoalright().getX() - this.getX() <= this.getWidth()
-				&& f.getGoalright().getY() <= this.getY() && f.getGoalright()
-				.getMaxY() >= this.getMaxY());
-	}
-
 	/**
 	 * il y a un goal Ã gauche
 	 *
@@ -357,7 +335,7 @@ public class Ball extends Ellipse2D.Double {
 	 * @return boolean
 	 */
 	public boolean isGoalLeft(FieldController f) {
-		return (f.getGoalleft().getMaxX() - this.getX() >= this.getWidth());
+		return (this.getMaxX() <= f.getGoalleft().getMaxX());
 	}
 
 	/**
@@ -369,75 +347,5 @@ public class Ball extends Ellipse2D.Double {
 	 */
 	public boolean isGoalRight(FieldController f) {
 		return (this.getMaxX() - f.getGoalright().getX() >= this.getWidth());
-	}
-
-	/**
-	 * la balle est dans le terrain
-	 * 
-	 * @param f
-	 *            FieldController
-	 * @return Oui/Non à la question
-	 */
-	public boolean isInsideField(FieldController f) {
-		return this.intersects(f) || this.intersects(f.getGoalright())
-				|| this.intersects(f.getGoalleft());
-	}
-
-	/**
-	 * Modifie la vitesse horizontale de la balle
-	 * 
-	 * @param d
-	 *            la nouvelle vitesse horizontale de la balle
-	 */
-	public void setVx(double d) {
-		this.vX = d;
-	}
-
-	/**
-	 * Modifie la vitesse verticale de la balle
-	 * 
-	 * @param d
-	 *            la nouvelle vitesse verticale de la balle
-	 */
-	public void setVy(double d) {
-		this.vY = d;
-	}
-
-	/**
-	 * Récupère la vitesse horizontale de la balle
-	 * 
-	 * @return la vitesse horizontale actuelle de la balle
-	 */
-	public double getVx() {
-		return this.vX;
-	}
-
-	/**
-	 * Récupère la vitesse verticale de la balle
-	 * 
-	 * @return la vitesse verticale actuelle de la balle
-	 */
-	public double getVy() {
-		return this.vY;
-	}
-
-	/**
-	 * Modifie la position verticale Y de la balle
-	 * 
-	 * @param d
-	 *            la nouvelle position verticale Y de la balle
-	 */
-	public void setY(double d) {
-		this.y = d;
-	}
-
-	/**
-	 * Modifie la position horizontale X de la balle
-	 * 
-	 * @param d
-	 *            la nouvelle position horizontale X de la balle
-	 */
-	public void setX(double d) {
-		this.x = d;
 	}
 }

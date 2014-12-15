@@ -103,9 +103,7 @@ public class Board extends JPanel implements ActionListener {
 		player2.player.getImg().applyFilter();
 
 		// setup ball
-		ball = new Ball(field.field.getCenterX(), field.field.getY()
-				+ (field_height / 2) - 10, player1.player.getWidth(),
-				player1.player.getHeight());
+		ball = new Ball(field.field);
 
 		// setup score indicator
 		score = new Text(null);
@@ -178,10 +176,10 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw ball
 		ball.draw(g2);
+		ball.move(field.field, player1.player, player2.player);
 
 		// draw key box
 		player1.keys.draw(g2);
-		player1.keys.drawSides(g2, player1.keys.getPressedKeys());
 
 		// draw score box
 		score.setStr(Integer.toString(player1.player.getScore()) + " / "
@@ -200,23 +198,22 @@ public class Board extends JPanel implements ActionListener {
 
 		// move ball
 		ball.move(field.field, player1.player, player2.player);
-		ball.brake();
 		
 		repaint();
 	}
 
 	private class KeyEvents extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
-			//int key = e.getKeyCode();
-
+			int key = e.getKeyCode();
+			if (key == KeyEvent.VK_ENTER) {
+				ball.centerBall(field.field);
+			}
 		}
 
 		public void keyReleased(KeyEvent e) {
 			int key = e.getKeyCode();
 
-			if (key == KeyEvent.VK_ENTER) {
-				ball.centerBall(field.field);
-			} else if (key == KeyEvent.VK_ESCAPE) {
+			if (key == KeyEvent.VK_ESCAPE) {
 				exitProgram();
 			}
 		}
