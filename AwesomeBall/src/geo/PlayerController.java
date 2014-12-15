@@ -293,8 +293,7 @@ public class PlayerController extends PlayerModel {
 		this.setMovement();
 
 		// Positionne le joueur si il est dans le terrain ou dans un goal
-		if (this.insideRect(f) || this.insideGoals(f) ||
-				!this.near(p) || !this.inPlayer(p)) {
+		if (this.insideRect(f) || this.insideGoals(f) || !this.inPlayer(p)) {
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}
