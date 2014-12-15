@@ -20,13 +20,6 @@ public class ClientTest extends Socket implements Runnable {
 		return this.message;
 	}
 
-	/**
-	 * Methode qui envoie le score sur le socket.
-	 * 
-	 * @param score
-	 *            score envoye
-	 * @throws IOException
-	 */
 	public synchronized void sendMsg(String msg) throws IOException {
 		if (this.isConnected()) {
 			PrintWriter sortie = 
@@ -36,7 +29,6 @@ public class ClientTest extends Socket implements Runnable {
 		}
 	}
 
-	// Socket en ecoute
 	public void run() {
 		while (!this.isClosed()) {
 			if (this != null && this.isConnected()) {
