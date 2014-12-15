@@ -1,10 +1,17 @@
 package net;
 
+import gui.*;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 public class Client implements Runnable {
@@ -66,8 +73,21 @@ public class Client implements Runnable {
 							new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
 					this.message = mes;
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (SocketException se) {
+					Dialog d = new Dialog("Player 2 Left");
+					ActionListener exit = new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							System.exit(0);
+						}
+					};
+					Button ex = new Button("exit", exit);
+					ex.setPreferredSize(new Dimension(d.getWidth(), 50));
+					d.add(ex, BorderLayout.SOUTH);
+					d.setVisible(true);
+					
+				} catch (IOException ioex) {
+					continue;
 				}
 			}
 		}

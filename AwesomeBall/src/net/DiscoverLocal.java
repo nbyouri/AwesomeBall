@@ -65,11 +65,9 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 		progressBar.setValue(0);
 		for (int i = MIN_IP; i < MAX_IP; i++) {
 			String host = subnet + "." + i;
-			System.out.println("trying : " + host);
 			try {
 				ip = InetAddress.getByName(host);
 				if (ip.isReachable(timeout)) {
-					System.out.println(host + " <= success");
 					addresses.add(ip);
 				}
 			} catch (Exception e) {
