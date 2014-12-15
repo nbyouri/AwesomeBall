@@ -3,6 +3,7 @@ package geo;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  *
@@ -52,19 +53,59 @@ public class Ball extends Ellipse2D.Double {
 	 * @param p2
 	 *            PlayerController
 	 */
-	public void move(FieldController f, PlayerController p1, PlayerController p2) {
-
+		public void move(FieldController f, PlayerController p1, PlayerController p2) {
 		// Applique le mouvement de la balle si celle-ci est dans le terrain
 		if (this.isInsideField(f)) {
 			this.setMovement();
 		}
+                double newY = this.getY();
+                double newX = this.getX();
+                if(this.isTouchHorizontalBorder(f)){
+                    this.setVy(-vY);
+                }else if(this.intersects(p1) && 
+                        this.isTouchBorderOuterShapeY(p1)){
+                    if(this.isBallAboveShape(p1)){
+                        newY = p1.getEll().getY() + p1.getHeight();
+                    }else if(this.isBallUnderShape(p1)){
+                            newY = p1.getEll().getY() - p1.getHeight();    
+                            }
+                }
+                if(this.isTouchVerticalBorder(f) &&
+                        !(this.isTouchVerticalBorder(f.getGoalright()) ||
+                        this.isTouchVerticalBorder(f.getGoalleft()))){
+                    this.setVx(-vX);
+                }else if(this.intersects(p1)&& 
+                        this.isTouchBorderOuterShapeX(p1)){
+                    if(this.isBallRightShape(p1)){
+                        newX = p1.getEll().getX() + p1.getWidth();
+                    }else if(this.isBallLeftShape(p1)){
+                        newX = p1.getEll().getX() - p1.getWidth();
+                    }
+                }
+        }
 
-		// Sinon, on vérifie les collisions:
-		this.checkCollisionField(f, p1, p2);
-		this.checkCollisionPlayer(f, p1, p2);
-
-		this.brake();
-	}
+        /**
+         * La balle touche le rectangle horizontallement ?
+         * 
+         * @param r
+         *              Rectangle2D : le rectangle en question à analyser
+         * @return 
+         *              Oui/Non à la question
+         */             
+        public boolean isTouchHorizontalBorder(Rectangle2D r){
+            return (this.getY() < r.getY() || this.getMaxY() > r.getMaxY() );
+        }
+        /**
+         * La balle touche le rectangle verticalement ?
+         * 
+         * @param r
+         *              Rectangle2D : le rectangle en question à analyser
+         * @return 
+         *              Oui/Non à la question
+         */
+        public boolean isTouchVerticalBorder(Rectangle2D r){
+            return (this.getX() < r.getX() || this.getMaxX() > r.getMaxX());
+        }
 
 	/**
 	 * Repositionne la balle
@@ -200,80 +241,6 @@ public class Ball extends Ellipse2D.Double {
 		}
 	}
 
-	/**
-	 * Verifie la collision joueur-balle (c'est ici qu'on utilise l'ellipse du
-	 * joueur)
-	 *
-	 * @param f
-	 *            FieldController
-	 * @param p1
-	 *            PlayerController
-	 * @param p2
-	 *            PlayerController
-	 */
-	public void checkCollisionPlayer(FieldController f, PlayerController p1,
-			PlayerController p2) {
-		if (this.intersects(p1)) {
-
-			// Pour l'axe des X ( gauche et droite du joueur)
-			if (this.isTouchBorderOuterShapeX(p1)) {
-				if (!(this.rect.touchRectInLeft(f) || this.rect
-						.touchRectInRight(f))
-						|| this.isTouchGoalLeft(f)
-						|| this.isTouchGoalRight(f)) {
-
-					if (this.isBallLeftShape(p1)) {
-						this.setX(p1.getEll().getX() - this.getWidth());
-					} else if (this.isBallRightShape(p1))
-						this.setX(p1.getEll().getX() + this.getWidth());
-				}
-			}
-
-			// Pour l'axe des Y ( bas et haut du joueur )
-			if (this.isTouchBorderOuterShapeY(p1)) {
-				if (!(this.rect.touchRectInBottom(f) || this.rect
-						.touchRectInTop(f))
-						|| this.isTouchGoalLeft(f)
-						|| this.isTouchGoalRight(f)) {
-
-					if (this.isBallAboveShape(p1)) {
-						this.setY(p1.getEll().getY() + this.getHeight());
-					} else if (this.isBallUnderShape(p1)) {
-						this.setY(p1.getEll().getY() - this.getHeight());
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Verifie la collision entre la balle et les terrains ( dont les goals)
-	 * Active la méthode goal si besoin.
-	 *
-	 * @param f
-	 *            FieldController
-	 * @param p1
-	 *            PlayerController
-	 * @param p2
-	 *            PlayerController
-	 */
-	public void checkCollisionField(FieldController f, PlayerController p1,
-			PlayerController p2) {
-
-		// Pour l'axe des X
-		if (this.rect.touchRectInTop(f) || this.rect.touchRectInBottom(f)) {
-			this.setVy(-vY);
-		}
-
-		// Pour l'axe des Y
-		if (this.rect.touchRectInLeft(f) || this.rect.touchRectInRight(f)) {
-			if ((!this.isTouchGoalLeft(f)) && (!this.isTouchGoalRight(f))) {
-				this.setVx(-vX);
-			} else {
-				this.goal(f, p1, p2);
-			}
-		}
-	}
 
 	/**
 	 * la balle touche les bordures droites ou gauches d'un rectangle dont la
