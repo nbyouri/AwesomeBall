@@ -144,7 +144,7 @@ public class Shape extends Rectangle2D.Double {
 	 * @return Oui/Non à la question.
 	 */
 	public boolean nearX(Rectangle2D s) {
-		return (this.getX() <= s.getMaxX() && this.getMaxX() >= s.getX());
+		return (this.getX() - 1 <= s.getMaxX() && this.getMaxX() + 1 >= s.getX());
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class Shape extends Rectangle2D.Double {
 	 * @return Oui/Non à la question.
 	 */
 	public boolean nearY(Rectangle2D s) {
-		return (this.getY() <= s.getMaxY() && this.getMaxY() >= s.getY());
+		return (this.getY() - 1 <= s.getMaxY() && this.getMaxY() + 1 >= s.getY());
 	}
 
 	/**
