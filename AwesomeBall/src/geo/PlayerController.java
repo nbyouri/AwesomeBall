@@ -293,7 +293,8 @@ public class PlayerController extends PlayerModel {
 		this.setMovement();
 
 		// Positionne le joueur si il est dans le terrain ou dans un goal
-		if (this.insideRect(f) || this.insideGoals(f) || !this.inPlayer(p)) {
+		if (this.insideRect(f) || this.insideGoals(f) ||
+				!this.near(p) || !this.inPlayer(p)) {
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}
@@ -361,18 +362,10 @@ public class PlayerController extends PlayerModel {
 
 				this.setScore(Integer.parseInt(data[2]));
 
-				java.lang.Double bx = java.lang.Double.parseDouble(data[3]);
-				java.lang.Double by = java.lang.Double.parseDouble(data[4]);
-				java.lang.Double vx = java.lang.Double.parseDouble(data[5]);
-				java.lang.Double vy = java.lang.Double.parseDouble(data[6]);
-
-				ball.setLocation(bx.intValue(), by.intValue(), vx.intValue(),
-						vy.intValue());
-
-				this.left = Boolean.parseBoolean(data[7]);
-				this.right = Boolean.parseBoolean(data[8]);
-				this.up = Boolean.parseBoolean(data[9]);
-				this.down = Boolean.parseBoolean(data[10]);
+				this.left = Boolean.parseBoolean(data[3]);
+				this.right = Boolean.parseBoolean(data[4]);
+				this.up = Boolean.parseBoolean(data[5]);
+				this.down = Boolean.parseBoolean(data[6]);
 			}
 		}
 	}
@@ -393,11 +386,6 @@ public class PlayerController extends PlayerModel {
 		msg.append(this.getY() + "/");
 
 		msg.append(this.getScore() + "/");
-
-		msg.append(ball.getX() + "/");
-		msg.append(ball.getY() + "/");
-		msg.append(ball.getVx() + "/");
-		msg.append(ball.getVy() + "/");
 
 		msg.append(this.left + "/");
 		msg.append(this.right + "/");

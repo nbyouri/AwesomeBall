@@ -206,11 +206,8 @@ public class Board extends JPanel implements ActionListener {
 
 	private class KeyEvents extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
-			int key = e.getKeyCode();
+			//int key = e.getKeyCode();
 
-			if (key == KeyEvent.VK_SPACE) {
-				ball.shootBall(field.field, player1.player);
-			}
 		}
 
 		public void keyReleased(KeyEvent e) {

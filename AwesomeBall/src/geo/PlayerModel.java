@@ -13,7 +13,8 @@ public class PlayerModel extends FieldController {
 	public Boolean right;
 	public Boolean up;
 	public Boolean down;
-
+	public Boolean shoot;
+	
 	// Constances
 	public static final int SPEED_ONE = 1;
 	// Vu que Dx et Dy peut-être les mêmes,
@@ -112,6 +113,8 @@ public class PlayerModel extends FieldController {
 		this.down = false;
 		this.left = false;
 		this.right = false;
+		
+		this.shoot = false;
 
 		this.setSides();
 
