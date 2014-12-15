@@ -47,8 +47,10 @@ public class Ball extends Ellipse2D.Double {
 	 *
 	 * @param f
 	 *            FieldController
-	 * @param p
+	 * @param p1
 	 *            PlayerController
+	 * @param p2
+	 * 			  PlayerController
 	 */
 	public void move(FieldController f, PlayerController p1, PlayerController p2) {
 
@@ -81,6 +83,10 @@ public class Ball extends Ellipse2D.Double {
 	 *            double : position en x
 	 * @param y
 	 *            double : la position en y
+	 * @param vx
+	 * 			  double : la vitesse en x
+	 * @param vy
+	 * 			  double : la vitesse en y
 	 */
 	public void setLocation(double x, double y, double vx, double vy) {
 		this.setFrame(x, y, this.getWidth(), this.getHeight());
@@ -175,12 +181,13 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Augmenter le score du joueur de 1 et recentre la balle A MODIFIER QUAND
-	 * CE SERA MULTIJOUEUR ?
+	 * Augmenter le score du joueur de 1 et recentre la balle
 	 *
 	 * @param f
 	 *            FieldController
-	 * @param p
+	 * @param p1
+	 *            PlayerController
+	 *            @param p2
 	 *            PlayerController
 	 */
 	public void goal(FieldController f, PlayerController p1, PlayerController p2) {
@@ -199,7 +206,9 @@ public class Ball extends Ellipse2D.Double {
 	 *
 	 * @param f
 	 *            FieldController
-	 * @param p
+	 * @param p1
+	 *            PlayerController
+	 * @param p2
 	 *            PlayerController
 	 */
 	public void checkCollisionPlayer(FieldController f, PlayerController p1, PlayerController p2) {
@@ -242,8 +251,10 @@ public class Ball extends Ellipse2D.Double {
 	 *
 	 * @param f
 	 *            FieldController
-	 * @param p
-	 *            Player
+	 * @param p1
+	 *            PlayerController
+	 * @param p2
+	 * 		      PlayerController
 	 */
 	public void checkCollisionField(FieldController f, PlayerController p1, PlayerController p2) {
 
@@ -263,8 +274,8 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Est-ce que la balle touche les bordures droites ou gauches d'un rectangle
-	 * dont la balle est a l'exterieur de ce rectangle ? XXXXX PAS REMPLACABLE
+	 * la balle touche les bordures droites ou gauches d'un rectangle
+	 * dont la balle est a l'exterieur de ce rectangle 
 	 *
 	 * @param r
 	 *            Shape
@@ -277,9 +288,8 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Est-ce que la balle touche les bordures hauts ou basses d'un rectangle
-	 * dont la balle est a l'exterieur de ce rectangle ? XXXX PAS REMPLACABLE
-	 * PAR NEARY XXXXX
+	 * la balle touche les bordures hauts ou basses d'un rectangle
+	 * dont la balle est a l'exterieur de ce rectangle ? 
 	 *
 	 * @param r
 	 *            Shape
@@ -291,7 +301,7 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Est-ce que la balle est au dessus du rectangle ?
+	 * la balle est au dessus du rectangle 
 	 *
 	 * @param r
 	 *            Shape
@@ -302,7 +312,7 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Est-ce que la balle est en dessous du rectangle ?
+	 * la balle est en dessous du rectangle
 	 *
 	 * @param r
 	 *            Shape
@@ -313,7 +323,7 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Est-ce que la balle est Ã droite du rectangle ?
+	 * la balle est Ã droite du rectangle
 	 *
 	 * @param r
 	 *            Shape
@@ -350,12 +360,11 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Est-ce que la balle est dans le goal droit pour les collisions de l'axe
-	 * des X ?
+	 * la balle est dans le goal droit 
 	 *
 	 * @param f
 	 *            FieldController
-	 * @return Oui/Non à la question
+	 * @return boolean
 	 */
 	public boolean isTouchGoalRight(FieldController f) {
 		return (f.getGoalright().getX() - this.getX() <= this.getWidth()
@@ -364,18 +373,18 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Est-ce qu'il y a un goal Ã gauche ?
+	 * il y a un goal Ã gauche 
 	 *
 	 * @param f
 	 *            FieldController
-	 * @return
+	 * @return boolean
 	 */
 	public boolean isGoalLeft(FieldController f) {
 		return (f.getGoalleft().getMaxX() - this.getX() >= this.getWidth());
 	}
 
 	/**
-	 * Est-ce qu'il y a un goal a droite ?
+	 * il y a un goal a droite
 	 *
 	 * @param f
 	 *            FieldController
@@ -386,7 +395,7 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	/**
-	 * Est-ce que la balle est dans le terrain ?
+	 * la balle est dans le terrain
 	 * 
 	 * @param f
 	 *            FieldController

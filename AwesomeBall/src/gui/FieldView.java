@@ -18,7 +18,7 @@ public class FieldView {
 	/**
 	 * Draw the line vertically centered of the field.
 	 * 
-	 * @param g2
+	 * @param g2 Graphics2D
 	 */
 	public void drawCenterLines(Graphics2D g2) {
 		g2.setColor(Color.magenta);
@@ -30,8 +30,8 @@ public class FieldView {
 	/**
 	 * Draw side(s) of Field.
 	 * 
-	 * @param g2
-	 * @param ar
+	 * @param g2 Graphics2D
+	 * @param ar ArrayList
 	 */
 	public void drawSides(Graphics2D g2, ArrayList<Integer> ar) {
 		g2.setColor(Color.magenta);
@@ -42,7 +42,7 @@ public class FieldView {
 	/**
 	 * Draw field and goals.
 	 * 
-	 * @param g2
+	 * @param g2 Graphics2D
 	 */
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.cyan);

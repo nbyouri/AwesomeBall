@@ -14,6 +14,18 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
+/**
+ * Client is a Runnable that will try to bind a socket to a given port until
+ * it is actually bound every 200 microsecond.
+ * 
+ * When it binds, it continuously reads data from the socket.
+ * 
+ * If the socket gets disconnected, a dialog with an exit button will show
+ * and exit the program.
+ * 
+ * @author youri
+ *
+ */
 public class Client implements Runnable {
 	private Socket socket;
 	private String address;

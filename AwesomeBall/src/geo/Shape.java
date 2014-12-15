@@ -178,7 +178,7 @@ public class Shape extends Rectangle2D.Double {
 	 *            le rectangle en question
 	 * @param line
 	 *            le côté choisie
-	 * @return
+	 * @return boolean
 	 */
 	public boolean near(Rectangle2D s, int line) {
 

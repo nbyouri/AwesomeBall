@@ -283,8 +283,8 @@ public class PlayerController extends PlayerModel {
 	 * Méthode utilisé par l'actionPerformed : bouge le joueur au fil du temps
 	 * et, oblige le joueur à rester dans le terrain ( goals compris)
 	 * 
-	 * @param f
-	 * @param p
+	 * @param f FieldController
+	 * @param p PlayerModel
 	 */
 	public void moveIn(FieldController f, PlayerModel p) {
 		// Modifie la vitesse du joueur

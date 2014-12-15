@@ -67,7 +67,7 @@ public class PlayerModel extends FieldController {
 		/**
 		 * Récupère le nom en anglais de ces rotations en fonction de l'id.
 		 * 
-		 * @param rotation
+		 * @param rotation int
 		 * @return Le nom de la rotation en anglais par rapport à son id
 		 */
 		public static String getName(int rotation) {

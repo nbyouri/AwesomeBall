@@ -30,7 +30,7 @@ public class Keys extends Shape {
 	/**
 	 * Récupère toutes les touches directionnelles appuyées
 	 * 
-	 * @return pressedkeys
+	 * @return pressedkeys : ArrayList
 	 */
 	public ArrayList<Integer> getPressedKeys() {
 		return pressedkeys;
@@ -39,7 +39,7 @@ public class Keys extends Shape {
 	/**
 	 * Modifie toutes les touches directionnelles appuyées
 	 * 
-	 * @param pressedkeys
+	 * @param pressedkeys : ArrayList
 	 */
 	public void setPressedKeys(ArrayList<Integer> pressedkeys) {
 		this.pressedkeys = pressedkeys;
@@ -51,7 +51,7 @@ public class Keys extends Shape {
 	 * @param i
 	 *            de 0 à 3 , déterminée par les constances de la classe Keys
 	 *            UP,DOWN,LEFT,RIGHT
-	 * @return
+	 * @return int
 	 */
 	public int getPressedKey(int i) {
 		return this.pressedkeys.get(i);
@@ -73,7 +73,7 @@ public class Keys extends Shape {
 	/**
 	 * Dessine la case des touches directionnelles
 	 * 
-	 * @param g2
+	 * @param g2 Graphics2D
 	 */
 	public void draw(Graphics2D g2) {
 		this.setSides();

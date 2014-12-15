@@ -25,8 +25,8 @@ public class Images {
 	/**
 	 * load image
 	 * 
-	 * @param path
-	 * @return
+	 * @param path String
+	 * @return Image
 	 */
 	public Image load(String path) {
 		ImageIcon ii = new ImageIcon(getClass().getResource(path));
@@ -79,8 +79,8 @@ public class Images {
 	/**
 	 * rotate the image.
 	 * 
-	 * @param img
-	 * @param rotation
+	 * @param img Image
+	 * @param rotation int
 	 */
 	public void rotate(Image img, int rotation) {
 		// only rotate if change of key
@@ -102,8 +102,8 @@ public class Images {
 	/**
 	 * flip image around vertical axis
 	 * 
-	 * @param img
-	 * @param rotation
+	 * @param img Image
+	 * @param rotation int
 	 */
 	public void flip(Image img, int rotation) {
 		if (this.getRotation() != rotation) {
@@ -121,7 +121,6 @@ public class Images {
 
 	/**
 	 * Invert Red and Blue colors
-	 * @author youri
 	 */
 	class RedBlueSwapFilter extends RGBImageFilter {
 		public RedBlueSwapFilter() {
