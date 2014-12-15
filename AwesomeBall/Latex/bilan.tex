@@ -1,26 +1,15 @@
 \chapter{Conclusion}
 
-%Rappel du context
-Intro / Rappel Contexte
+De manière générale, la conception de ce jeu nous a permis d'apprendre beaucoup sur l'Orienté Object appliqué à un projet avoisinant les 3000 lignes de code et les design patterns tels que le MVC.\\
 
-Nous avons donc pu en tirer la problématique suivante :
+Les gestions de collisions avec la balle a posé beaucoup de problèmes, la classe Ball.java a été réécrite plusieurs fois.\\ 
 
-\begin{center}
-\hskip7mm
-Problématique du sujet
-\end{center}
+Le projet a permis une bonne introduction à la programmation évenementielle, aux éléments d'interface graphique et au threading, qui a permis de lancer nos processus jeu, serveur et client de manière concurrente sans bloquer les éléments d'interface graphique.\\
 
-Bla
+La manière dont le programme envoie les informations pourrait être fort améliorée, utiliser UDP permetterait de pouvoir jouer sans que le déplacement des joueurs et de la balle soit saccadé.\\
 
-Bla\\
+Nous utilisons une boite de dialogue avec une barre de progrès lorsque le programme essaye de trouver des ordinateurs connectés sur le réseau local, nous pourrions lancer une requète UDP en broadcast pour ne trouver que les ordinateurs qui ont un ServerSocket écoutant sur un port qui nous intéresse.\\
 
-Bla\\
+L'utilisation d'une librairie graphique aurait pu nous faciliter la tâche et nous permettre de nous concentrer sur d'autres aspects et détails du jeu, mais ce fut un apprentissage intéressant.\\
 
-%Rappel des résultats
-Bla
-
-Bla\\
-
-Bla
-
-Bla
+Le programme manque d'un panneau de configuration graphique que l'on aurait bien voulu coder, mais le temps donné ne nous l'a pas permis.\\

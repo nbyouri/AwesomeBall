@@ -1,7 +1,7 @@
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.1.1}{Qu'est-ce que G\351nialBall ?}{chapter.1}% 2
 \BOOKMARK [1][-]{section.1.2}{Comment y jouer ?}{chapter.1}% 3
-\BOOKMARK [1][-]{section.1.3}{Interface}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.3}{Interface du jeu}{chapter.1}% 4
 \BOOKMARK [1][-]{section.1.4}{Les contr\364les du jeu}{chapter.1}% 5
 \BOOKMARK [0][-]{chapter.2}{Extrait UML}{}% 6
 \BOOKMARK [0][-]{chapter.3}{Extrait du code source \(SpaceBalls.java\)}{}% 7
@@ -11,20 +11,3 @@
 \BOOKMARK [1][-]{section.5.2}{JUnit Testing :}{chapter.5}% 11
 \BOOKMARK [1][-]{section.5.3}{System.out.println}{chapter.5}% 12
 \BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 13
-\BOOKMARK [-1][-]{part*.12}{Annexes}{}% 14
-\BOOKMARK [0][-]{chapter*.13}{Annexe 1}{part*.12}% 15
-\BOOKMARK [1][-]{section.6.1}{Partie 1}{chapter*.13}% 16
-\BOOKMARK [2][-]{subsection.6.1.1}{Sous-partie 1}{section.6.1}% 17
-\BOOKMARK [2][-]{subsection.6.1.2}{Sous-partie 2}{section.6.1}% 18
-\BOOKMARK [2][-]{subsection.6.1.3}{Sous-partie 3}{section.6.1}% 19
-\BOOKMARK [1][-]{section.6.2}{Partie 2}{chapter*.13}% 20
-\BOOKMARK [2][-]{subsection.6.2.1}{Sous-partie 1}{section.6.2}% 21
-\BOOKMARK [2][-]{subsection.6.2.2}{Sous-partie 2}{section.6.2}% 22
-\BOOKMARK [2][-]{subsection.6.2.3}{Sous-partie 3}{section.6.2}% 23
-\BOOKMARK [0][-]{chapter*.14}{Annexe 2}{part*.12}% 24
-\BOOKMARK [1][-]{section*.15}{Pr\351requis}{chapter*.14}% 25
-\BOOKMARK [1][-]{section.6.1}{Partie 1}{chapter*.14}% 26
-\BOOKMARK [2][-]{subsection.6.1.1}{Sous-parie 1}{section.6.1}% 27
-\BOOKMARK [2][-]{subsection.6.1.2}{Sous-parie 2}{section.6.1}% 28
-\BOOKMARK [1][-]{section.6.2}{Partie 2}{chapter*.14}% 29
-\BOOKMARK [1][-]{section.6.3}{Partie 3}{chapter*.14}% 30
