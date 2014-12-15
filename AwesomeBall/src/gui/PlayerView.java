@@ -42,7 +42,7 @@ public class PlayerView implements ActionListener {
 				(int) player.getHeight(), null);
 		g2.setColor(Color.WHITE);
 		// g2.draw(player.getEll());
-		g2.draw(this.player);
+		// g2.draw(this.player);
 	}
 
 	/**

@@ -72,7 +72,7 @@ public class Ball extends Ellipse2D.Double {
 		g2.setColor(Color.yellow);
 		g2.draw(this);
 		g2.fill(this);
-		g2.draw(this.rect);
+		// g2.draw(this.rect);
 	}
 
 	/**
