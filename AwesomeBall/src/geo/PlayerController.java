@@ -339,6 +339,16 @@ public class PlayerController extends PlayerModel {
 	}
 
 	/**
+	 * Détecte si un autre joueur se déplace déjà avec
+	 * une balle 
+	 * @param 
+	 * @return
+	 */
+	public boolean movingWithBall(Ball b) {
+		return ((this.getDx() != STOP || this.getDy() != STOP) && this.near(b.rect));
+	}
+
+	/**
 	 * Réception du paquet serveur pour la position du joueur reçois aussi la
 	 * position du ballon.
 	 * 
@@ -366,7 +376,7 @@ public class PlayerController extends PlayerModel {
 				this.right = Boolean.parseBoolean(data[4]);
 				this.up = Boolean.parseBoolean(data[5]);
 				this.down = Boolean.parseBoolean(data[6]);
-				
+
 				this.shoot = Boolean.parseBoolean(data[7]);
 			}
 		}

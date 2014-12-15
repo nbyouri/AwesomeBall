@@ -18,7 +18,7 @@ public class Ball extends Ellipse2D.Double {
 	public Shape rect;
 	private double Dx;
 	private double Dy;
-	
+
 	public static final int BALL_SIZE = 15;
 	public static final double BALL_RADIUS = BALL_SIZE / 2;
 	public static final int STOP = 0;
@@ -60,7 +60,7 @@ public class Ball extends Ellipse2D.Double {
 	public void setX(double d) {
 		this.x = d;
 	}
-	
+
 	/**
 	 * Creation graphique de la balle
 	 *
@@ -83,7 +83,7 @@ public class Ball extends Ellipse2D.Double {
 		this.setFrame(x, y, this.getWidth(), this.getHeight());
 		this.rect.setFrame(this.getFrame());
 	}
-	
+
 	/**
 	 * Methode principale de la balle utilisé par actionPerformed : applique et
 	 * modifie, si neccessaire, le mouvement apres un check de toutes les
@@ -119,35 +119,35 @@ public class Ball extends Ellipse2D.Double {
 		 * Collisions Joueurs
 		 */
 		if (this.rect.near((Rectangle2D) p1, Side.RIGHT.getId())) {
-			p1.setDx(SPEED_ONE);
+			p1.setDx(p2.movingWithBall(this) ? SPEED_ONE : STOP);
 			this.setDx(SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p1, Side.UP.getId())) {
-			p1.setDy(-SPEED_ONE);
+			p1.setDy(p2.movingWithBall(this) ? -SPEED_ONE : STOP);
 			this.setDy(-SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p1, Side.LEFT.getId())) {
-			p1.setDx(-SPEED_ONE);
+			p1.setDx(p2.movingWithBall(this) ? -SPEED_ONE : STOP);
 			this.setDx(-SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p1, Side.DOWN.getId())) {
-			p1.setDy(SPEED_ONE);
+			p1.setDy(p2.movingWithBall(this) ? SPEED_ONE : STOP);
 			this.setDy(SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p2, Side.RIGHT.getId())) {
-			p2.setDx(SPEED_ONE);
+			p2.setDx(p1.movingWithBall(this) ? SPEED_ONE : STOP);
 			this.setDx(SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p2, Side.UP.getId())) {
-			p2.setDy(-SPEED_ONE);
+			p2.setDy(p1.movingWithBall(this) ? -SPEED_ONE: STOP);
 			this.setDy(-SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p2, Side.LEFT.getId())) {
-			p2.setDx(-SPEED_ONE);
+			p2.setDx(p1.movingWithBall(this) ? -SPEED_ONE : STOP);
 			this.setDx(-SPEED_ONE);
 		}
 		if (this.rect.near((Rectangle2D) p2, Side.DOWN.getId())) {
-			p2.setDy(SPEED_ONE);
+			p2.setDy(p1.movingWithBall(this) ? SPEED_ONE : STOP);
 			this.setDy(SPEED_ONE);
 		}
 
@@ -155,7 +155,7 @@ public class Ball extends Ellipse2D.Double {
 		 * test goal
 		 */
 		this.goal(f, p1, p2);
-		
+
 		/*
 		 * bouger la balle
 		 */
@@ -163,7 +163,7 @@ public class Ball extends Ellipse2D.Double {
 			this.setLocation(this.getX() + this.getDx(),
 					this.getY() + this.getDy());
 		}
-		
+
 		this.brake();
 	}
 
@@ -293,20 +293,21 @@ public class Ball extends Ellipse2D.Double {
 		this.setDx(STOP);
 		this.setDy(STOP);
 	}
-	//	/**
-	//	 * Methode pour le tir de la balle
-	//	 *
-	//	 * @param p
-	//	 *            PlayerController
-	//	 * @param f
-	//	 *            FieldController
-	////	 */
-	//	public void shootBall(FieldController f, PlayerController p) {
-	//		if (p.near(this.rect)) {
-	//			this.modifySpeed(SPEED_SHOOT, p);
-	//		}
-	//	}
-	//
+	
+	/**
+	 * Methode pour le tir de la balle
+	 *
+	 * @param p
+	 *            PlayerController
+	 * @param f
+	 *            FieldController
+	 */
+//	public void shootBall(FieldController f, PlayerController p) {
+//		if (p.near(this.rect)) {
+//			this.modifySpeed(SPEED_SHOOT, p);
+//		}
+//	}
+
 	/**
 	 * Augmenter le score du joueur de 1 et recentre la balle
 	 *
