@@ -27,17 +27,11 @@ public class initServer implements Runnable {
 	 * @throws IOException
 	 *             IOException
 	 */
-	public initServer() throws IOException {
+	public initServer(boolean host) throws IOException {
 		inport = IN_PORT;
 		outport = OUT_PORT;
+                
 
-		int type = JOptionPane
-				.showConfirmDialog(null, "Êtes vous un serveur ?");
-		if (type == JOptionPane.CANCEL_OPTION
-				|| type == JOptionPane.CLOSED_OPTION) {
-			System.exit(0);
-		}
-		boolean host = (type == 0);
 
 		/*
 		 * 
@@ -60,9 +54,9 @@ public class initServer implements Runnable {
 		Thread servth = new Thread(serv);
 		servth.start();
 
-		address = DiscoverLocal.getIp();
+  		address = DiscoverLocal.getIp();
 
-		client = new Client(address, inport);
+		client = new Client("10.99.3.134", inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 

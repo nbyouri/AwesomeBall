@@ -40,7 +40,7 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 	 * Constructeur initialisant un dialog, un bouton start, une bare de
 	 * progres.
 	 */
-	public DiscoverLocal() {
+	public DiscoverLocal() throws Exception {
 		super("Scanning Local Network.");
 
 		startButton = new Button("Start", this);
@@ -51,8 +51,9 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 		progressBar.setValue(0);
 		progressBar.setStringPainted(true);
 
-		exitButton = new Button("<html>Scanning Local Network. "
-				+ "<br>Click to cancel and exit</html>", new CloseListener());
+		exitButton = new Button("<html><center>Scan du réseau local. "
+				+ "<br>Cliquez pour annuler et quitter l'application<br>"
+                        + "Vous êtes "+InetAddress.getLocalHost().toString()+"</center></html>", new CloseListener());
 
 		add(progressBar, BorderLayout.SOUTH);
 		// add(startButton, BorderLayout.NORTH);
@@ -193,8 +194,9 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 	 * 
 	 * @return ip : String
 	 */
-	public static String getIp() {
-		DiscoverLocal swt = new DiscoverLocal();
+	public static String getIp() throws Exception {
+                DiscoverLocal swt = new DiscoverLocal();
+          
 		// XXX: ugly hack
 		swt.startButton.doClick();
 		swt.setVisible(true);

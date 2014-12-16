@@ -15,6 +15,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -69,10 +70,16 @@ public class Board extends JPanel implements ActionListener {
 	 *            , la taille de l'écran.
 	 */
 	public Board(Dimension boardSize) {
-
+                int type = JOptionPane
+				.showConfirmDialog(null, "Êtes vous un serveur ?");
+		if (type == JOptionPane.CANCEL_OPTION
+				|| type == JOptionPane.CLOSED_OPTION) {
+			System.exit(0);
+		}
+		boolean host = (type == 0);
 		// Initialisation du serveur
 		try {
-			serv = new initServer();
+			serv = new initServer(host);
 			Thread servth = new Thread(serv);
 			servth.start();
 		} catch (Exception ex) {
@@ -152,8 +159,7 @@ public class Board extends JPanel implements ActionListener {
 			try {
 				serv.getServ().sendMsg(player1.toString(ball));
 			} catch (Exception ex) {
-				System.out
-						.println("Failed to send player coordinates to server");
+				System.out.println("Failed to send player coordinates to server");
 			}
 		}
 

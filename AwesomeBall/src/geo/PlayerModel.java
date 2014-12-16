@@ -6,14 +6,15 @@ import java.awt.geom.Ellipse2D;
 
 @SuppressWarnings("serial")
 public class PlayerModel extends FieldController {
+        public boolean host;
 	public Images img;
 	public int score;
 	public Ellipse2D.Double ell;
-	public Boolean left;
-	public Boolean right;
-	public Boolean up;
-	public Boolean down;
-	public Boolean shoot;
+	public boolean left;
+	public boolean right;
+	public boolean up;
+	public boolean down;
+	public boolean shoot;
 
 	// Constances
 	public static final int SPEED_ONE = 1;
