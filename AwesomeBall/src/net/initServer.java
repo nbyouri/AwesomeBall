@@ -2,8 +2,6 @@ package net;
 
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
-
 public class initServer implements Runnable {
 	private Server serv;
 	private Client client;
@@ -30,7 +28,7 @@ public class initServer implements Runnable {
 	public initServer(boolean host) throws IOException {
 		inport = IN_PORT;
 		outport = OUT_PORT;
-                
+
 
 
 		/*
@@ -54,9 +52,9 @@ public class initServer implements Runnable {
 		Thread servth = new Thread(serv);
 		servth.start();
 
-  		address = DiscoverLocal.getIp();
+		address = inputIp.getInput("Entrer l'IP de l'autre joueur",null);
 
-		client = new Client("10.99.3.134", inport);
+		client = new Client(address, inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 
