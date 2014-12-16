@@ -181,7 +181,7 @@ public class Ball extends Ellipse2D.Double {
 	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
 				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
-				.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
+						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class Ball extends Ellipse2D.Double {
 		return (f.getMaxX() - this.getMaxX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
-				.getGoalright().getMaxX());
+						.getGoalright().getMaxX());
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class Ball extends Ellipse2D.Double {
 		return (this.getX() - f.getX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getX() <= f
-				.getGoalleft().getX());
+						.getGoalleft().getX());
 	}
 
 	/**
@@ -338,10 +338,10 @@ public class Ball extends Ellipse2D.Double {
 	public void goal(FieldController f, PlayerController p1, PlayerController p2) {
 		if (this.isGoalLeft(f)) {
 			this.centerBall(f);
-			p1.setScore(p1.getScore() + 1);
+			p2.setScore(p2.getScore() + 1);
 		} else if (this.isGoalRight(f)) {
 			this.centerBall(f);
-			p2.setScore(p2.getScore() + 1);
+			p1.setScore(p1.getScore() + 1);
 		}
 	}
 
@@ -364,6 +364,6 @@ public class Ball extends Ellipse2D.Double {
 	 * @return Oui/Non à la question
 	 */
 	public boolean isGoalRight(FieldController f) {
-		return (this.getMaxX() - f.getGoalright().getX() >= this.getWidth());
+		return (this.getX() >= f.getGoalright().getX());
 	}
 }

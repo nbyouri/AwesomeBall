@@ -7,6 +7,10 @@ import java.awt.geom.Rectangle2D;
 
 @SuppressWarnings("serial")
 public class PlayerController extends PlayerModel {
+	public PlayerController(boolean host) {
+		super(host);
+	}
+
 	/**
 	 * Récupère l'image du joueur
 	 * 
@@ -173,7 +177,7 @@ public class PlayerController extends PlayerModel {
 	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
 				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
-				.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
+						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/**
@@ -212,7 +216,7 @@ public class PlayerController extends PlayerModel {
 		return (f.getMaxX() - this.getMaxX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
-				.getGoalright().getMaxX());
+						.getGoalright().getMaxX());
 	}
 
 	/**
@@ -227,7 +231,7 @@ public class PlayerController extends PlayerModel {
 		return (this.getX() - f.getX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getX() <= f
-				.getGoalleft().getX());
+						.getGoalleft().getX());
 	}
 
 	/**
@@ -337,7 +341,7 @@ public class PlayerController extends PlayerModel {
 		int py = (int) p.getY();
 
 		return (new Shape(tx, ty, this.getWidth(), this.getHeight())
-				.near(new Shape(px, py, p.width, p.height)));
+		.near(new Shape(px, py, p.width, p.height)));
 	}
 
 	/**
@@ -410,5 +414,23 @@ public class PlayerController extends PlayerModel {
 		msg.append(this.shoot + "/");
 
 		return msg.toString();
+	}
+
+	/**
+	 * Set players initial position
+	 */
+	public static void initPosition(FieldController f, 
+			PlayerController p1, PlayerController p2) {
+		if (p1.host) {
+			p1.setLocation(f.getCenterX() / 2 - p1.width, 
+					f.getCenterY() - p1.height);
+			p2.setLocation(f.getCenterX()  +  f.getCenterX() / 2 - p2.width,
+					f.getCenterY() - p2.height);
+		} else {
+			p1.setLocation(f.getCenterX()  +  f.getCenterX() / 2 - p1.width,
+					f.getCenterY() - p1.height);
+			p2.setLocation(f.getCenterX() / 2 - p2.width, 
+					f.getCenterY() - p2.height);
+		}
 	}
 }

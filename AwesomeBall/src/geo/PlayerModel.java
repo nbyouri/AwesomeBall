@@ -86,7 +86,7 @@ public class PlayerModel extends FieldController {
 	/**
 	 * Constructeur de PlayerModel()
 	 */
-	public PlayerModel() {
+	public PlayerModel(boolean host) {
 		super(0, 0, 0, 0);
 		// Charge l'image
 		try {
@@ -117,7 +117,11 @@ public class PlayerModel extends FieldController {
 
 		this.shoot = false;
 		
-		this.host = false;
+		this.host = host;
+		
+		if (!host) {
+			img.applyFilter();
+		}
 
 		this.setSides();
 

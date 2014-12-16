@@ -54,9 +54,9 @@ public class FieldView {
 		g2.draw(field);
 		
 		
-		g2.setColor(p1.host ? Color.blue : Color.red);
+		g2.setColor(Color.blue);
 		g2.draw(field.goalleft);
-		g2.setColor(p1.host ? Color.red : Color.blue);
+		g2.setColor(Color.red);
 		g2.draw(field.goalright);
 
 		g2.setColor(Color.black);

@@ -19,7 +19,7 @@ public class PlayerView implements ActionListener {
 	public Keys keys;
 	public KeyEvents kev;
 
-	public PlayerView(FieldView f, Ball b) {
+	public PlayerView(FieldView f, Ball b, boolean host) {
 		field = f;
 		ball = b;
 
@@ -27,8 +27,8 @@ public class PlayerView implements ActionListener {
 		kev = new KeyEvents();
 
 		// setup player
-		player = new PlayerController();
-
+		player = new PlayerController(host);
+		
 		// setup key indicator
 		keys = new Keys(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS,
 				Board.KEYS_WIDTH, Board.TOP_MENUS_HEIGHT);

@@ -71,14 +71,16 @@ public class Board extends JPanel implements ActionListener {
 	 *            , la taille de l'écran.
 	 */
 	public Board(Dimension boardSize) throws Exception {
-                int type = JOptionPane
-				.showConfirmDialog(null, "<html><center>Êtes vous un serveur ?"
-						+ "<br>vous êtes " + InetAddress.getLocalHost().toString());
+		int type = JOptionPane.showConfirmDialog(null, 
+				"<html><center>Êtes vous un serveur ?"+ "<br>vous êtes " +
+		InetAddress.getLocalHost().toString());
+		
 		if (type == JOptionPane.CANCEL_OPTION
 				|| type == JOptionPane.CLOSED_OPTION) {
 			System.exit(0);
 		}
 		boolean host = (type == 0);
+		
 		// Initialisation du serveur
 		try {
 			serv = new initServer(host);
@@ -104,13 +106,12 @@ public class Board extends JPanel implements ActionListener {
 				field_height);
 		field.field.setCenterCircle();
 
-		// setup player 1
-		player1 = new PlayerView(field, ball);
-		player1.player.setLocation(100, 100);
-		player1.player.host = true;
-		player2 = new PlayerView(field, ball);
-		player2.player.setLocation(200, 200);
-		player2.player.getImg().applyFilter();
+		// setup players and put them in the right place
+		player1 = new PlayerView(field, ball, host);
+		player2 = new PlayerView(field, ball, !host);
+		
+		PlayerController.initPosition(field.field,  player1.player,  player2.player);
+
 
 		// setup ball
 		ball = new Ball(field.field);
@@ -134,10 +135,10 @@ public class Board extends JPanel implements ActionListener {
 		exit.setBounds(
 				BOARD_X_POS,
 				BOARD_X_POS
-						+ (int) field.field.getHeight()
-						+ (int) ((boardSize.getHeight() - (BOARD_Y_POS + field.field
-								.getHeight())) / 4),
-				(int) field.field.getWidth(), TOP_MENUS_HEIGHT);
+				+ (int) field.field.getHeight()
+				+ (int) ((boardSize.getHeight() - (BOARD_Y_POS + field.field
+						.getHeight())) / 4),
+						(int) field.field.getWidth(), TOP_MENUS_HEIGHT);
 		add(exit);
 
 		// timer
@@ -189,9 +190,11 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw key box
 		player1.keys.draw(g2);
+		player1.keys.drawSides(g2, player1.keys.getPressedKeys());
 
 		// draw score box
-		score.setStr(Integer.toString(player1.player.getScore()) + " / "
+		score.setStr("Player 1 : " + 
+				Integer.toString(player1.player.getScore()) + " / " + "Player 2 : " 
 				+ Integer.toString(player2.player.getScore()));
 		score.draw(g2);
 
