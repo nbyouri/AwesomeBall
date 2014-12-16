@@ -36,7 +36,7 @@ public class inputIp {
 	private void init(){
 
 		textField = new JTextField();
-		JButton okButton = new JButton("OK");
+		JButton okButton = new JButton("ok");
 		okButton.addActionListener(new ActionListener(){
 
 			@Override

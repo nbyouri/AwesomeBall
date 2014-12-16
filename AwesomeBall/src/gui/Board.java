@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.InetAddress;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -69,9 +70,10 @@ public class Board extends JPanel implements ActionListener {
 	 * @param boardSize
 	 *            , la taille de l'écran.
 	 */
-	public Board(Dimension boardSize) {
+	public Board(Dimension boardSize) throws Exception {
                 int type = JOptionPane
-				.showConfirmDialog(null, "Êtes vous un serveur ?");
+				.showConfirmDialog(null, "<html><center>Êtes vous un serveur ?"
+						+ "<br>vous êtes " + InetAddress.getLocalHost().toString());
 		if (type == JOptionPane.CANCEL_OPTION
 				|| type == JOptionPane.CLOSED_OPTION) {
 			System.exit(0);
