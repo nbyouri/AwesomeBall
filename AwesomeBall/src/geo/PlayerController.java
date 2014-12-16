@@ -352,8 +352,7 @@ public class PlayerController extends PlayerModel {
 	 * @return boolean
 	 */
 	public boolean movingWithBall(Ball b) {
-		return ((this.getDx() != STOP || this.getDy() != STOP) && this
-				.near(b.rect));
+		return ((this.getDx() > 0 || this.getDy() > 0) && this.near(b.rect, 5));
 	}
 
 	/**

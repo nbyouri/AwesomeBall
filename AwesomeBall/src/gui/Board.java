@@ -42,7 +42,7 @@ public class Board extends JPanel implements ActionListener {
 	public static final int TOP_MENUS_X_POS = 50;
 	public static final int TOP_MENUS_Y_POS = 15;
 	public static final int TOP_MENUS_HEIGHT = 22;
-	public static final int TOP_TITLE_WIDTH = 130;
+	public static final int TOP_TITLE_WIDTH = 79;
 	public static final int BOARD_X_POS = 50;
 	public static final int BOARD_Y_POS = 50;
 	public static final int KEYS_X_POS = 190;
@@ -50,7 +50,7 @@ public class Board extends JPanel implements ActionListener {
 	public static final int ROTATION_X = 220;
 	public static final int ROTATION_WIDTH = 50;
 	public static final int SCORES_X = 290;
-	public static final int SCORES_WIDTH = 50;
+	public static final int SCORES_WIDTH = 155;
 	public static final int FPS = 5;
 	public static final int EXIT_SUCCESS = 0;
 
@@ -96,7 +96,7 @@ public class Board extends JPanel implements ActionListener {
 		double field_width = (field_height / 6) * 10;
 
 		// setup game title
-		title = new Text("SpaceShip Collider");
+		title = new Text("GénialBall");
 
 		title.setRect(TOP_MENUS_X_POS, TOP_MENUS_Y_POS, TOP_TITLE_WIDTH,
 				TOP_MENUS_HEIGHT);
@@ -194,7 +194,8 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw score box
 		score.setStr("Player 1 : " + 
-				Integer.toString(player1.player.getScore()) + " / " + "Player 2 : " 
+				Integer.toString(player1.player.getScore()) + 
+				" / Player 2 : " 
 				+ Integer.toString(player2.player.getScore()));
 		score.draw(g2);
 

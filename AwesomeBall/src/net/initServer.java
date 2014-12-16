@@ -29,12 +29,7 @@ public class initServer implements Runnable {
 		inport = IN_PORT;
 		outport = OUT_PORT;
 
-
-
-		/*
-		 * 
-		 * If we're the second player, invert the ports.
-		 */
+		/* If we're the second player, invert the ports. */
 		if (!host) {
 			int temp = inport;
 			inport = outport;
@@ -52,7 +47,7 @@ public class initServer implements Runnable {
 		Thread servth = new Thread(serv);
 		servth.start();
 
-		address = inputIp.getInput("Entrer l'IP de l'autre joueur",null);
+		address = inputIp.getInput("Entrer l'IP de l'autre joueur", null);
 
 		client = new Client(address, inport);
 		Thread clienth = new Thread(client);

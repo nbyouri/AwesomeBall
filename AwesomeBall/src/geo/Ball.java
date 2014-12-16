@@ -112,7 +112,7 @@ public class Ball extends Ellipse2D.Double {
 			this.setDy(SPEED_ONE);
 		}
 		if (this.touchRectInRight(f)) {
-			this.setDx(SPEED_ONE);
+			this.setDx(-SPEED_ONE);
 		}
 		if (this.rect.touchRectInBottom(f) || this.touchGoalRightBottom(f)
 				|| this.touchGoalLeftBottom(f)) {
