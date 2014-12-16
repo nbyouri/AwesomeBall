@@ -6,7 +6,7 @@ import java.awt.geom.Ellipse2D;
 
 @SuppressWarnings("serial")
 public class PlayerModel extends FieldController {
-        public boolean host;
+	public boolean host;
 	public Images img;
 	public int score;
 	public Ellipse2D.Double ell;
@@ -116,6 +116,8 @@ public class PlayerModel extends FieldController {
 		this.right = false;
 
 		this.shoot = false;
+		
+		this.host = false;
 
 		this.setSides();
 

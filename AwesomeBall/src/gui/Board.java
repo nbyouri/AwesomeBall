@@ -107,6 +107,7 @@ public class Board extends JPanel implements ActionListener {
 		// setup player 1
 		player1 = new PlayerView(field, ball);
 		player1.player.setLocation(100, 100);
+		player1.player.host = true;
 		player2 = new PlayerView(field, ball);
 		player2.player.setLocation(200, 200);
 		player2.player.getImg().applyFilter();
@@ -174,7 +175,7 @@ public class Board extends JPanel implements ActionListener {
 		title.draw(g2);
 
 		// draw field and it's center line
-		field.draw(g2);
+		field.draw(g2, player1.player, player2.player);
 
 		// draw player
 		player1.draw(g2);

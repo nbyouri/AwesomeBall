@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import geo.FieldController;
 import geo.FieldModel;
+import geo.PlayerModel;
 import geo.Shape.Side;
 
 public class FieldView {
@@ -48,12 +49,14 @@ public class FieldView {
 	 * @param g2
 	 *            Graphics2D
 	 */
-	public void draw(Graphics2D g2) {
+	public void draw(Graphics2D g2, PlayerModel p1, PlayerModel p2) {
 		g2.setColor(Color.cyan);
 		g2.draw(field);
-		g2.setColor(Color.blue);
+		
+		
+		g2.setColor(p1.host ? Color.blue : Color.red);
 		g2.draw(field.goalleft);
-		g2.setColor(Color.red);
+		g2.setColor(p1.host ? Color.red : Color.blue);
 		g2.draw(field.goalright);
 
 		g2.setColor(Color.black);
