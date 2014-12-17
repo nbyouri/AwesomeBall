@@ -20,6 +20,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import net.ballClient;
+import net.ballServer;
 import net.initServer;
 
 @SuppressWarnings("serial")
@@ -37,6 +39,7 @@ public class Board extends JPanel implements ActionListener {
 	private Button exit;
 
 	private initServer serv;
+	private ballServer ballserv;
 
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
@@ -73,15 +76,15 @@ public class Board extends JPanel implements ActionListener {
 	public Board(Dimension boardSize) throws Exception {
 		int type = JOptionPane.showConfirmDialog(null, 
 				"<html><center>Êtes vous un serveur ?"+ "<br>vous êtes " +
-		InetAddress.getLocalHost().toString());
-		
+						InetAddress.getLocalHost().toString());
+
 		if (type == JOptionPane.CANCEL_OPTION
 				|| type == JOptionPane.CLOSED_OPTION) {
 			System.exit(0);
 		}
 		boolean host = (type == 0);
-		
-		// Initialisation du serveur
+
+		// Initialisation du serveur/client TCP et UDP
 		try {
 			serv = new initServer(host);
 			Thread servth = new Thread(serv);
@@ -109,7 +112,7 @@ public class Board extends JPanel implements ActionListener {
 		// setup players and put them in the right place
 		player1 = new PlayerView(field, ball, host);
 		player2 = new PlayerView(field, ball, !host);
-		
+
 		PlayerController.initPosition(field.field,  player1.player,  player2.player);
 
 
@@ -161,7 +164,7 @@ public class Board extends JPanel implements ActionListener {
 		if (serv.getServ().getSocket() != null
 				&& serv.getServ().getSocket().isConnected()) {
 			try {
-				serv.getServ().sendMsg(player1.toString(ball));
+				serv.getServ().sendMsg(player1.toString());
 			} catch (Exception ex) {
 				System.out.println("Failed to send player coordinates to server");
 			}
@@ -169,7 +172,20 @@ public class Board extends JPanel implements ActionListener {
 
 		// receive player 2 info if the client is connected, otherwise, retry
 		if (serv.getClient() != null) {
-			player2.player.msgToCoord(serv.getClient().getMessage(), ball);
+			player2.player.msgToCoord(serv.getClient().getMessage());
+		}
+
+		// listen to info if we're server , otherwise send it 
+		if (player1.player.host) {
+			try {
+				ball.toBall(ballserv.getBytes());
+			} catch (Exception e) {
+			}
+		} else {
+			try {
+				ballClient.send(ball.toBytes(), serv.getClient().getAddr());
+			} catch (Exception e) {
+			}
 		}
 
 		// draw title

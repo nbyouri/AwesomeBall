@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -28,11 +29,11 @@ import java.net.SocketTimeoutException;
  */
 public class Client implements Runnable {
 	private Socket socket;
-	private String address;
+	private InetAddress address;
 	private int port;
 	private String message;
 
-	public Client(String addr, int inport) {
+	public Client(InetAddress addr, int inport) {
 		socket = null;
 		port = inport;
 		address = addr;
@@ -42,6 +43,10 @@ public class Client implements Runnable {
 		return this.message;
 	}
 
+	public InetAddress getAddr() {
+		return socket.getLocalAddress();
+	}
+	
 	public void run() {
 		try {
 			Thread.sleep(2);

@@ -1,11 +1,13 @@
 package net;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 public class initServer implements Runnable {
 	private Server serv;
 	private Client client;
-	private String address;
+	private ballServer bserv;
+	private InetAddress address;
 	private int inport;
 	private int outport;
 
@@ -25,7 +27,7 @@ public class initServer implements Runnable {
 	 * @throws IOException
 	 *             IOException
 	 */
-	public initServer(boolean host) throws IOException {
+	public initServer(boolean host) throws Exception {
 		inport = IN_PORT;
 		outport = OUT_PORT;
 
@@ -47,12 +49,23 @@ public class initServer implements Runnable {
 		Thread servth = new Thread(serv);
 		servth.start();
 
-		address = inputIp.getInput("Entrer l'IP de l'autre joueur", null);
+		address = InetAddress.getByName(inputIp.getInput("Entrer l'IP de l'autre joueur", null));
 
 		client = new Client(address, inport);
 		Thread clienth = new Thread(client);
 		clienth.start();
 
+		// initialization du client UDP
+		if (host) {
+			try {
+				bserv = new ballServer();
+				bserv.setAddr(address);
+				Thread bs = new Thread(bserv);
+				bs.start();
+			} catch (Exception e) {
+				System.out.println("Failed to start UDP server");
+			}
+		}
 	}
 
 	public Server getServ() {

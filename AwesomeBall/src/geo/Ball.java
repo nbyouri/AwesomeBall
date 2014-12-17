@@ -6,6 +6,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
 /**
  * Classe Balle, gère les collisions avec les joueurs et les bords du terrain.
@@ -112,7 +116,7 @@ public class Ball extends Ellipse2D.Double {
 		boolean nearleft = this.rect.near((Rectangle2D)p1, Side.LEFT.getId());
 		boolean neardown = this.rect.near((Rectangle2D)p1, Side.DOWN.getId());
 		boolean pmoving = p2.movingWithBall(this); /*is other player moving ?*/
-		
+
 		if (fieldtop) {
 			this.setDy(SPEED_ONE);
 		}
@@ -125,7 +129,7 @@ public class Ball extends Ellipse2D.Double {
 		if (fieldright) {
 			this.setDx(-SPEED_ONE);
 		}
-		
+
 		if (nearright) {
 			p1.setDx(pmoving ? SPEED_ONE : STOP);
 			this.setDx(nearright ? SPEED_ONE : STOP);
@@ -142,13 +146,13 @@ public class Ball extends Ellipse2D.Double {
 			p1.setDy(pmoving ? SPEED_ONE : STOP);
 			this.setDy(neardown ? SPEED_ONE : STOP);
 		}
-		
+
 		nearright = this.rect.near((Rectangle2D)p2, Side.RIGHT.getId());
 		nearup = this.rect.near((Rectangle2D)p2, Side.UP.getId());
 		nearleft = this.rect.near((Rectangle2D)p2, Side.LEFT.getId());
 		neardown = this.rect.near((Rectangle2D)p2, Side.DOWN.getId());
 		pmoving = p1.movingWithBall(this); /* is other player moving ? */
-		
+
 		if (nearright) {
 			p2.setDx(pmoving ? SPEED_ONE : STOP);
 			this.setDx(nearright ? SPEED_ONE : STOP);
@@ -165,7 +169,7 @@ public class Ball extends Ellipse2D.Double {
 			p2.setDy(pmoving ? SPEED_ONE : STOP);
 			this.setDy(neardown ? SPEED_ONE : STOP);
 		}
-		
+
 		this.goal(f, p1, p2);
 
 		this.setLocation(this.getX() + this.getDx(),this.getY() + this.getDy());
@@ -372,5 +376,33 @@ public class Ball extends Ellipse2D.Double {
 	@Override
 	public String toString() {
 		return (this.getX() + "/" + this.getY()); 
+	}
+
+	public byte[] toBytes() throws Exception {
+		final ByteArrayOutputStream baos=new ByteArrayOutputStream();
+		final DataOutputStream daos=new DataOutputStream(baos);
+		daos.writeDouble(this.getX());
+		daos.writeDouble(this.getY());
+		daos.close();
+		return baos.toByteArray();
+	}
+
+	public void toBall(byte[] b) throws Exception {
+		final ByteArrayInputStream bais = 
+				new ByteArrayInputStream(b);
+		final DataInputStream dais=new DataInputStream(bais);
+
+		double nx = dais.readDouble();
+		double ny = dais.readDouble();
+		
+		if (nx > 0) {
+			this.x = nx;
+		} 
+		if (ny > 0) {
+			this.y = ny;
+		}
+
+		bais.close();
+		dais.close();
 	}
 }

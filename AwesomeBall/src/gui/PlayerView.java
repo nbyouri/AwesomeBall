@@ -98,7 +98,7 @@ public class PlayerView implements ActionListener {
 
 	}
 
-	public String toString(Ball b) {
-		return player.toString(b);
+	public String toString() {
+		return player.toString();
 	}
 }

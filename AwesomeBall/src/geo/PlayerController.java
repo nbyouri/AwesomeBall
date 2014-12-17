@@ -364,7 +364,7 @@ public class PlayerController extends PlayerModel {
 	 * @param ball
 	 *            Ballon
 	 */
-	public void msgToCoord(String msg, Ball ball) {
+	public void msgToCoord(String msg) {
 
 		if (msg != null) {
 
@@ -382,12 +382,6 @@ public class PlayerController extends PlayerModel {
 			this.right = Boolean.parseBoolean(data[4]);
 			this.up = Boolean.parseBoolean(data[5]);
 			this.down = Boolean.parseBoolean(data[6]);
-			
-			double bx = java.lang.Double.parseDouble(data[7]);
-			double by = java.lang.Double.parseDouble(data[8]);
-
-			ball.setX(bx);
-			ball.setY(by);
 		}
 	}
 
@@ -400,7 +394,7 @@ public class PlayerController extends PlayerModel {
 	 * @return Un message utilisé pour l'envoi d'information au serveur et au
 	 *         client.
 	 */
-	public String toString(Ball ball) {
+	public String toString() {
 		StringBuilder msg = new StringBuilder();
 
 		msg.append(this.getX() + "/");
@@ -412,8 +406,6 @@ public class PlayerController extends PlayerModel {
 		msg.append(this.right + "/");
 		msg.append(this.up + "/");
 		msg.append(this.down + "/");
-
-		msg.append(ball.toString());
 
 		return msg.toString();
 	}
