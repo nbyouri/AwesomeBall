@@ -23,11 +23,11 @@ public class Dialog extends JDialog {
 	public Dialog(String message) {
 		font = new Font("Helvetica", Font.BOLD, FONT_SIZE_NORMAL);
 		border = new LineBorder(Color.cyan, BORDER_NORMAL);
-		FgColor = Color.white;
-		FbColor = Color.black;
+		FgColor = Color.black;
+		FbColor = Color.white;
 
 		JPanel messagePane = new JPanel(new GridBagLayout());
-		messagePane.add(createLabel(message, Color.cyan));
+		messagePane.add(createLabel(message, Color.black));
 		getContentPane().add(messagePane);
 		this.setModal(true);
 		this.setSize(200, 200);
@@ -38,6 +38,8 @@ public class Dialog extends JDialog {
 		messagePane.setBorder(this.border);
 		this.setForeground(this.FgColor);
 		this.setBackground(this.FbColor);
+		this.getContentPane().setBackground(FbColor);
+		this.getRootPane().setOpaque(true);
 	}
 
 	/**

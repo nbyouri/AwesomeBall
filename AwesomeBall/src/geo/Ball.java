@@ -385,6 +385,7 @@ public class Ball extends Ellipse2D.Double {
 		daos.writeDouble(this.getX());
 		daos.writeDouble(this.getY());
 		daos.close();
+		baos.close();
 		return baos.toByteArray();
 	}
 

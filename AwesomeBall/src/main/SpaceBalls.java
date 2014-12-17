@@ -32,7 +32,7 @@ public class SpaceBalls extends JFrame {
 		add(mainBoard);
 
 		// jframe settings
-		this.setTitle("SpaceBalls");
+		this.setTitle("GénialBall");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);

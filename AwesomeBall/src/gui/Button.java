@@ -40,6 +40,7 @@ public class Button extends JButton {
 		this.setContentAreaFilled(false);
 		this.addActionListener(al);
 		this.setRolloverEnabled(true);
+		this.setOpaque(true);
 
 		/**
 		 * Change la couleur lorsque le bouton est clique ou survole
