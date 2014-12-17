@@ -101,72 +101,74 @@ public class Ball extends Ellipse2D.Double {
 	 *            PlayerController
 	 */
 	public void move(FieldController f, PlayerController p1, PlayerController p2) {
-		/*
-		 * Collisions Terrain
-		 */
-		if (this.touchRectInLeft(f)) {
-			this.setDx(SPEED_ONE);
-		}
-		if (this.rect.touchRectInTop(f) || this.touchGoalRightTop(f)
-				|| this.touchGoalLeftTop(f)) {
+		boolean fieldtop = (this.rect.touchRectInTop(f) ||
+				this.touchGoalRightTop(f) || this.touchGoalLeftTop(f));
+		boolean fieldbottom = (this.rect.touchRectInBottom(f) ||
+				this.touchGoalRightBottom(f) || this.touchGoalLeftBottom(f));
+		boolean fieldleft = this.touchRectInLeft(f);
+		boolean fieldright = this.touchRectInRight(f);
+		boolean nearright = this.rect.near((Rectangle2D)p1, Side.RIGHT.getId());
+		boolean nearup = this.rect.near((Rectangle2D)p1, Side.UP.getId());
+		boolean nearleft = this.rect.near((Rectangle2D)p1, Side.LEFT.getId());
+		boolean neardown = this.rect.near((Rectangle2D)p1, Side.DOWN.getId());
+		boolean pmoving = p2.movingWithBall(this); /*is other player moving ?*/
+		
+		if (fieldtop) {
 			this.setDy(SPEED_ONE);
 		}
-		if (this.touchRectInRight(f)) {
-			this.setDx(-SPEED_ONE);
-		}
-		if (this.rect.touchRectInBottom(f) || this.touchGoalRightBottom(f)
-				|| this.touchGoalLeftBottom(f)) {
+		if (fieldbottom) {
 			this.setDy(-SPEED_ONE);
 		}
-
-		/*
-		 * Collisions Joueurs
-		 */
-		if (this.rect.near((Rectangle2D) p1, Side.RIGHT.getId())) {
-			p1.setDx(p2.movingWithBall(this) ? SPEED_ONE : STOP);
+		if (fieldleft) {
 			this.setDx(SPEED_ONE);
 		}
-		if (this.rect.near((Rectangle2D) p1, Side.UP.getId())) {
-			p1.setDy(p2.movingWithBall(this) ? -SPEED_ONE : STOP);
-			this.setDy(-SPEED_ONE);
-		}
-		if (this.rect.near((Rectangle2D) p1, Side.LEFT.getId())) {
-			p1.setDx(p2.movingWithBall(this) ? -SPEED_ONE : STOP);
+		if (fieldright) {
 			this.setDx(-SPEED_ONE);
 		}
-		if (this.rect.near((Rectangle2D) p1, Side.DOWN.getId())) {
-			p1.setDy(p2.movingWithBall(this) ? SPEED_ONE : STOP);
-			this.setDy(SPEED_ONE);
+		
+		if (nearright) {
+			p1.setDx(pmoving ? SPEED_ONE : STOP);
+			this.setDx(nearright ? SPEED_ONE : STOP);
 		}
-		if (this.rect.near((Rectangle2D) p2, Side.RIGHT.getId())) {
-			p2.setDx(p1.movingWithBall(this) ? SPEED_ONE : STOP);
-			this.setDx(SPEED_ONE);
+		if (nearup) {
+			p1.setDy(pmoving ? -SPEED_ONE : STOP);
+			this.setDy(nearup ? -SPEED_ONE : STOP);
 		}
-		if (this.rect.near((Rectangle2D) p2, Side.UP.getId())) {
-			p2.setDy(p1.movingWithBall(this) ? -SPEED_ONE : STOP);
-			this.setDy(-SPEED_ONE);
+		if (nearleft) {
+			p1.setDx(pmoving ? -SPEED_ONE : STOP);
+			this.setDx(nearleft ? -SPEED_ONE : STOP);
 		}
-		if (this.rect.near((Rectangle2D) p2, Side.LEFT.getId())) {
-			p2.setDx(p1.movingWithBall(this) ? -SPEED_ONE : STOP);
-			this.setDx(-SPEED_ONE);
+		if (neardown) {
+			p1.setDy(pmoving ? SPEED_ONE : STOP);
+			this.setDy(neardown ? SPEED_ONE : STOP);
 		}
-		if (this.rect.near((Rectangle2D) p2, Side.DOWN.getId())) {
-			p2.setDy(p1.movingWithBall(this) ? SPEED_ONE : STOP);
-			this.setDy(SPEED_ONE);
+		
+		nearright = this.rect.near((Rectangle2D)p2, Side.RIGHT.getId());
+		nearup = this.rect.near((Rectangle2D)p2, Side.UP.getId());
+		nearleft = this.rect.near((Rectangle2D)p2, Side.LEFT.getId());
+		neardown = this.rect.near((Rectangle2D)p2, Side.DOWN.getId());
+		pmoving = p1.movingWithBall(this); /* is other player moving ? */
+		
+		if (nearright) {
+			p2.setDx(pmoving ? SPEED_ONE : STOP);
+			this.setDx(nearright ? SPEED_ONE : STOP);
 		}
-
-		/*
-		 * test goal
-		 */
+		if (nearup) {
+			p2.setDy(pmoving ? -SPEED_ONE : STOP);
+			this.setDy(nearup ? -SPEED_ONE : STOP);
+		}
+		if (nearleft) {
+			p2.setDx(pmoving ? -SPEED_ONE : STOP);
+			this.setDx(nearleft ? -SPEED_ONE : STOP);
+		}
+		if (neardown) {
+			p2.setDy(pmoving ? SPEED_ONE : STOP);
+			this.setDy(neardown ? SPEED_ONE : STOP);
+		}
+		
 		this.goal(f, p1, p2);
 
-		/*
-		 * bouger la balle
-		 */
-		if (this.rect.insideRect(f) || this.insideGoals(f)) {
-			this.setLocation(this.getX() + this.getDx(),
-					this.getY() + this.getDy());
-		}
+		this.setLocation(this.getX() + this.getDx(),this.getY() + this.getDy());
 
 		this.brake();
 	}
@@ -291,8 +293,8 @@ public class Ball extends Ellipse2D.Double {
 	 *            FieldController
 	 */
 	public void centerBall(FieldController f) {
-		this.setFrame(f.getCenterX() - this.getWidth() / 2,
-				f.getY() + (f.getHeight() / 2) - 10, width, height);
+		this.setFrame(f.getCenterX() - BALL_RADIUS, f.getCenterY()
+				- BALL_RADIUS, BALL_SIZE, BALL_SIZE);
 		this.setDx(STOP);
 		this.setDy(STOP);
 	}
@@ -365,5 +367,10 @@ public class Ball extends Ellipse2D.Double {
 	 */
 	public boolean isGoalRight(FieldController f) {
 		return (this.getX() >= f.getGoalright().getX());
+	}
+
+	@Override
+	public String toString() {
+		return (this.getX() + "/" + this.getY()); 
 	}
 }

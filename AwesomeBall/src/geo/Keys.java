@@ -81,6 +81,7 @@ public class Keys extends Shape {
 		this.setSides();
 		g2.setColor(Color.cyan);
 		g2.draw(this);
+		this.drawSides(g2, this.getPressedKeys());
 	}
 
 	/**

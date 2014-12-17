@@ -301,7 +301,7 @@ public class Shape extends Rectangle2D.Double {
 	 * @return Oui/Non à la question
 	 */
 	public boolean touchRectInTop(Rectangle2D r) {
-		return (this.getY() - 1 < r.getY());
+		return (this.getY() + 1 < r.getY());
 	}
 
 	/**

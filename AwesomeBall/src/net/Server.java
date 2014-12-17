@@ -1,6 +1,13 @@
 package net;
 
+import gui.Button;
+import gui.Dialog;
+
 import java.net.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 
 public class Server extends ServerSocket implements Runnable {
@@ -57,6 +64,19 @@ public class Server extends ServerSocket implements Runnable {
 						if (mes != null) {
 							this.msg = mes;
 						}
+					} catch (SocketException se) {
+						Dialog d = new Dialog("Player 2 Left");
+						ActionListener exit = new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								System.exit(0);
+							}
+						};
+						Button ex = new Button("exit", exit);
+						ex.setPreferredSize(new Dimension(d.getWidth(), 50));
+						d.add(ex, BorderLayout.SOUTH);
+						d.setVisible(true);
+
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}

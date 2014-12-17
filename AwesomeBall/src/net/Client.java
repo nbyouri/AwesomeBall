@@ -44,7 +44,7 @@ public class Client implements Runnable {
 
 	public void run() {
 		try {
-			Thread.sleep(20);
+			Thread.sleep(2);
 		} catch (Exception e) {
 		}
 
@@ -88,7 +88,9 @@ public class Client implements Runnable {
 					BufferedReader entree = new BufferedReader(
 							new InputStreamReader(socket.getInputStream()));
 					String mes = entree.readLine();
-					this.message = mes;
+					if (mes != null) {
+						this.message = mes;
+					}
 				} catch (SocketException se) {
 					Dialog d = new Dialog("Player 2 Left");
 					ActionListener exit = new ActionListener() {

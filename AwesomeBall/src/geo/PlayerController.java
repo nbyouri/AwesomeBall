@@ -370,22 +370,24 @@ public class PlayerController extends PlayerModel {
 
 			String data[] = msg.split("/");
 
-			if (data.length == 8) {
 
-				double nx = java.lang.Double.parseDouble(data[0]);
-				double ny = java.lang.Double.parseDouble(data[1]);
+			double nx = java.lang.Double.parseDouble(data[0]);
+			double ny = java.lang.Double.parseDouble(data[1]);
 
-				this.setLocation(nx, ny);
+			this.setLocation(nx, ny);
 
-				this.setScore(Integer.parseInt(data[2]));
+			this.setScore(Integer.parseInt(data[2]));
 
-				this.left = Boolean.parseBoolean(data[3]);
-				this.right = Boolean.parseBoolean(data[4]);
-				this.up = Boolean.parseBoolean(data[5]);
-				this.down = Boolean.parseBoolean(data[6]);
+			this.left = Boolean.parseBoolean(data[3]);
+			this.right = Boolean.parseBoolean(data[4]);
+			this.up = Boolean.parseBoolean(data[5]);
+			this.down = Boolean.parseBoolean(data[6]);
+			
+			double bx = java.lang.Double.parseDouble(data[7]);
+			double by = java.lang.Double.parseDouble(data[8]);
 
-				this.shoot = Boolean.parseBoolean(data[7]);
-			}
+			ball.setX(bx);
+			ball.setY(by);
 		}
 	}
 
@@ -410,7 +412,8 @@ public class PlayerController extends PlayerModel {
 		msg.append(this.right + "/");
 		msg.append(this.up + "/");
 		msg.append(this.down + "/");
-		msg.append(this.shoot + "/");
+
+		msg.append(ball.toString());
 
 		return msg.toString();
 	}

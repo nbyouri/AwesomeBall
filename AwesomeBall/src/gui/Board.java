@@ -186,11 +186,9 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw ball
 		ball.draw(g2);
-		ball.move(field.field, player1.player, player2.player);
 
 		// draw key box
 		player1.keys.draw(g2);
-		player1.keys.drawSides(g2, player1.keys.getPressedKeys());
 
 		// draw score box
 		score.setStr("Player 1 : " + 

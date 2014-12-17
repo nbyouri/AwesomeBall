@@ -68,8 +68,6 @@ public class PlayerView implements ActionListener {
 				player.setDy(PlayerModel.SPEED_ONE);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_ON);
 				player.down = true;
-			} else if (key == KeyEvent.VK_SPACE) {
-				player.shoot = true;
 			}
 		}
 
@@ -92,8 +90,6 @@ public class PlayerView implements ActionListener {
 				player.setDy(PlayerModel.STOP);
 				keys.setPressedKey(Keys.KEY_DOWN, Keys.KEY_OFF);
 				player.down = false;
-			} else if (key == KeyEvent.VK_SPACE) {
-				player.shoot = false;
 			}
 		}
 	}

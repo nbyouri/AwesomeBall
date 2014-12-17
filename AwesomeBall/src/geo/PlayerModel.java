@@ -14,7 +14,6 @@ public class PlayerModel extends FieldController {
 	public boolean right;
 	public boolean up;
 	public boolean down;
-	public boolean shoot;
 
 	// Constances
 	public static final int SPEED_ONE = 1;
@@ -114,8 +113,6 @@ public class PlayerModel extends FieldController {
 		this.down = false;
 		this.left = false;
 		this.right = false;
-
-		this.shoot = false;
 		
 		this.host = host;
 		
