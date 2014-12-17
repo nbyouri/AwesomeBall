@@ -105,17 +105,18 @@ public class Ball extends Ellipse2D.Double {
 	 *            PlayerController
 	 */
 	public void move(FieldController f, PlayerController p1, PlayerController p2) {
-		boolean fieldtop = (this.rect.touchRectInTop(f) ||
-				this.touchGoalRightTop(f) || this.touchGoalLeftTop(f));
-		boolean fieldbottom = (this.rect.touchRectInBottom(f) ||
-				this.touchGoalRightBottom(f) || this.touchGoalLeftBottom(f));
+		boolean fieldtop = (this.rect.touchRectInTop(f)
+				|| this.touchGoalRightTop(f) || this.touchGoalLeftTop(f));
+		boolean fieldbottom = (this.rect.touchRectInBottom(f)
+				|| this.touchGoalRightBottom(f) || this.touchGoalLeftBottom(f));
 		boolean fieldleft = this.touchRectInLeft(f);
 		boolean fieldright = this.touchRectInRight(f);
-		boolean nearright = this.rect.near((Rectangle2D)p1, Side.RIGHT.getId());
-		boolean nearup = this.rect.near((Rectangle2D)p1, Side.UP.getId());
-		boolean nearleft = this.rect.near((Rectangle2D)p1, Side.LEFT.getId());
-		boolean neardown = this.rect.near((Rectangle2D)p1, Side.DOWN.getId());
-		boolean pmoving = p2.movingWithBall(this); /*is other player moving ?*/
+		boolean nearright = this.rect
+				.near((Rectangle2D) p1, Side.RIGHT.getId());
+		boolean nearup = this.rect.near((Rectangle2D) p1, Side.UP.getId());
+		boolean nearleft = this.rect.near((Rectangle2D) p1, Side.LEFT.getId());
+		boolean neardown = this.rect.near((Rectangle2D) p1, Side.DOWN.getId());
+		boolean pmoving = p2.movingWithBall(this); /* is other player moving ? */
 
 		if (fieldtop) {
 			this.setDy(SPEED_ONE);
@@ -147,10 +148,10 @@ public class Ball extends Ellipse2D.Double {
 			this.setDy(neardown ? SPEED_ONE : STOP);
 		}
 
-		nearright = this.rect.near((Rectangle2D)p2, Side.RIGHT.getId());
-		nearup = this.rect.near((Rectangle2D)p2, Side.UP.getId());
-		nearleft = this.rect.near((Rectangle2D)p2, Side.LEFT.getId());
-		neardown = this.rect.near((Rectangle2D)p2, Side.DOWN.getId());
+		nearright = this.rect.near((Rectangle2D) p2, Side.RIGHT.getId());
+		nearup = this.rect.near((Rectangle2D) p2, Side.UP.getId());
+		nearleft = this.rect.near((Rectangle2D) p2, Side.LEFT.getId());
+		neardown = this.rect.near((Rectangle2D) p2, Side.DOWN.getId());
 		pmoving = p1.movingWithBall(this); /* is other player moving ? */
 
 		if (nearright) {
@@ -172,7 +173,7 @@ public class Ball extends Ellipse2D.Double {
 
 		this.goal(f, p1, p2);
 
-		this.setLocation(this.getX() + this.getDx(),this.getY() + this.getDy());
+		this.setLocation(this.getX() + this.getDx(), this.getY() + this.getDy());
 
 		this.brake();
 	}
@@ -187,7 +188,7 @@ public class Ball extends Ellipse2D.Double {
 	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
 				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
-						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
+				.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/**
@@ -226,7 +227,7 @@ public class Ball extends Ellipse2D.Double {
 		return (f.getMaxX() - this.getMaxX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
-						.getGoalright().getMaxX());
+				.getGoalright().getMaxX());
 	}
 
 	/**
@@ -241,7 +242,7 @@ public class Ball extends Ellipse2D.Double {
 		return (this.getX() - f.getX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getX() <= f
-						.getGoalleft().getX());
+				.getGoalleft().getX());
 	}
 
 	/**
@@ -375,12 +376,12 @@ public class Ball extends Ellipse2D.Double {
 
 	@Override
 	public String toString() {
-		return (this.getX() + "/" + this.getY()); 
+		return (this.getX() + "/" + this.getY());
 	}
 
 	public byte[] toBytes() throws Exception {
-		final ByteArrayOutputStream baos=new ByteArrayOutputStream();
-		final DataOutputStream daos=new DataOutputStream(baos);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final DataOutputStream daos = new DataOutputStream(baos);
 		daos.writeDouble(this.getX());
 		daos.writeDouble(this.getY());
 		daos.close();
@@ -388,16 +389,15 @@ public class Ball extends Ellipse2D.Double {
 	}
 
 	public void toBall(byte[] b) throws Exception {
-		final ByteArrayInputStream bais = 
-				new ByteArrayInputStream(b);
-		final DataInputStream dais=new DataInputStream(bais);
+		final ByteArrayInputStream bais = new ByteArrayInputStream(b);
+		final DataInputStream dais = new DataInputStream(bais);
 
 		double nx = dais.readDouble();
 		double ny = dais.readDouble();
-		
+
 		if (nx > 0) {
 			this.x = nx;
-		} 
+		}
 		if (ny > 0) {
 			this.y = ny;
 		}

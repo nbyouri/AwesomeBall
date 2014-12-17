@@ -1,5 +1,7 @@
 package net;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -7,7 +9,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
-public class ballServer implements Runnable {
+public class playerServer implements Runnable {
 	public byte[] oldb = null;
 	public InetAddress address = null;
 	public int port;
@@ -39,6 +41,14 @@ public class ballServer implements Runnable {
 
 				if (!Arrays.equals(dp.getData(), oldb)) {
 					oldb = dp.getData();
+					final ByteArrayInputStream bais = new ByteArrayInputStream(
+							oldb);
+					final ObjectInputStream dais = new ObjectInputStream(bais);
+
+					bais.close();
+					dais.close();
+					PlayerPacket pc = (PlayerPacket) dais.readObject();
+					System.out.println(pc.toString());
 				}
 
 			} catch (Exception ex) {

@@ -113,9 +113,9 @@ public class PlayerModel extends FieldController {
 		this.down = false;
 		this.left = false;
 		this.right = false;
-		
+
 		this.host = host;
-		
+
 		if (!host) {
 			img.applyFilter();
 		}

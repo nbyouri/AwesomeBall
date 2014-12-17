@@ -20,9 +20,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import net.ballClient;
+import net.UDPClient;
 import net.ballServer;
-import net.initServer;
+import net.inputIp;
+import net.playerServer;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
@@ -38,8 +39,9 @@ public class Board extends JPanel implements ActionListener {
 	private FieldView field;
 	private Button exit;
 
-	private initServer serv;
+	private playerServer playerserv;
 	private ballServer ballserv;
+	private InetAddress other_player_address;
 
 	// constants
 	public static final int TOP_MENUS_X_POS = 50;
@@ -56,6 +58,9 @@ public class Board extends JPanel implements ActionListener {
 	public static final int SCORES_WIDTH = 155;
 	public static final int FPS = 5;
 	public static final int EXIT_SUCCESS = 0;
+	public static final int PPORT = 1233;
+	public static final int BPORT = 1234;
+	public static final int P2PORT = 1235;
 
 	/**
 	 * Initialise le serveur
@@ -74,9 +79,9 @@ public class Board extends JPanel implements ActionListener {
 	 *            , la taille de l'écran.
 	 */
 	public Board(Dimension boardSize) throws Exception {
-		int type = JOptionPane.showConfirmDialog(null, 
-				"<html><center>Êtes vous un serveur ?"+ "<br>vous êtes " +
-						InetAddress.getLocalHost().toString());
+		int type = JOptionPane.showConfirmDialog(null,
+				"<html><center>Êtes vous un serveur ?" + "<br>vous êtes "
+						+ InetAddress.getLocalHost().toString());
 
 		if (type == JOptionPane.CANCEL_OPTION
 				|| type == JOptionPane.CLOSED_OPTION) {
@@ -84,14 +89,9 @@ public class Board extends JPanel implements ActionListener {
 		}
 		boolean host = (type == 0);
 
-		// Initialisation du serveur/client TCP et UDP
-		try {
-			serv = new initServer(host);
-			Thread servth = new Thread(serv);
-			servth.start();
-		} catch (Exception ex) {
-			System.out.println("Failed to initServer");
-		}
+		other_player_address = InetAddress.getByName(inputIp.getInput(
+				"Entrer l'IP de l'autre joueur", null));
+		// InetAddress.getByName("192.168.12.76");
 
 		// Applique les proportions du terrains , H = 60yds, W = 100yds, Center
 		// radius = 10yds
@@ -113,11 +113,27 @@ public class Board extends JPanel implements ActionListener {
 		player1 = new PlayerView(field, ball, host);
 		player2 = new PlayerView(field, ball, !host);
 
-		PlayerController.initPosition(field.field,  player1.player,  player2.player);
-
+		PlayerController.initPosition(field.field, player1.player,
+				player2.player);
 
 		// setup ball
 		ball = new Ball(field.field);
+
+		try {
+			playerserv = new playerServer();
+			ballserv = new ballServer();
+			ballserv.setAddr(other_player_address);
+			ballserv.setPort(BPORT);
+			playerserv.setAddr(other_player_address);
+			playerserv.setPort(player1.player.host ? P2PORT : PPORT);
+			Thread pserv = new Thread(playerserv);
+			Thread bserv = new Thread(ballserv);
+			pserv.start();
+			bserv.start();
+		} catch (Exception e) {
+			System.out.println("Failed to start servers");
+			System.exit(1);
+		}
 
 		// setup score indicator
 		score = new Text(null);
@@ -138,10 +154,10 @@ public class Board extends JPanel implements ActionListener {
 		exit.setBounds(
 				BOARD_X_POS,
 				BOARD_X_POS
-				+ (int) field.field.getHeight()
-				+ (int) ((boardSize.getHeight() - (BOARD_Y_POS + field.field
-						.getHeight())) / 4),
-						(int) field.field.getWidth(), TOP_MENUS_HEIGHT);
+						+ (int) field.field.getHeight()
+						+ (int) ((boardSize.getHeight() - (BOARD_Y_POS + field.field
+								.getHeight())) / 4),
+				(int) field.field.getWidth(), TOP_MENUS_HEIGHT);
 		add(exit);
 
 		// timer
@@ -160,32 +176,32 @@ public class Board extends JPanel implements ActionListener {
 		g2.setRenderingHint(RenderingHints.KEY_RENDERING,
 				RenderingHints.VALUE_RENDER_QUALITY);
 
-		// update player 1 location on server/client
-		if (serv.getServ().getSocket() != null
-				&& serv.getServ().getSocket().isConnected()) {
-			try {
-				serv.getServ().sendMsg(player1.toString());
-			} catch (Exception ex) {
-				System.out.println("Failed to send player coordinates to server");
-			}
-		}
-
-		// receive player 2 info if the client is connected, otherwise, retry
-		if (serv.getClient() != null) {
-			player2.player.msgToCoord(serv.getClient().getMessage());
-		}
-
-		// listen to info if we're server , otherwise send it 
+		// listen to info if we're server , otherwise send it
 		if (player1.player.host) {
 			try {
-				ball.toBall(ballserv.getBytes());
+				UDPClient.send(ball.toBytes(), other_player_address, BPORT);
 			} catch (Exception e) {
+				System.out.println("ball send error");
 			}
 		} else {
 			try {
-				ballClient.send(ball.toBytes(), serv.getClient().getAddr());
+				ball.toBall(ballserv.getBytes());
 			} catch (Exception e) {
+				System.out.println("toBall error");
 			}
+		}
+
+		try {
+			UDPClient.send(player1.player.toBytes(), other_player_address,
+					player1.player.host ? PPORT : P2PORT);
+		} catch (Exception e) {
+			System.out.println("player1 send error");
+		}
+
+		try {
+			player2.player.toPlayer(playerserv.getBytes());
+		} catch (Exception e) {
+			System.out.println("toPlayer error");
 		}
 
 		// draw title
@@ -207,9 +223,9 @@ public class Board extends JPanel implements ActionListener {
 		player1.keys.draw(g2);
 
 		// draw score box
-		score.setStr("Player 1 : " + 
-				Integer.toString(player1.player.getScore()) + 
-				" / Player 2 : " 
+		score.setStr("Player 1 : "
+				+ Integer.toString(player1.player.getScore())
+				+ " / Player 2 : "
 				+ Integer.toString(player2.player.getScore()));
 		score.draw(g2);
 
@@ -262,7 +278,6 @@ public class Board extends JPanel implements ActionListener {
 	 * Exit in a clean way
 	 */
 	public void exitProgram() {
-		serv.closeSocket();
 		Container frame = this.getParent();
 		do {
 			frame = frame.getParent();

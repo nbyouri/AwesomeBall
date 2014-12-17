@@ -53,7 +53,8 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 
 		exitButton = new Button("<html><center>Scan du réseau local. "
 				+ "<br>Cliquez pour annuler et quitter l'application<br>"
-                        + "Vous êtes "+InetAddress.getLocalHost().toString()+"</center></html>", new CloseListener());
+				+ "Vous êtes " + InetAddress.getLocalHost().toString()
+				+ "</center></html>", new CloseListener());
 
 		add(progressBar, BorderLayout.SOUTH);
 		// add(startButton, BorderLayout.NORTH);
@@ -195,8 +196,8 @@ public class DiscoverLocal extends Dialog implements ActionListener,
 	 * @return ip : String
 	 */
 	public static String getIp() throws Exception {
-                DiscoverLocal swt = new DiscoverLocal();
-          
+		DiscoverLocal swt = new DiscoverLocal();
+
 		// XXX: ugly hack
 		swt.startButton.doClick();
 		swt.setVisible(true);

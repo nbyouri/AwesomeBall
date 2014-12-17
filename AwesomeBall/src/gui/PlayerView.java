@@ -28,7 +28,7 @@ public class PlayerView implements ActionListener {
 
 		// setup player
 		player = new PlayerController(host);
-		
+
 		// setup key indicator
 		keys = new Keys(Board.KEYS_X_POS, Board.TOP_MENUS_Y_POS,
 				Board.KEYS_WIDTH, Board.TOP_MENUS_HEIGHT);

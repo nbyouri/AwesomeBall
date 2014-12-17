@@ -4,6 +4,10 @@ import gui.Images;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
 @SuppressWarnings("serial")
 public class PlayerController extends PlayerModel {
@@ -177,7 +181,7 @@ public class PlayerController extends PlayerModel {
 	public boolean insideGoals(FieldController f) {
 		return ((this.getMaxX() < f.getGoalright().getMaxX() && this.getY() - 1 >= f
 				.getGoalright().getY()) || (this.getX() > f.getGoalleft()
-						.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
+				.getX() && this.getY() - 1 >= f.getGoalleft().getY()));
 	}
 
 	/**
@@ -216,7 +220,7 @@ public class PlayerController extends PlayerModel {
 		return (f.getMaxX() - this.getMaxX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getMaxX() + 1 >= f
-						.getGoalright().getMaxX());
+				.getGoalright().getMaxX());
 	}
 
 	/**
@@ -231,7 +235,7 @@ public class PlayerController extends PlayerModel {
 		return (this.getX() - f.getX() <= 1.5
 				&& (this.getY() < f.getGoalright().getY() || this.getMaxY() > f
 						.getGoalright().getMaxY()) || this.getX() <= f
-						.getGoalleft().getX());
+				.getGoalleft().getX());
 	}
 
 	/**
@@ -341,7 +345,7 @@ public class PlayerController extends PlayerModel {
 		int py = (int) p.getY();
 
 		return (new Shape(tx, ty, this.getWidth(), this.getHeight())
-		.near(new Shape(px, py, p.width, p.height)));
+				.near(new Shape(px, py, p.width, p.height)));
 	}
 
 	/**
@@ -355,76 +359,60 @@ public class PlayerController extends PlayerModel {
 		return ((this.getDx() > 0 || this.getDy() > 0) && this.near(b.rect, 5));
 	}
 
-	/**
-	 * Réception du paquet serveur pour la position du joueur reçois aussi la
-	 * position du ballon.
-	 * 
-	 * @param msg
-	 *            Message reçue
-	 * @param ball
-	 *            Ballon
-	 */
-	public void msgToCoord(String msg) {
-
-		if (msg != null) {
-
-			String data[] = msg.split("/");
-
-
-			double nx = java.lang.Double.parseDouble(data[0]);
-			double ny = java.lang.Double.parseDouble(data[1]);
-
-			this.setLocation(nx, ny);
-
-			this.setScore(Integer.parseInt(data[2]));
-
-			this.left = Boolean.parseBoolean(data[3]);
-			this.right = Boolean.parseBoolean(data[4]);
-			this.up = Boolean.parseBoolean(data[5]);
-			this.down = Boolean.parseBoolean(data[6]);
-		}
+	public byte[] toBytes() throws Exception {
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final DataOutputStream oos = new DataOutputStream(baos);
+		oos.writeDouble(this.x);
+		oos.writeDouble(this.y);
+		oos.writeInt(this.score);
+		oos.writeBoolean(this.up);
+		oos.writeBoolean(this.down);
+		oos.writeBoolean(this.left);
+		oos.writeBoolean(this.right);
+		oos.close();
+		baos.close();
+		return baos.toByteArray();
 	}
 
-	/**
-	 * Création d'une chaine de caractère déterminant la position du joueur et
-	 * de la balle
-	 * 
-	 * @param ball
-	 *            Balle
-	 * @return Un message utilisé pour l'envoi d'information au serveur et au
-	 *         client.
-	 */
-	public String toString() {
-		StringBuilder msg = new StringBuilder();
+	public void toPlayer(byte[] b) throws Exception {
+		final ByteArrayInputStream bais = new ByteArrayInputStream(b);
+		final DataInputStream dais = new DataInputStream(bais);
 
-		msg.append(this.getX() + "/");
-		msg.append(this.getY() + "/");
+		double nx = dais.readDouble();
+		double ny = dais.readDouble();
 
-		msg.append(this.getScore() + "/");
+		if (nx > 0) {
+			this.x = nx;
+		}
+		if (ny > 0) {
+			this.y = ny;
+		}
 
-		msg.append(this.left + "/");
-		msg.append(this.right + "/");
-		msg.append(this.up + "/");
-		msg.append(this.down + "/");
+		this.score = dais.readInt();
+		this.up = dais.readBoolean();
+		this.down = dais.readBoolean();
+		this.left = dais.readBoolean();
+		this.right = dais.readBoolean();
 
-		return msg.toString();
+		bais.close();
+		dais.close();
 	}
 
 	/**
 	 * Set players initial position
 	 */
-	public static void initPosition(FieldController f, 
-			PlayerController p1, PlayerController p2) {
+	public static void initPosition(FieldController f, PlayerController p1,
+			PlayerController p2) {
 		if (p1.host) {
-			p1.setLocation(f.getCenterX() / 2 - p1.width, 
-					f.getCenterY() - p1.height);
-			p2.setLocation(f.getCenterX()  +  f.getCenterX() / 2 - p2.width,
+			p1.setLocation(f.getCenterX() / 2 - p1.width, f.getCenterY()
+					- p1.height);
+			p2.setLocation(f.getCenterX() + f.getCenterX() / 2 - p2.width,
 					f.getCenterY() - p2.height);
 		} else {
-			p1.setLocation(f.getCenterX()  +  f.getCenterX() / 2 - p1.width,
+			p1.setLocation(f.getCenterX() + f.getCenterX() / 2 - p1.width,
 					f.getCenterY() - p1.height);
-			p2.setLocation(f.getCenterX() / 2 - p2.width, 
-					f.getCenterY() - p2.height);
+			p2.setLocation(f.getCenterX() / 2 - p2.width, f.getCenterY()
+					- p2.height);
 		}
 	}
 }
