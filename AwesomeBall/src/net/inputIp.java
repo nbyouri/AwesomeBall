@@ -1,22 +1,24 @@
 package net;
 
+import gui.Dialog;
+import gui.Button;
+
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 public class inputIp {
 
-	private JDialog dialog;
+	private Dialog dialog;
 	private JTextField textField;
 
 	private inputIp(String title, JFrame frame) {
-		dialog = new JDialog(frame, title, true);
+		dialog = new Dialog(title);
 		dialog.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		dialog.setMinimumSize(new Dimension(200, 200));
 		init();
@@ -32,11 +34,26 @@ public class inputIp {
 		String text = input.textField.getText();
 		return text;
 	}
+	
 
 	private void init() {
+		ActionListener exit = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		};
+		ActionListener disp = new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dialog.dispose();
+			}
+
+		};
 		textField = new JTextField();
-		JButton okButton = new JButton("ok");
+		Button exitButton = new Button("exit", exit);
+		Button okButton = new Button("ok", disp);
 		okButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -46,9 +63,10 @@ public class inputIp {
 
 		});
 
-		dialog.setLayout(new GridLayout(2, 1, 5, 5));
+		dialog.setLayout(new GridLayout(2, 2, 5, 5));
 
 		dialog.add(textField);
+		dialog.add(exitButton);
 		dialog.add(okButton);
 		dialog.pack();
 	}

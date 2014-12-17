@@ -2,6 +2,7 @@ package gui;
 
 import geo.*;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -89,8 +90,25 @@ public class Board extends JPanel implements ActionListener {
 		}
 		boolean host = (type == 0);
 
-		other_player_address = InetAddress.getByName(inputIp.getInput(
-				"Entrer l'IP de l'autre joueur", null));
+		String ip = "";
+		while (ip.isEmpty()) {
+			ip = inputIp.getInput("Entrer l'IP de l'autre joueur", null);
+		}
+		try {
+			other_player_address = InetAddress.getByName(ip);
+		} catch (Exception uhe) {
+			Dialog d = new Dialog("Adresse Erronée");
+			ActionListener exit = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.exit(0);
+				}
+			};
+			Button ex = new Button("exit", exit);
+			ex.setPreferredSize(new Dimension(d.getWidth(), 50));
+			d.add(ex, BorderLayout.SOUTH);
+			d.setVisible(true);
+		}
 		// InetAddress.getByName("192.168.12.76");
 
 		// Applique les proportions du terrains , H = 60yds, W = 100yds, Center
@@ -154,10 +172,10 @@ public class Board extends JPanel implements ActionListener {
 		exit.setBounds(
 				BOARD_X_POS,
 				BOARD_X_POS
-						+ (int) field.field.getHeight()
-						+ (int) ((boardSize.getHeight() - (BOARD_Y_POS + field.field
-								.getHeight())) / 4),
-				(int) field.field.getWidth(), TOP_MENUS_HEIGHT);
+				+ (int) field.field.getHeight()
+				+ (int) ((boardSize.getHeight() - (BOARD_Y_POS + field.field
+						.getHeight())) / 4),
+						(int) field.field.getWidth(), TOP_MENUS_HEIGHT);
 		add(exit);
 
 		// timer

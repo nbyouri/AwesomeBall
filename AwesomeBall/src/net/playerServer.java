@@ -1,7 +1,5 @@
 package net;
 
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -41,14 +39,6 @@ public class playerServer implements Runnable {
 
 				if (!Arrays.equals(dp.getData(), oldb)) {
 					oldb = dp.getData();
-					final ByteArrayInputStream bais = new ByteArrayInputStream(
-							oldb);
-					final ObjectInputStream dais = new ObjectInputStream(bais);
-
-					bais.close();
-					dais.close();
-					PlayerPacket pc = (PlayerPacket) dais.readObject();
-					System.out.println(pc.toString());
 				}
 
 			} catch (Exception ex) {
