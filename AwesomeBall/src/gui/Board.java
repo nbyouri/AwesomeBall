@@ -62,6 +62,7 @@ public class Board extends JPanel implements ActionListener {
 	public static final int PPORT = 1233;
 	public static final int BPORT = 1234;
 	public static final int P2PORT = 1235;
+	public static final int B2PORT = 1236;
 
 	/**
 	 * Initialise le serveur
@@ -141,7 +142,7 @@ public class Board extends JPanel implements ActionListener {
 			playerserv = new playerServer();
 			ballserv = new ballServer();
 			ballserv.setAddr(other_player_address);
-			ballserv.setPort(BPORT);
+			ballserv.setPort(player1.player.host ? B2PORT : BPORT);
 			playerserv.setAddr(other_player_address);
 			playerserv.setPort(player1.player.host ? P2PORT : PPORT);
 			Thread pserv = new Thread(playerserv);
@@ -195,18 +196,12 @@ public class Board extends JPanel implements ActionListener {
 				RenderingHints.VALUE_RENDER_QUALITY);
 
 		// listen to info if we're server , otherwise send it
-		if (player1.player.host) {
-			try {
-				UDPClient.send(ball.toBytes(), other_player_address, BPORT);
-			} catch (Exception e) {
-				System.out.println("ball send error");
-			}
-		} else {
-			try {
-				ball.toBall(ballserv.getBytes());
-			} catch (Exception e) {
-				System.out.println("toBall error");
-			}
+		try {
+			UDPClient.send(ball.toBytes(), other_player_address, 
+					player1.player.host ? BPORT : B2PORT);
+			ball.toBall(ballserv.getBytes());
+		} catch (Exception e) {
+			System.out.println("ball send error");
 		}
 
 		try {
