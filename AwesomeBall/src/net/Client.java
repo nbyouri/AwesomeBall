@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
@@ -31,15 +33,35 @@ public class Client implements Runnable {
 	private String address;
 	private int port;
 	private String message;
+	private Object objin;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
 
-	public Client(String addr, int inport) {
+	public Client(String addr, int inport) throws Exception {
 		socket = null;
 		port = inport;
 		address = addr;
+		objin = null;
 	}
 
+	public Object getObjectIn() {
+		return objin;
+	}
+	
 	public String getMessage() {
 		return this.message;
+	}
+	
+	public void send(PlayerPacket pp) throws IOException {
+		if (oos == null) {
+			oos = new ObjectOutputStream(socket.getOutputStream());
+		}
+		if (socket.isConnected()) {
+			if (oos != null) {
+				oos.writeObject(pp);
+				oos.reset();
+			}
+		}
 	}
 
 	public void run() {
@@ -53,6 +75,8 @@ public class Client implements Runnable {
 				socket = new Socket(address, port);
 				if (socket != null && socket.isBound()) {
 					System.out.println("connected");
+					ois = new ObjectInputStream(socket.getInputStream());
+					oos = new ObjectOutputStream(socket.getOutputStream());
 					break;
 				} else {
 					System.out.println("no server detected");
@@ -83,15 +107,20 @@ public class Client implements Runnable {
 
 		while (!socket.isClosed()) {
 
-			if (socket != null && socket.isConnected()) {
+			if (socket != null && socket.isConnected() && ois != null) {
 				try {
-					BufferedReader entree = new BufferedReader(
-							new InputStreamReader(socket.getInputStream()));
-					String mes = entree.readLine();
-					if (mes != null) {
-						this.message = mes;
+//					BufferedReader entree = new BufferedReader(
+//							new InputStreamReader(socket.getInputStream()));
+//					String mes = entree.readLine();
+//					if (mes != null) {
+//						this.message = mes;
+//					}
+					try {
+						objin = ois.readObject();
+					} catch (Exception e) {
+						System.out.println("Object read not valid");
 					}
-				} catch (SocketException se) {
+				} catch (Exception se) {
 					Dialog d = new Dialog("Player 2 Left");
 					ActionListener exit = new ActionListener() {
 						@Override
@@ -104,8 +133,6 @@ public class Client implements Runnable {
 					d.add(ex, BorderLayout.SOUTH);
 					d.setVisible(true);
 
-				} catch (IOException ioex) {
-					continue;
 				}
 			}
 		}

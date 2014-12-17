@@ -1,64 +1,73 @@
 package test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
 import java.net.Socket;
+
+import com.sun.xml.internal.rngom.parse.compact.EOFException;
+
+import net.PlayerPacket;
 
 public class ClientTest extends Socket implements Runnable {
 
-	private String message;
+	private ObjectInputStream ois;
+	private PlayerPacket pp;
 
 	public ClientTest() throws Exception {
-		super("192.168.1.6", 7331);
-		Thread t = new Thread(this);
-		t.start();
+		super("10.99.3.134", 1337);
+		ois = new ObjectInputStream(this.getInputStream());
+		pp = (PlayerPacket)ois.readObject();
 	}
 
-	public String getMessage() {
-		return this.message;
-	}
-
-	public synchronized void sendMsg(String msg) throws IOException {
-		if (this.isConnected()) {
-			PrintWriter sortie = new PrintWriter(this.getOutputStream());
-			sortie.println(msg);
-			sortie.flush();
-		}
+	public PlayerPacket getPlayer() { 
+		return pp;
 	}
 
 	public void run() {
-		while (!this.isClosed()) {
-			if (this != null && this.isConnected()) {
+		while (this.isConnected()) {
+			try {
+				Thread.sleep(200);
+			} catch (Exception e) {
+			}
+			if (this != null && this.isConnected() && ois != null) {
 				try {
-					BufferedReader entree = new BufferedReader(
-							new InputStreamReader(this.getInputStream()));
-					String mes = entree.readLine();
-					if (mes != null) {
-						this.message = mes;
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
+					//Object o = ois.readObject();
+					pp = (PlayerPacket)ois.readObject();
+					//ois.reset();
+					//pp = (PlayerPacket)o;
+					System.out.println(pp.toString());
+					/*if (o instanceof PlayerPacket) {
+						if (!pp.equals(o)) {
+							pp = (PlayerPacket)o;
+						} else {
+							System.out.println(pp.equals(o));
+						}
+					} else {
+						System.out.println("Wrong Object read");
+					}*/
+				} catch (EOFException e) {
+					System.out.println("Server disconnected");
+					System.exit(0);
+				} catch (Exception e) {
+					continue;
 				}
+			}
+		}
+		while (isConnected() && isBound()) {
+			if (pp == null) {
+				continue;
+			}
+			System.out.println("out <- " + pp.toString());
+			try {
+				ois.reset();
+			} catch (Exception e) {
+				System.out.println("failed to reset ois");
 			}
 		}
 	}
 
 	public static void main(String[] args) throws Exception {
-		ClientTest ct = new ClientTest();
-		while (ct.isConnected() && ct.isBound()) {
-			System.out.println("Waiting for info");
-			try {
-				Thread.sleep(20);
-			} catch (Exception e) {
-			}
-			if (ct.getMessage() == null) {
-				continue;
-			}
-			System.out.println("out <- " + ct.getMessage());
-			System.out.println(ct.getLocalPort() + " " + ct.getPort()
-					+ ct.getRemoteSocketAddress());
-		}
+		//ClientTest ct = new ClientTest();
+		Thread t = new Thread(new ClientTest());
+		t.start();
 	}
 }

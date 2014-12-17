@@ -47,9 +47,13 @@ public class initServer implements Runnable {
 		Thread servth = new Thread(serv);
 		servth.start();
 
-		address = inputIp.getInput("Entrer l'IP de l'autre joueur", null);
+		//address = inputIp.getInput("Entrer l'IP de l'autre joueur", null);
 
-		client = new Client(address, inport);
+		try {
+			client = new Client("10.99.3.134", inport);
+		} catch (Exception e) {
+			System.out.println("failed to connect client");
+		}
 		Thread clienth = new Thread(client);
 		clienth.start();
 

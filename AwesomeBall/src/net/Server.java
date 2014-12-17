@@ -1,27 +1,17 @@
 package net;
 
-import gui.Button;
-import gui.Dialog;
-
 import java.net.*;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 
 public class Server extends ServerSocket implements Runnable {
 	private Socket socket;
-	private String msg;
-	private BufferedReader in;
-	private PrintWriter out;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
 
 	public Server(int outport) throws Exception {
 		super(outport, 50, InetAddress.getLocalHost());
-	}
-
-	public String getMessage() {
-		return msg;
+		oos = null;
+		socket = null;
 	}
 
 	public Socket getSocket() {
@@ -32,16 +22,31 @@ public class Server extends ServerSocket implements Runnable {
 		this.socket = socket;
 	}
 
-	public synchronized void sendMsg(String msg) throws IOException {
-		if (socket != null && socket.isConnected() && msg != null) {
-			out = new PrintWriter(socket.getOutputStream());
-			out.println(msg);
-			out.flush();
+	public void send(PlayerPacket pp) throws IOException {
+		if (oos == null) {
+			oos = new ObjectOutputStream(socket.getOutputStream());
+		}
+		if (socket.isConnected() && oos != null) {
+			oos.writeObject(pp);
+			oos.reset();
+		}
+	}
+
+
+	public PlayerPacket read() throws Exception {
+		if (ois == null)  {
+			ois = new ObjectInputStream(socket.getInputStream());
+		}
+		if (socket.isConnected() && ois != null) {
+			return (PlayerPacket)ois.readObject();
+		} else {
+			return null;
 		}
 	}
 
 	public void run() {
 		while (true) {
+
 			try {
 				socket = this.accept();
 			} catch (SocketException se) {
@@ -55,36 +60,6 @@ public class Server extends ServerSocket implements Runnable {
 			catch (IOException ex) {
 				ex.printStackTrace();
 			}
-			while (!this.isClosed()) {
-				if (socket != null && socket.isConnected()) {
-					try {
-						in = new BufferedReader(new InputStreamReader(
-								socket.getInputStream()));
-						String mes = in.readLine();
-						if (mes != null) {
-							this.msg = mes;
-						}
-					} catch (SocketException se) {
-						Dialog d = new Dialog("Player 2 Left");
-						ActionListener exit = new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								System.exit(0);
-							}
-						};
-						Button ex = new Button("exit", exit);
-						ex.setPreferredSize(new Dimension(d.getWidth(), 50));
-						d.add(ex, BorderLayout.SOUTH);
-						d.setVisible(true);
-
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-			/*
-			 * try { Thread.sleep(50); } catch (Exception e) {}
-			 */
 		}
 	}
 }

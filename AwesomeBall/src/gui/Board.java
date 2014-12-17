@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import net.PlayerPacket;
 import net.initServer;
 
 @SuppressWarnings("serial")
@@ -73,14 +74,14 @@ public class Board extends JPanel implements ActionListener {
 	public Board(Dimension boardSize) throws Exception {
 		int type = JOptionPane.showConfirmDialog(null, 
 				"<html><center>Êtes vous un serveur ?"+ "<br>vous êtes " +
-		InetAddress.getLocalHost().toString());
-		
+						InetAddress.getLocalHost().toString());
+
 		if (type == JOptionPane.CANCEL_OPTION
 				|| type == JOptionPane.CLOSED_OPTION) {
 			System.exit(0);
 		}
 		boolean host = (type == 0);
-		
+
 		// Initialisation du serveur
 		try {
 			serv = new initServer(host);
@@ -109,7 +110,7 @@ public class Board extends JPanel implements ActionListener {
 		// setup players and put them in the right place
 		player1 = new PlayerView(field, ball, host);
 		player2 = new PlayerView(field, ball, !host);
-		
+
 		PlayerController.initPosition(field.field,  player1.player,  player2.player);
 
 
@@ -157,20 +158,27 @@ public class Board extends JPanel implements ActionListener {
 		g2.setRenderingHint(RenderingHints.KEY_RENDERING,
 				RenderingHints.VALUE_RENDER_QUALITY);
 
-		// update player 1 location on server/client
+		// update player 2 location on server/client
 		if (serv.getServ().getSocket() != null
 				&& serv.getServ().getSocket().isConnected()) {
 			try {
-				serv.getServ().sendMsg(player1.toString(ball));
+				//PlayerPacket.toCtrl(serv.getServ().read(), player1.player);
+				serv.getServ().send(new PlayerPacket(player1.player));
 			} catch (Exception ex) {
-				System.out.println("Failed to send player coordinates to server");
+				//System.out.println("Failed to send player coordinates to server");
 			}
 		}
 
 		// receive player 2 info if the client is connected, otherwise, retry
-		if (serv.getClient() != null) {
-			player2.player.msgToCoord(serv.getClient().getMessage(), ball);
-		}
+		/*if (serv.getClient() != null) {
+			//player2.player.msgToCoord(serv.getClient().getMessage(), ball);
+			//player2.player = (PlayerController)serv.getClient().getObjectIn();
+			try {
+				serv.getClient().send(new PlayerPacket(player2.player));
+			} catch (Exception e) {
+				System.out.println("Failed to send data");
+			}
+		}*/
 
 		// draw title
 		title.draw(g2);
@@ -197,12 +205,6 @@ public class Board extends JPanel implements ActionListener {
 				+ Integer.toString(player2.player.getScore()));
 		score.draw(g2);
 
-		// clean
-		Toolkit.getDefaultToolkit().sync();
-		g.dispose();
-	}
-
-	public void actionPerformed(ActionEvent e) {
 		// move player
 		player1.player.moveIn(field.field, player2.player);
 		player2.player.moveIn(field.field, player1.player);
@@ -210,6 +212,12 @@ public class Board extends JPanel implements ActionListener {
 		// move ball
 		ball.move(field.field, player1.player, player2.player);
 
+		// clean
+		Toolkit.getDefaultToolkit().sync();
+		g.dispose();
+	}
+
+	public void actionPerformed(ActionEvent e) {
 		repaint();
 	}
 

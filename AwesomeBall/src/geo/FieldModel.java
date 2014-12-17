@@ -3,8 +3,8 @@ package geo;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
-@SuppressWarnings("serial")
 public class FieldModel extends Shape {
+	private static final long serialVersionUID = 2086297269914706327L;
 	public Ellipse2D.Double center;
 	public Rectangle2D goalleft;
 	public Rectangle2D goalright;
