@@ -27,7 +27,7 @@ public class Ball extends Ellipse2D.Double {
 	public static final int BALL_SIZE = 15;
 	public static final double BALL_RADIUS = BALL_SIZE / 2;
 	public static final int STOP = 0;
-	public static final double SPEED_ONE = 0.5;
+	public static final double SPEED_ONE = 1;
 	public static final double SPEED_ONE_DIAG = PlayerModel.SPEED_ONE_DIAG;
 	public static final double SPEED_SHOOT = 0.05;
 	public static final double BRAKE = -0.005;
@@ -313,7 +313,7 @@ public class Ball extends Ellipse2D.Double {
 	 *            FieldController
 	 */
 	public void shoot(FieldController f, PlayerController p) {
-		int dist = 4;
+		int dist = 8;
 		if (p.nearInPixels(this.rect, Side.LEFT.getId(), dist)) {
 			this.setDx(this.getDx() + Math.abs(this.getX() - p.getX())
 					* SPEED_SHOOT);

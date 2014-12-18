@@ -196,20 +196,17 @@ public class Board extends JPanel implements ActionListener {
 					player1.player.host ? BPORT : B2PORT);
 			ball.toBall(ballserv.getBytes());
 		} catch (Exception e) {
-			System.out.println("ball send error");
 		}
 
 		try {
 			UDPClient.send(player1.player.toBytes(), other_player_address,
 					player1.player.host ? PPORT : P2PORT);
 		} catch (Exception e) {
-			System.out.println("player1 send error");
 		}
 
 		try {
 			player2.player.toPlayer(playerserv.getBytes());
 		} catch (Exception e) {
-			System.out.println("toPlayer error");
 		}
 
 		// draw title

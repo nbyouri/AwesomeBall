@@ -32,7 +32,7 @@ public class UDPServer implements Runnable {
 
 		while (true) {
 			try {
-				byte[] buf = new byte[100];
+				byte[] buf = new byte[1000];
 				dp = new DatagramPacket(buf, buf.length, address, port);
 
 				try {

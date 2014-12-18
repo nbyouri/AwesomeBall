@@ -19,7 +19,7 @@ public class PlayerModel extends FieldController {
 	public static final int SPEED_ONE = 1;
 	// Vu que Dx et Dy peut-être les mêmes,
 	// on fait pythagore des deux pour obtenir la vitesse diagonale.
-	public static final double SPEED_ONE_DIAG = Math.sqrt(2 * SPEED_ONE);
+	public static final double SPEED_ONE_DIAG = 1.4;
 	public static final int SPEED_TWO = 2;
 	public static final int STOP = 0;
 	public static final int INIT_X = 400;
