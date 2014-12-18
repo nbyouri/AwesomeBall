@@ -1,6 +1,7 @@
 package gui;
 
 import geo.*;
+import net.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,10 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import net.UDPClient;
-import net.ballServer;
-import net.inputIp;
-import net.playerServer;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel implements ActionListener {
@@ -40,8 +37,8 @@ public class Board extends JPanel implements ActionListener {
 	private FieldView field;
 	private Button exit;
 
-	private playerServer playerserv;
-	private ballServer ballserv;
+	private UDPServer playerserv;
+	private UDPServer ballserv;
 	private InetAddress other_player_address;
 
 	// constants
@@ -139,12 +136,10 @@ public class Board extends JPanel implements ActionListener {
 		ball = new Ball(field.field);
 
 		try {
-			playerserv = new playerServer();
-			ballserv = new ballServer();
-			ballserv.setAddr(other_player_address);
-			ballserv.setPort(player1.player.host ? B2PORT : BPORT);
-			playerserv.setAddr(other_player_address);
-			playerserv.setPort(player1.player.host ? P2PORT : PPORT);
+			playerserv = new UDPServer(other_player_address,
+					player1.player.host ? P2PORT : PPORT);
+			ballserv = new UDPServer(other_player_address,
+					player1.player.host ? B2PORT : BPORT);
 			Thread pserv = new Thread(playerserv);
 			Thread bserv = new Thread(ballserv);
 			pserv.start();

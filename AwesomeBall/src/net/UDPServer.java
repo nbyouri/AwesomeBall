@@ -7,11 +7,16 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
-public class playerServer implements Runnable {
+public class UDPServer implements Runnable {
 	public byte[] oldb = null;
 	public InetAddress address = null;
 	public int port;
 
+	public UDPServer(InetAddress ad, int p) {
+		address = ad;
+		port = p;
+	}
+	
 	public void run() {
 		DatagramPacket dp = null;
 		DatagramSocket ds = null;
@@ -45,14 +50,6 @@ public class playerServer implements Runnable {
 				continue;
 			}
 		}
-	}
-
-	public void setAddr(InetAddress ad) {
-		address = ad;
-	}
-
-	public void setPort(int p) {
-		port = p;
 	}
 
 	public byte[] getBytes() {
