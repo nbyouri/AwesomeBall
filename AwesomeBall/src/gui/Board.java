@@ -20,6 +20,7 @@ import java.net.InetAddress;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 
@@ -54,7 +55,7 @@ public class Board extends JPanel implements ActionListener {
 	public static final int ROTATION_WIDTH = 50;
 	public static final int SCORES_X = 290;
 	public static final int SCORES_WIDTH = 155;
-	public static final int FPS = 5;
+	public static final int FPS = 17; // 60 fps
 	public static final int EXIT_SUCCESS = 0;
 	public static final int PPORT = 1233;
 	public static final int BPORT = 1234;
@@ -78,9 +79,11 @@ public class Board extends JPanel implements ActionListener {
 	 *            , la taille de l'écran.
 	 */
 	public Board(Dimension boardSize) throws Exception {
-		int type = JOptionPane.showConfirmDialog(null,
-				"<html><center>Êtes vous un serveur ?" + "<br>vous êtes "
-						+ InetAddress.getLocalHost().toString());
+		JTextArea textarea = new JTextArea("vous êtes "
+				+ InetAddress.getLocalHost().toString());
+		 textarea.setEditable(true);
+		int type = JOptionPane.showConfirmDialog(null, textarea,
+				"Êtes vous un serveur ?", JOptionPane.INFORMATION_MESSAGE);
 
 		if (type == JOptionPane.CANCEL_OPTION
 				|| type == JOptionPane.CLOSED_OPTION) {
