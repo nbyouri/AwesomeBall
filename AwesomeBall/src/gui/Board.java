@@ -232,9 +232,11 @@ public class Board extends JPanel implements ActionListener {
 
 		// draw score box
 		score.setStr("Player 1 : "
-				+ Integer.toString(player1.player.getScore())
+				//+ Integer.toString(player1.player.getScore())
+                                + Integer.toString(ball.getScoreGauche())
 				+ " / Player 2 : "
-				+ Integer.toString(player2.player.getScore()));
+				//+ Integer.toString(player2.player.getScore()));
+                                + Integer.toString(ball.getScoreDroit()));
 		score.draw(g2);
 
 		// clean
