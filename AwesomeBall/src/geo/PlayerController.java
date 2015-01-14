@@ -39,7 +39,7 @@ public class PlayerController extends PlayerModel {
 	 * 
 	 * @return le score du joueur
 	 */
-	public int getScore() {
+	/*public int getScore() {
 		return score;
 	}
 
@@ -49,7 +49,7 @@ public class PlayerController extends PlayerModel {
 	 * @param score
 	 *            le score du joueur
 	 */
-	public void setScore(int score) {
+	/*public void setScore(int score) {
 		this.score = score;
 	}
 
@@ -65,7 +65,7 @@ public class PlayerController extends PlayerModel {
 	/**
 	 * Modifie l'ellipse du joueur utilisée pour certaines collisions
 	 * 
-	 * @param ell
+	 * @param ell 
 	 *            l'ellipse utilisée pour certaines collisions
 	 */
 	public void setEll(Ellipse2D.Double ell) {
@@ -364,7 +364,7 @@ public class PlayerController extends PlayerModel {
 		final DataOutputStream oos = new DataOutputStream(baos);
 		oos.writeDouble(this.x);
 		oos.writeDouble(this.y);
-		oos.writeInt(this.score);
+		//oos.writeInt(this.score);
 		oos.writeBoolean(this.up);
 		oos.writeBoolean(this.down);
 		oos.writeBoolean(this.left);
@@ -388,7 +388,7 @@ public class PlayerController extends PlayerModel {
 			this.y = ny;
 		}
 
-		this.score = dais.readInt();
+		//this.score = dais.readInt();
 		this.up = dais.readBoolean();
 		this.down = dais.readBoolean();
 		this.left = dais.readBoolean();

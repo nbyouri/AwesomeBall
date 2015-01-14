@@ -8,7 +8,7 @@ import java.awt.geom.Ellipse2D;
 public class PlayerModel extends FieldController {
 	public boolean host;
 	public Images img;
-	public int score;
+	//public int score;
 	public Ellipse2D.Double ell;
 	public boolean left;
 	public boolean right;

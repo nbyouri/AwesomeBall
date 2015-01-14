@@ -23,6 +23,8 @@ public class Ball extends Ellipse2D.Double {
 	public Shape rect;
 	private double Dx;
 	private double Dy;
+        private int scoreGauche;
+        private int scoreDroit;
 
 	public static final int BALL_SIZE = 15;
 	public static final double BALL_RADIUS = BALL_SIZE / 2;
@@ -65,7 +67,23 @@ public class Ball extends Ellipse2D.Double {
 	public void setX(double d) {
 		this.x = d;
 	}
-
+        
+        public int getScoreGauche(){
+            return scoreGauche;
+        }
+        
+        public int getScoreDroit(){
+            return scoreDroit;
+        }
+        
+        public void setScoreGauche(int s){
+            this.scoreGauche = s;
+        }
+        
+        public void setScoreDroit(int s){
+            this.scoreDroit = s;
+        }
+        
 	/**
 	 * Creation graphique de la balle
 	 *
@@ -298,8 +316,10 @@ public class Ball extends Ellipse2D.Double {
 	 *            FieldController
 	 */
 	public void centerBall(FieldController f) {
-		this.setFrame(f.getCenterX() - BALL_RADIUS, f.getCenterY()
-				- BALL_RADIUS, BALL_SIZE, BALL_SIZE);
+		/*this.setFrame(f.getCenterX() - BALL_RADIUS, f.getCenterY()
+				- BALL_RADIUS, BALL_SIZE, BALL_SIZE);*/
+                this.setX(f.getCenterX() - BALL_RADIUS);
+                this.setY(f.getCenterY() - BALL_RADIUS);
 		this.setDx(STOP);
 		this.setDy(STOP);
 	}
@@ -345,10 +365,12 @@ public class Ball extends Ellipse2D.Double {
 	public void goal(FieldController f, PlayerController p1, PlayerController p2) {
 		if (this.isGoalLeft(f)) {
 			this.centerBall(f);
-			p2.setScore(p2.getScore() + 1);
+			//p2.setScore(p2.getScore() + 1);
+                        setScoreGauche(scoreGauche + 1);
 		} else if (this.isGoalRight(f)) {
 			this.centerBall(f);
-			p1.setScore(p1.getScore() + 1);
+			//p1.setScore(p1.getScore() + 1);
+                        setScoreDroit(scoreDroit + 1);
 		}
 	}
 
@@ -384,6 +406,9 @@ public class Ball extends Ellipse2D.Double {
 		final DataOutputStream daos = new DataOutputStream(baos);
 		daos.writeDouble(this.getX());
 		daos.writeDouble(this.getY());
+                daos.writeInt(this.getScoreGauche());
+                daos.writeInt(this.getScoreDroit());
+                
 		daos.close();
 		baos.close();
 		return baos.toByteArray();
@@ -395,6 +420,8 @@ public class Ball extends Ellipse2D.Double {
 
 		double nx = dais.readDouble();
 		double ny = dais.readDouble();
+                int scoreLeft = dais.readInt();
+                int scoreRight = dais.readInt();
 
 		if (nx > 0) {
 			this.x = nx;
@@ -402,7 +429,8 @@ public class Ball extends Ellipse2D.Double {
 		if (ny > 0) {
 			this.y = ny;
 		}
-
+                this.scoreGauche = scoreLeft;
+                this.scoreDroit = scoreRight;
 		bais.close();
 		dais.close();
 	}
