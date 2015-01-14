@@ -364,10 +364,14 @@ public class Ball extends Ellipse2D.Double {
 	 */
 	public void goal(FieldController f, PlayerController p1, PlayerController p2) {
 		if (this.isGoalLeft(f)) {
+                        this.setDx(STOP);
+                        this.setDy(STOP);
 			this.centerBall(f);
 			//p2.setScore(p2.getScore() + 1);
                         setScoreGauche(scoreGauche + 1);
 		} else if (this.isGoalRight(f)) {
+                        this.setDx(STOP);
+                        this.setDy(STOP);
 			this.centerBall(f);
 			//p1.setScore(p1.getScore() + 1);
                         setScoreDroit(scoreDroit + 1);
